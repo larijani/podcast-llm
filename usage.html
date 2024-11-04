@@ -96,12 +96,32 @@
 <section id="basic-usage">
 <h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
 <p>Here’s how to use the Podcast LLM system:</p>
-<p>[Add usage examples here]</p>
+<ol class="arabic">
+<li><p>Generate a podcast about a topic:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Artificial Intelligence&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Options:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Customize number of Q&amp;A rounds per section</span>
+python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Linux&quot;</span><span class="w"> </span>--qa-rounds<span class="w"> </span><span class="m">3</span>
+
+<span class="c1"># Disable checkpointing</span>
+python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Space Exploration&quot;</span><span class="w"> </span>--checkpoint<span class="w"> </span><span class="nb">false</span>
+
+<span class="c1"># Generate audio output</span>
+python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Quantum Computing&quot;</span><span class="w"> </span>--audio-output<span class="w"> </span>podcast.mp3
+
+<span class="c1"># Generate Markdown output</span>
+python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Machine Learning&quot;</span><span class="w"> </span>--text-output<span class="w"> </span>podcast.md
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The system can be configured using the <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file:</p>
-<p>[Add configuration details here]</p>
 </section>
 </section>
 

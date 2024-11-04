@@ -50,7 +50,16 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#yaml-configuration">YAML configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yaml-configuration">YAML configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#llm-configuration">LLM Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#text-to-speech-configuration">Text-to-Speech Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#audio-settings">Audio Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checkpointing-settings">Checkpointing Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rate-limiting">Rate Limiting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#content-settings">Content Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -95,13 +104,92 @@
 <h1>Configuration Guide<a class="headerlink" href="#configuration-guide" title="Link to this heading"></a></h1>
 <section id="basic-usage">
 <h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
-<p>Here’s how to configure the Podcast LLM system:</p>
-<p>[Add usage examples here]</p>
+<p>Here’s how to configure the Podcast LLM system by providing a custom configuration file:</p>
 </section>
 <section id="yaml-configuration">
 <h2>YAML configuration<a class="headerlink" href="#yaml-configuration" title="Link to this heading"></a></h2>
 <p>The system can be configured using the <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file:</p>
-<p>[Add configuration details here]</p>
+<p>The configuration file contains several sections:</p>
+<section id="llm-configuration">
+<h3>LLM Configuration<a class="headerlink" href="#llm-configuration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fast_llm_provider</span></code>: Provider for quick LLM operations (options: ‘openai’, ‘google’, ‘anthropic’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">long_context_llm_provider</span></code>: Provider for operations requiring longer context</p></li>
+</ul>
+</section>
+<section id="text-to-speech-configuration">
+<h3>Text-to-Speech Configuration<a class="headerlink" href="#text-to-speech-configuration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tts_provider</span></code>: Text-to-speech service to use (options: ‘google’, ‘elevenlabs’)</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">tts_settings</span></code>: Provider-specific settings including:</dt><dd><ul>
+<li><p>Voice mappings for interviewer and interviewee</p></li>
+<li><p>Model settings</p></li>
+<li><p>Language codes</p></li>
+<li><p>Audio effect profiles</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="audio-settings">
+<h3>Audio Settings<a class="headerlink" href="#audio-settings" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_format</span></code>: Format for generated audio (options: ‘mp3’, ‘wav’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temp_audio_dir</span></code>: Directory for temporary audio files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_dir</span></code>: Directory for final output files</p></li>
+</ul>
+</section>
+<section id="checkpointing-settings">
+<h3>Checkpointing Settings<a class="headerlink" href="#checkpointing-settings" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">checkpoint_dir</span></code>: Directory for saving generation checkpoints</p></li>
+</ul>
+</section>
+<section id="rate-limiting">
+<h3>Rate Limiting<a class="headerlink" href="#rate-limiting" title="Link to this heading"></a></h3>
+<p>Configure API rate limits per provider:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">requests_per_minute</span></code>: Maximum requests allowed per minute</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_retries</span></code>: Number of retry attempts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">base_delay</span></code>: Base delay between retries</p></li>
+</ul>
+</section>
+<section id="content-settings">
+<h3>Content Settings<a class="headerlink" href="#content-settings" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">podcast_name</span></code>: Name of the podcast</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">intro</span></code>: Template for podcast introduction (variables: {podcast_name}, {topic})</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outro</span></code>: Template for podcast conclusion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">episode_structure</span></code>: List defining the structure of episodes</p></li>
+</ul>
+</section>
+<section id="example-configuration">
+<h3>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># LLM Configuration</span>
+<span class="nt">fast_llm_provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropic</span>
+<span class="nt">long_context_llm_provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+
+<span class="c1"># TTS Configuration</span>
+<span class="nt">tts_provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elevenlabs</span>
+<span class="nt">tts_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">elevenlabs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">voice_mapping</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Interviewer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Chris</span>
+<span class="w">      </span><span class="nt">Interviewee</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Charlie</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eleven_multilingual_v2</span>
+
+<span class="c1"># Output settings</span>
+<span class="nt">output_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mp3</span>
+<span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./output</span>
+
+<span class="c1"># Content settings</span>
+<span class="nt">podcast_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My AI Podcast</span>
+<span class="nt">intro</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Welcome</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">{podcast_name}.</span><span class="nv"> </span><span class="s">Today</span><span class="nv"> </span><span class="s">we&#39;re</span><span class="nv"> </span><span class="s">exploring</span><span class="nv"> </span><span class="s">{topic}.&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
