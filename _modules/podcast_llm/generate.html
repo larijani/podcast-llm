@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.generate &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.generate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.generate</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Podcast generation module.</span>
+
+<span class="sd">This module provides functionality to generate complete podcast episodes from a given topic.</span>
+<span class="sd">It handles the end-to-end process including research, script writing, and audio generation.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from podcast_llm.generate import generate</span>
+<span class="sd">    &gt;&gt;&gt; generate(</span>
+<span class="sd">    ...     topic=&#39;Artificial Intelligence&#39;,</span>
+<span class="sd">    ...     qa_rounds=3,</span>
+<span class="sd">    ...     use_checkpoints=True,</span>
+<span class="sd">    ...     audio_output=&#39;podcast.mp3&#39;,</span>
+<span class="sd">    ...     text_output=&#39;script.md&#39;,</span>
+<span class="sd">    ...     config=&#39;config.yaml&#39;,</span>
+<span class="sd">    ...     debug=True</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">The generation process includes:</span>
+<span class="sd">- Background research on the topic</span>
+<span class="sd">- Outlining the episode structure </span>
+<span class="sd">- Writing draft and final scripts</span>
+<span class="sd">- Converting the script to audio using text-to-speech</span>
+<span class="sd">- Saving outputs to specified locations</span>
+
+<span class="sd">The process can be checkpointed to allow for resuming interrupted generations.</span>
+<span class="sd">Debug logging provides detailed information about the generation process.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.research</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">research_background_info</span><span class="p">,</span>
+    <span class="n">research_discussion_topics</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.writer</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">write_draft_script</span><span class="p">,</span>
+    <span class="n">write_final_script</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.outline</span> <span class="kn">import</span> <span class="n">outline_episode</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.utils.checkpointer</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Checkpointer</span><span class="p">,</span>
+    <span class="n">to_snake_case</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.text_to_speech</span> <span class="kn">import</span> <span class="n">generate_audio</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">setup_logging</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.utils.text</span> <span class="kn">import</span> <span class="n">generate_markdown_script</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<span class="n">PACKAGE_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">DEFAULT_CONFIG_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;config.yaml&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="generate">
+<a class="viewcode-back" href="../../modules/generate.html#podcast_llm.generate.generate">[docs]</a>
+<span class="k">def</span> <span class="nf">generate</span><span class="p">(</span>
+    <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">qa_rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">use_checkpoints</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">audio_output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">text_output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a podcast episode.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        topic: Topic of the podcast</span>
+<span class="sd">        qa_rounds: Number of Q&amp;A rounds</span>
+<span class="sd">        use_checkpoints: Whether to use checkpointing</span>
+<span class="sd">        audio_output: Path to save audio output</span>
+<span class="sd">        text_output: Path to save text output</span>
+<span class="sd">        config: Path to config file</span>
+<span class="sd">        debug: Whether to enable debug logging</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Set logging level based on debug flag</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">debug</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+    <span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+    
+    <span class="n">config</span> <span class="o">=</span> <span class="n">PodcastConfig</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yaml_path</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="n">checkpointer</span> <span class="o">=</span> <span class="n">Checkpointer</span><span class="p">(</span>
+        <span class="n">checkpoint_key</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">to_snake_case</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span><span class="si">}</span><span class="s2">_qa_</span><span class="si">{</span><span class="n">qa_rounds</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="o">=</span><span class="n">use_checkpoints</span>
+    <span class="p">)</span>
+
+    <span class="n">background_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">research_background_info</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;background_info&#39;</span><span class="p">)</span>
+    <span class="n">outline</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">outline_episode</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">background_info</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;outline&#39;</span><span class="p">)</span>
+    <span class="n">deep_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">research_discussion_topics</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;deep_info&#39;</span><span class="p">)</span>
+    <span class="n">draft_script</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">write_draft_script</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">,</span> <span class="n">background_info</span><span class="p">,</span> <span class="n">deep_info</span><span class="p">,</span> <span class="n">qa_rounds</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;draft_script&#39;</span><span class="p">)</span>
+    <span class="n">final_script</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">write_final_script</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">draft_script</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;final_script&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">text_output</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">text_output</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">generate_markdown_script</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">,</span> <span class="n">final_script</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">audio_output</span><span class="p">:</span>
+        <span class="n">generate_audio</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">final_script</span><span class="p">,</span> <span class="n">audio_output</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_arguments">
+<a class="viewcode-back" href="../../modules/generate.html#podcast_llm.generate.parse_arguments">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_arguments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command line arguments.&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Generate text using a language model&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;topic&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Topic of the podcast.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--qa-rounds&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of question-answer rounds per section&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--checkpoint&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Whether to enable checkpointing&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--audio-output&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Output filename for the generated audio&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--text-output&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Output filename for the generated text script&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--config&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_CONFIG_PATH</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to YAML config file&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--debug&#39;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enable debug logging&#39;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../modules/generate.html#podcast_llm.generate.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
+    <span class="n">generate</span><span class="p">(</span>
+        <span class="n">topic</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">topic</span><span class="p">,</span>
+        <span class="n">qa_rounds</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">qa_rounds</span><span class="p">,</span>
+        <span class="n">use_checkpoints</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">,</span>
+        <span class="n">audio_output</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">audio_output</span><span class="p">,</span>
+        <span class="n">text_output</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">text_output</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+        <span class="n">debug</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">debug</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

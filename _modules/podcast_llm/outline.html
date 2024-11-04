@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.outline &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.outline</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.outline</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Podcast outline generation module.</span>
+
+<span class="sd">This module provides functionality for generating and structuring podcast outlines.</span>
+<span class="sd">It defines data models for representing podcast sections and subsections, and includes</span>
+<span class="sd">utilities for formatting and manipulating outline structures.</span>
+
+<span class="sd">The module uses Pydantic models to enforce data validation and provide a clean interface</span>
+<span class="sd">for working with podcast outline components. The models support hierarchical organization</span>
+<span class="sd">of content with sections containing subsections, and include helper methods for string</span>
+<span class="sd">formatting.</span>
+
+<span class="sd">Classes:</span>
+<span class="sd">    PodcastSubsection: Models an individual subsection within a podcast section</span>
+<span class="sd">    PodcastSection: Models a major section containing multiple subsections</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    section = PodcastSection(</span>
+<span class="sd">        title=&quot;Main Discussion&quot;,</span>
+<span class="sd">        subsections=[</span>
+<span class="sd">            PodcastSubsection(title=&quot;Key Concepts&quot;),</span>
+<span class="sd">            PodcastSubsection(title=&quot;Historical Context&quot;)</span>
+<span class="sd">        ]</span>
+<span class="sd">    )</span>
+<span class="sd">    print(section.as_str)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">langchain</span> <span class="kn">import</span> <span class="n">hub</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.utils.llm</span> <span class="kn">import</span> <span class="n">get_long_context_llm</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PodcastSubsection">
+<a class="viewcode-back" href="../../modules/outline.html#podcast_llm.outline.PodcastSubsection">[docs]</a>
+<span class="k">class</span> <span class="nc">PodcastSubsection</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A model representing a subsection within a podcast section.</span>
+
+<span class="sd">    This class models an individual subsection of content within a larger podcast section.</span>
+<span class="sd">    It provides a structured way to store and format subsection titles, with a helper</span>
+<span class="sd">    property to output the subsection in a standardized string format with appropriate</span>
+<span class="sd">    indentation.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        title (str): The title/heading text for this subsection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A subsection in a podcast outline&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;-- </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="PodcastSection">
+<a class="viewcode-back" href="../../modules/outline.html#podcast_llm.outline.PodcastSection">[docs]</a>
+<span class="k">class</span> <span class="nc">PodcastSection</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A model representing a section within a podcast outline.</span>
+
+<span class="sd">    This class models a major section of content within a podcast outline. Each section</span>
+<span class="sd">    contains a title and a list of subsections, providing hierarchical structure to</span>
+<span class="sd">    the podcast content. A helper property formats the section and its subsections</span>
+<span class="sd">    into a standardized string representation.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        title (str): The title/heading text for this section</span>
+<span class="sd">        subsections (List[PodcastSubsection]): List of subsections contained within this section</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A section in a podcast outline&quot;</span><span class="p">)</span>
+    <span class="n">subsections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PodcastSubsection</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of subsections in a podcast section&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">ss</span><span class="o">.</span><span class="n">as_str</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">ss</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">subsections</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+    
+
+<div class="viewcode-block" id="PodcastOutline">
+<a class="viewcode-back" href="../../modules/outline.html#podcast_llm.outline.PodcastOutline">[docs]</a>
+<span class="k">class</span> <span class="nc">PodcastOutline</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A model representing a complete podcast episode outline.</span>
+
+<span class="sd">    This class models the full structure of a podcast episode outline, containing</span>
+<span class="sd">    an ordered list of major sections, each with their own subsections. It provides</span>
+<span class="sd">    a hierarchical organization of the episode content and includes a helper property</span>
+<span class="sd">    to format the entire outline into a standardized string representation.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        sections (List[PodcastSection]): Ordered list of major sections making up the episode outline</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PodcastSection</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of sections in a podcast outline&quot;</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">as_str</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="format_wikipedia_document">
+<a class="viewcode-back" href="../../modules/outline.html#podcast_llm.outline.format_wikipedia_document">[docs]</a>
+<span class="k">def</span> <span class="nf">format_wikipedia_document</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format a Wikipedia document for use in prompt context.</span>
+
+<span class="sd">    Takes a Wikipedia document object and formats its metadata and content into a </span>
+<span class="sd">    structured string format suitable for inclusion in LLM prompts. The format</span>
+<span class="sd">    includes a header with the article title followed by the full article content.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        doc: Wikipedia document object containing metadata and page content</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Formatted string with article title and content</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;### </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="outline_episode">
+<a class="viewcode-back" href="../../modules/outline.html#podcast_llm.outline.outline_episode">[docs]</a>
+<span class="k">def</span> <span class="nf">outline_episode</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">background_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PodcastOutline</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a structured outline for a podcast episode.</span>
+
+<span class="sd">    Takes a topic and background research information, then uses LangChain and GPT-4 </span>
+<span class="sd">    to generate a detailed podcast outline with sections and subsections. The outline</span>
+<span class="sd">    is structured using Pydantic models for type safety and validation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        topic (str): The main topic for the podcast episode</span>
+<span class="sd">        background_info (list): List of Wikipedia document objects containing research material</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        PodcastOutline: Structured outline object containing sections and subsections</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Generating outline for podcast on: </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">prompthub_path</span> <span class="o">=</span> <span class="s2">&quot;evandempsey/podcast_outline:6ceaa688&quot;</span>
+    <span class="n">outline_prompt</span> <span class="o">=</span> <span class="n">hub</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">prompthub_path</span><span class="p">,</span> <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got prompt from hub: </span><span class="si">{</span><span class="n">prompthub_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">outline_llm</span> <span class="o">=</span> <span class="n">get_long_context_llm</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="n">outline_chain</span> <span class="o">=</span> <span class="n">outline_prompt</span> <span class="o">|</span> <span class="n">outline_llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
+        <span class="n">PodcastOutline</span>
+    <span class="p">)</span>
+
+    <span class="n">outline</span> <span class="o">=</span> <span class="n">outline_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+        <span class="s2">&quot;episode_structure&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">episode_structure_for_prompt</span><span class="p">,</span>
+        <span class="s2">&quot;topic&quot;</span><span class="p">:</span> <span class="n">topic</span><span class="p">,</span>
+        <span class="s2">&quot;context_documents&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">format_wikipedia_document</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">background_info</span><span class="p">])</span>
+    <span class="p">})</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">outline</span><span class="o">.</span><span class="n">as_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outline</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

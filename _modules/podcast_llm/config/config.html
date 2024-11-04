@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.config.config &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.config.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.config.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Configuration module for podcast generation.</span>
+
+<span class="sd">This module provides configuration management for the podcast generation system through</span>
+<span class="sd">the PodcastConfig class. It handles loading and validating configuration from environment</span>
+<span class="sd">variables and YAML files, setting defaults, and providing a clean interface for accessing</span>
+<span class="sd">configuration values throughout the application.</span>
+
+<span class="sd">The configuration covers all aspects of podcast generation including:</span>
+<span class="sd">- API credentials for various services (OpenAI, ElevenLabs, Google, etc.)</span>
+<span class="sd">- LLM provider settings for different use cases</span>
+<span class="sd">- Text-to-speech configuration and voice mappings</span>
+<span class="sd">- Output format and directory management</span>
+<span class="sd">- Rate limiting parameters</span>
+<span class="sd">- Podcast metadata and episode structure</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    config = PodcastConfig.load(&#39;config.yaml&#39;)</span>
+<span class="sd">    print(config.podcast_name)</span>
+<span class="sd">    print(config.tts_provider)</span>
+
+<span class="sd">The module uses environment variables for sensitive values like API keys and a YAML</span>
+<span class="sd">file for general configuration settings. It provides smart defaults while allowing</span>
+<span class="sd">full customization of all parameters.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+
+
+<div class="viewcode-block" id="PodcastConfig">
+<a class="viewcode-back" href="../../../modules/config.html#podcast_llm.config.config.PodcastConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PodcastConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration class for podcast generation.</span>
+
+<span class="sd">    Holds all configuration parameters needed for generating podcast content, including:</span>
+<span class="sd">    - API keys for various services (OpenAI, ElevenLabs, etc.)</span>
+<span class="sd">    - LLM provider settings for different use cases</span>
+<span class="sd">    - Text-to-speech configuration</span>
+<span class="sd">    - Output format and directory settings</span>
+<span class="sd">    - Rate limiting parameters</span>
+<span class="sd">    - Podcast metadata and structure</span>
+
+<span class="sd">    The configuration can be loaded from environment variables and an optional YAML file</span>
+<span class="sd">    using the load() class method.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        google_api_key (str): API key for Google services</span>
+<span class="sd">        elevenlabs_api_key (str): API key for ElevenLabs TTS</span>
+<span class="sd">        openai_api_key (str): API key for OpenAI services</span>
+<span class="sd">        tavily_api_key (str): API key for Tavily search</span>
+<span class="sd">        anthropic_api_key (str): API key for Anthropic services</span>
+<span class="sd">        fast_llm_provider (str): Provider to use for quick LLM operations</span>
+<span class="sd">        long_context_llm_provider (str): Provider to use for long context operations</span>
+<span class="sd">        tts_provider (str): Text-to-speech service provider</span>
+<span class="sd">        tts_settings (Dict): Configuration settings for TTS</span>
+<span class="sd">        output_format (str): Format for output audio files</span>
+<span class="sd">        temp_audio_dir (str): Directory for temporary audio files</span>
+<span class="sd">        output_dir (str): Directory for final output files</span>
+<span class="sd">        rate_limits (Dict): Rate limiting settings for API calls</span>
+<span class="sd">        checkpoint_dir (str): Directory for saving checkpoints</span>
+<span class="sd">        podcast_name (str): Name of the podcast</span>
+<span class="sd">        intro (str): Template for podcast intro</span>
+<span class="sd">        outro (str): Template for podcast outro</span>
+<span class="sd">        episode_structure (List): Structure template for podcast episodes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># API Keys</span>
+    <span class="n">google_api_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">elevenlabs_api_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">openai_api_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tavily_api_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">anthropic_api_key</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1"># LLM config</span>
+    <span class="n">fast_llm_provider</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">long_context_llm_provider</span><span class="p">:</span> <span class="nb">str</span>
+    
+    <span class="c1"># TTS Config </span>
+    <span class="n">tts_provider</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tts_settings</span><span class="p">:</span> <span class="n">Dict</span>
+    
+    <span class="c1"># Output Config</span>
+    <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">temp_audio_dir</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1"># Rate limits for TTS:</span>
+    <span class="n">rate_limits</span><span class="p">:</span> <span class="n">Dict</span>
+
+    <span class="c1"># Checkpointer confif</span>
+    <span class="n">checkpoint_dir</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">podcast_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">intro</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">outro</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">episode_structure</span><span class="p">:</span> <span class="n">List</span>
+    
+<div class="viewcode-block" id="PodcastConfig.load">
+<a class="viewcode-back" href="../../../modules/config.html#podcast_llm.config.config.PodcastConfig.load">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">yaml_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;PodcastConfig&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load configuration from .env and optional yaml file</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            yaml_path: Optional path to yaml config file</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            PodcastConfig: Loaded configuration object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Load environment variables</span>
+        <span class="n">load_dotenv</span><span class="p">()</span>
+        
+        <span class="c1"># Required API keys from env</span>
+        <span class="n">required_env_vars</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;GOOGLE_API_KEY&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ELEVENLABS_API_KEY&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;TAVILY_API_KEY&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ANTHROPIC_API_KEY&#39;</span>
+        <span class="p">]</span>
+        
+        <span class="n">config_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">required_env_vars</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Missing required environment variable: </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span>
+            
+        <span class="c1"># Load and merge yaml config if provided</span>
+        <span class="k">if</span> <span class="n">yaml_path</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">yaml_config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">config_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">yaml_config</span><span class="p">)</span>
+        
+        <span class="c1"># Set defaults for optional configs</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;fast_llm_provider&#39;</span><span class="p">:</span> <span class="s1">&#39;openai&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;long_context_llm_provider&#39;</span><span class="p">:</span> <span class="s1">&#39;openai&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;tts_provider&#39;</span><span class="p">:</span> <span class="s1">&#39;google&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;tts_settings&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;elevenlabs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;voice_mapping&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;Interviewer&#39;</span><span class="p">:</span> <span class="s1">&#39;Chris&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Interviewee&#39;</span><span class="p">:</span> <span class="s1">&#39;Charlie&#39;</span>
+                    <span class="p">},</span>
+                    <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;eleven_multilingual_v2&#39;</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;google&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;voice_mapping&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;Interviewer&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US-Journey-F&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Interviewee&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US-Journey-D&#39;</span>
+                    <span class="p">},</span>
+                    <span class="s1">&#39;language_code&#39;</span><span class="p">:</span> <span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;effects_profile_id&#39;</span><span class="p">:</span> <span class="s1">&#39;small-bluetooth-speaker-class-device&#39;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;output_format&#39;</span><span class="p">:</span> <span class="s1">&#39;mp3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;temp_audio_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;./.temp_audio&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;output_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;./output&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;checkpoint_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;./.checkpoints&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rate_limits&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;elevenlabs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;requests_per_minute&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                    <span class="s1">&#39;max_retries&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                    <span class="s1">&#39;base_delay&#39;</span><span class="p">:</span> <span class="mf">2.0</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;google&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;requests_per_minute&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                    <span class="s1">&#39;max_retries&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                    <span class="s1">&#39;base_delay&#39;</span><span class="p">:</span> <span class="mf">2.0</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;podcast_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Podcast LLM&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;intro&#39;</span><span class="p">:</span> <span class="s2">&quot;Welcome to </span><span class="si">{podcast_name}</span><span class="s2">. Today we&#39;ve invited an expert to talk about </span><span class="si">{topic}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;outro&#39;</span><span class="p">:</span> <span class="s2">&quot;That&#39;s all for today. Thank you for listening to </span><span class="si">{podcast_name}</span><span class="s2">. See you next time when we&#39;ll talk about whatever you want.&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;episode_structure&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;Episode Introduction (with subsections)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Main Discussion Topics (with subsections)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Conclusion (with subsections)&#39;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">defaults</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config_dict</span><span class="p">:</span>
+                <span class="n">config_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">episode_structure_for_prompt</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the episode structure as a string for use in prompts.</span>
+
+<span class="sd">        Converts the episode_structure list into a newline-separated string with bullet points,</span>
+<span class="sd">        suitable for inclusion in LLM prompts. Each section is prefixed with a hyphen for</span>
+<span class="sd">        consistent formatting.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Bullet-pointed string representation of the episode structure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;- </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">episode_structure</span><span class="p">])</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

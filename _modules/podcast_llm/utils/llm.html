@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.utils.llm &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.utils.llm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.utils.llm</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utilities for working with Language Learning Models (LLMs) in a standardized way.</span>
+
+<span class="sd">This module provides utilities for interacting with various LLM providers through</span>
+<span class="sd">a unified interface. It handles provider-specific implementation details while</span>
+<span class="sd">exposing a consistent API for the rest of the application.</span>
+
+<span class="sd">Key components:</span>
+<span class="sd">- LLMWrapper: A class that wraps different LLM providers (OpenAI, Google, Anthropic)</span>
+<span class="sd">  with standardized interfaces for structured output parsing and rate limiting</span>
+<span class="sd">- Helper functions for configuring and instantiating LLM instances with appropriate</span>
+<span class="sd">  settings for podcast generation tasks</span>
+
+<span class="sd">The module abstracts away provider differences around:</span>
+<span class="sd">- Message formatting and chunking</span>
+<span class="sd">- Rate limiting implementation</span>
+<span class="sd">- Structured output parsing</span>
+<span class="sd">- Temperature and token limit settings</span>
+
+<span class="sd">This allows the rest of the application to work with LLMs in a provider-agnostic way</span>
+<span class="sd">while still leveraging provider-specific capabilities when beneficial.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pydantic</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">langchain_core.language_models.base</span> <span class="kn">import</span> <span class="n">LanguageModelInput</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">SystemMessage</span>
+<span class="kn">from</span> <span class="nn">langchain_core.output_parsers</span> <span class="kn">import</span> <span class="n">PydanticOutputParser</span><span class="p">,</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain_core.prompt_values</span> <span class="kn">import</span> <span class="n">ChatPromptValue</span>
+<span class="kn">from</span> <span class="nn">langchain_core.rate_limiters</span> <span class="kn">import</span> <span class="n">BaseRateLimiter</span>
+<span class="kn">from</span> <span class="nn">langchain_core.runnables.base</span> <span class="kn">import</span> <span class="n">Runnable</span>
+<span class="kn">from</span> <span class="nn">langchain_core.runnables.config</span> <span class="kn">import</span> <span class="n">RunnableConfig</span>
+<span class="kn">from</span> <span class="nn">langchain_google_genai</span> <span class="kn">import</span> <span class="n">ChatGoogleGenerativeAI</span>
+<span class="kn">from</span> <span class="nn">langchain_anthropic</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langchain_core.rate_limiters</span> <span class="kn">import</span> <span class="n">BaseRateLimiter</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LLMWrapper">
+<a class="viewcode-back" href="../../../modules/utils_llm.html#podcast_llm.utils.llm.LLMWrapper">[docs]</a>
+<span class="k">class</span> <span class="nc">LLMWrapper</span><span class="p">(</span><span class="n">Runnable</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                 <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                 <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> 
+                 <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8192</span><span class="p">,</span> 
+                 <span class="n">rate_limiter</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseRateLimiter</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A wrapper class for various LLM providers that standardizes their interfaces.</span>
+
+<span class="sd">        This class provides a unified interface for working with different LLM providers</span>
+<span class="sd">        (OpenAI, Google, Anthropic) while handling provider-specific implementation details.</span>
+<span class="sd">        It supports structured output parsing and rate limiting across all providers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            provider (str): The LLM provider to use (&#39;openai&#39;, &#39;google&#39;, or &#39;anthropic&#39;)</span>
+<span class="sd">            model (str): The specific model name/identifier for the chosen provider</span>
+<span class="sd">            temperature (float, optional): Controls randomness in responses. Defaults to 1.0</span>
+<span class="sd">            max_tokens (int, optional): Maximum tokens in response. Defaults to 8192</span>
+<span class="sd">            rate_limiter (BaseRateLimiter | None, optional): Rate limiter for API calls. Defaults to None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If an unsupported provider is specified</span>
+
+<span class="sd">        The wrapper normalizes differences between providers, particularly around:</span>
+<span class="sd">        - Structured output parsing</span>
+<span class="sd">        - Message formatting</span>
+<span class="sd">        - Rate limiting implementation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="o">=</span> <span class="n">provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span> <span class="o">=</span> <span class="n">max_tokens</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span> <span class="o">=</span> <span class="n">rate_limiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">provider_to_model</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;openai&#39;</span><span class="p">:</span> <span class="n">ChatOpenAI</span><span class="p">,</span>
+            <span class="s1">&#39;google&#39;</span><span class="p">:</span> <span class="n">ChatGoogleGenerativeAI</span><span class="p">,</span>
+            <span class="s1">&#39;anthropic&#39;</span><span class="p">:</span> <span class="n">ChatAnthropic</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">provider_to_model</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The LLM provider value &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="si">}</span><span class="s2">&#39; is not supported.&quot;</span><span class="p">)</span>
+
+        <span class="n">model_class</span> <span class="o">=</span> <span class="n">provider_to_model</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="n">model_class</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">rate_limiter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LLMWrapper.invoke">
+<a class="viewcode-back" href="../../../modules/utils_llm.html#podcast_llm.utils.llm.LLMWrapper.invoke">[docs]</a>
+    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="n">LanguageModelInput</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunnableConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invoke the LLM with the given input and configuration.</span>
+
+<span class="sd">        This method handles provider-specific invocation details while maintaining a consistent</span>
+<span class="sd">        interface. It manages structured output formatting and parsing based on the provider&#39;s</span>
+<span class="sd">        capabilities.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input (LanguageModelInput): The input to send to the LLM, typically messages or prompts</span>
+<span class="sd">            config (Optional[RunnableConfig]): Optional configuration for the invocation</span>
+<span class="sd">            **kwargs (Any): Additional keyword arguments passed to the underlying LLM</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BaseMessage: The LLM&#39;s response message</span>
+
+<span class="sd">        The implementation varies by provider:</span>
+<span class="sd">        - OpenAI/Anthropic: Direct invocation with native structured output support</span>
+<span class="sd">        - Google: Custom handling for structured output via parser and format instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invoking LLM with prompt:</span><span class="se">\n</span><span class="si">{</span><span class="nb">input</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;openai&#39;</span><span class="p">,</span> <span class="s1">&#39;anthropic&#39;</span><span class="p">,):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="s1">&#39;google&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">format_instructions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get_format_instructions</span><span class="p">()</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LLM provider is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="si">}</span><span class="s2"> and schema is provided. Adding format instructions to prompt:</span><span class="se">\n</span><span class="si">{</span><span class="n">format_instructions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">messages</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">to_messages</span><span class="p">()</span>
+                <span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SystemMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">format_instructions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptValue</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modified prompt:</span><span class="se">\n</span><span class="si">{</span><span class="n">prompt</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LLMWrapper.with_structured_output">
+<a class="viewcode-back" href="../../../modules/utils_llm.html#podcast_llm.utils.llm.LLMWrapper.with_structured_output">[docs]</a>
+    <span class="k">def</span> <span class="nf">with_structured_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">:</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span> 
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Configure the LLM wrapper to output structured data using a Pydantic schema.</span>
+
+<span class="sd">        This method adapts the underlying LLM to output responses conforming to the provided</span>
+<span class="sd">        Pydantic model schema. The implementation varies by provider:</span>
+
+<span class="sd">        - OpenAI/Anthropic: Uses native structured output support</span>
+<span class="sd">        - Google: Implements structured output via output parser and format instructions</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            schema (pydantic.BaseModel): The Pydantic model class defining the expected </span>
+<span class="sd">                response structure</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LLMWrapper: The wrapper instance configured for structured output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;openai&#39;</span><span class="p">,</span> <span class="s1">&#39;anthropic&#39;</span><span class="p">,):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="s1">&#39;google&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">PydanticOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span>
+         
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="get_fast_llm">
+<a class="viewcode-back" href="../../../modules/utils_llm.html#podcast_llm.utils.llm.get_fast_llm">[docs]</a>
+<span class="k">def</span> <span class="nf">get_fast_llm</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">rate_limiter</span><span class="p">:</span> <span class="n">BaseRateLimiter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a fast LLM model optimized for quick responses.</span>
+
+<span class="sd">    Creates and returns an LLM wrapper configured with a fast model variant from the </span>
+<span class="sd">    specified provider. Fast models trade some quality for improved response speed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (PodcastConfig): Configuration object containing provider settings</span>
+<span class="sd">        rate_limiter (BaseRateLimiter | None, optional): Rate limiter to control API request </span>
+<span class="sd">            frequency. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        LLMWrapper: Wrapper instance configured with a fast model variant</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the configured fast_llm_provider is not supported</span>
+
+<span class="sd">    The function maps providers to their respective fast model variants:</span>
+<span class="sd">    - OpenAI: gpt-4o-mini</span>
+<span class="sd">    - Google: gemini-1.5-flash</span>
+<span class="sd">    - Anthropic: claude-3-5-sonnet</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fast_llm_models</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;openai&#39;</span><span class="p">:</span> <span class="s1">&#39;gpt-4o-mini&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;google&#39;</span><span class="p">:</span> <span class="s1">&#39;gemini-1.5-flash&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;anthropic&#39;</span><span class="p">:</span> <span class="s1">&#39;claude-3-5-sonnet-20241022&#39;</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">fast_llm_provider</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fast_llm_models</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The fast_llm_provider value &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">fast_llm_provider</span><span class="si">}</span><span class="s2">&#39; is not supported.&quot;</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">LLMWrapper</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">fast_llm_provider</span><span class="p">,</span> <span class="n">fast_llm_models</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">fast_llm_provider</span><span class="p">],</span> <span class="n">rate_limiter</span><span class="o">=</span><span class="n">rate_limiter</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_long_context_llm">
+<a class="viewcode-back" href="../../../modules/utils_llm.html#podcast_llm.utils.llm.get_long_context_llm">[docs]</a>
+<span class="k">def</span> <span class="nf">get_long_context_llm</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">rate_limiter</span><span class="p">:</span> <span class="n">BaseRateLimiter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a long context LLM model optimized for handling larger prompts.</span>
+
+<span class="sd">    Creates and returns an LLM wrapper configured with a model variant that can handle</span>
+<span class="sd">    longer context windows from the specified provider. These models are optimized for</span>
+<span class="sd">    processing larger amounts of text at once.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (PodcastConfig): Configuration object containing provider settings</span>
+<span class="sd">        rate_limiter (BaseRateLimiter | None, optional): Rate limiter to control API request</span>
+<span class="sd">            frequency. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        LLMWrapper: Wrapper instance configured with a long context model variant</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the configured long_context_llm_provider is not supported</span>
+
+<span class="sd">    The function maps providers to their respective long context model variants:</span>
+<span class="sd">    - OpenAI: gpt-4o </span>
+<span class="sd">    - Google: gemini-1.5-pro-latest</span>
+<span class="sd">    - Anthropic: claude-3-5-sonnet</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">long_context_llm_models</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;openai&#39;</span><span class="p">:</span> <span class="s1">&#39;gpt-4o&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;google&#39;</span><span class="p">:</span> <span class="s1">&#39;gemini-1.5-pro-latest&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;anthropic&#39;</span><span class="p">:</span> <span class="s1">&#39;claude-3-5-sonnet-20241022&#39;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">long_context_llm_provider</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">long_context_llm_models</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The long_context_llm_provider value &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">long_context_llm_provider</span><span class="si">}</span><span class="s2">&#39; is not supported.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">LLMWrapper</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">long_context_llm_provider</span><span class="p">,</span> <span class="n">long_context_llm_models</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">long_context_llm_provider</span><span class="p">],</span> <span class="n">rate_limiter</span><span class="o">=</span><span class="n">rate_limiter</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

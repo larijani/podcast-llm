@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.config &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="podcast_llm.generate" href="generate.html" />
+    <link rel="prev" title="License" href="../license.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.config</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig"><code class="docutils literal notranslate"><span class="pre">PodcastConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.google_api_key"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.google_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.elevenlabs_api_key"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.elevenlabs_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.openai_api_key"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.openai_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.tavily_api_key"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.tavily_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.anthropic_api_key"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.anthropic_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.fast_llm_provider"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.fast_llm_provider</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.long_context_llm_provider"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.long_context_llm_provider</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.tts_provider"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.tts_provider</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.tts_settings"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.tts_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.output_format"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.output_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.temp_audio_dir"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.temp_audio_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.output_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.rate_limits"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.rate_limits</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.checkpoint_dir"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.checkpoint_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.podcast_name"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.podcast_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.intro"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.intro</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.outro"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.outro</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.episode_structure"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.episode_structure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.anthropic_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.checkpoint_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.elevenlabs_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.episode_structure</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.episode_structure_for_prompt"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.episode_structure_for_prompt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.fast_llm_provider</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.google_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.intro</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig.load"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.long_context_llm_provider</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.openai_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.output_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.output_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.outro</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.podcast_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.rate_limits</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.tavily_api_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.temp_audio_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.tts_provider</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17"><code class="docutils literal notranslate"><span class="pre">PodcastConfig.tts_settings</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">podcast_llm.config</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-podcast_llm.config.config">
+<span id="podcast-llm-config"></span><h1>podcast_llm.config<a class="headerlink" href="#module-podcast_llm.config.config" title="Link to this heading"></a></h1>
+<p>Configuration module for podcast generation.</p>
+<p>This module provides configuration management for the podcast generation system through
+the PodcastConfig class. It handles loading and validating configuration from environment
+variables and YAML files, setting defaults, and providing a clean interface for accessing
+configuration values throughout the application.</p>
+<p>The configuration covers all aspects of podcast generation including:
+- API credentials for various services (OpenAI, ElevenLabs, Google, etc.)
+- LLM provider settings for different use cases
+- Text-to-speech configuration and voice mappings
+- Output format and directory management
+- Rate limiting parameters
+- Podcast metadata and episode structure</p>
+<p class="rubric">Example</p>
+<p>config = PodcastConfig.load(‘config.yaml’)
+print(config.podcast_name)
+print(config.tts_provider)</p>
+<p>The module uses environment variables for sensitive values like API keys and a YAML
+file for general configuration settings. It provides smart defaults while allowing
+full customization of all parameters.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.config.config.</span></span><span class="sig-name descname"><span class="pre">PodcastConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">google_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevenlabs_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openai_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tavily_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anthropic_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fast_llm_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_context_llm_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_audio_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">podcast_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intro</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outro</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode_structure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/config/config.html#PodcastConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Configuration class for podcast generation.</p>
+<p>Holds all configuration parameters needed for generating podcast content, including:
+- API keys for various services (OpenAI, ElevenLabs, etc.)
+- LLM provider settings for different use cases
+- Text-to-speech configuration
+- Output format and directory settings
+- Rate limiting parameters
+- Podcast metadata and structure</p>
+<p>The configuration can be loaded from environment variables and an optional YAML file
+using the load() class method.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.google_api_key">
+<span class="sig-name descname"><span class="pre">google_api_key</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.google_api_key" title="Link to this definition"></a></dt>
+<dd><p>API key for Google services</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.elevenlabs_api_key">
+<span class="sig-name descname"><span class="pre">elevenlabs_api_key</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.elevenlabs_api_key" title="Link to this definition"></a></dt>
+<dd><p>API key for ElevenLabs TTS</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.openai_api_key">
+<span class="sig-name descname"><span class="pre">openai_api_key</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.openai_api_key" title="Link to this definition"></a></dt>
+<dd><p>API key for OpenAI services</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.tavily_api_key">
+<span class="sig-name descname"><span class="pre">tavily_api_key</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.tavily_api_key" title="Link to this definition"></a></dt>
+<dd><p>API key for Tavily search</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.anthropic_api_key">
+<span class="sig-name descname"><span class="pre">anthropic_api_key</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.anthropic_api_key" title="Link to this definition"></a></dt>
+<dd><p>API key for Anthropic services</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.fast_llm_provider">
+<span class="sig-name descname"><span class="pre">fast_llm_provider</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.fast_llm_provider" title="Link to this definition"></a></dt>
+<dd><p>Provider to use for quick LLM operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.long_context_llm_provider">
+<span class="sig-name descname"><span class="pre">long_context_llm_provider</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.long_context_llm_provider" title="Link to this definition"></a></dt>
+<dd><p>Provider to use for long context operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.tts_provider">
+<span class="sig-name descname"><span class="pre">tts_provider</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.tts_provider" title="Link to this definition"></a></dt>
+<dd><p>Text-to-speech service provider</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.tts_settings">
+<span class="sig-name descname"><span class="pre">tts_settings</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.tts_settings" title="Link to this definition"></a></dt>
+<dd><p>Configuration settings for TTS</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.output_format">
+<span class="sig-name descname"><span class="pre">output_format</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.output_format" title="Link to this definition"></a></dt>
+<dd><p>Format for output audio files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.temp_audio_dir">
+<span class="sig-name descname"><span class="pre">temp_audio_dir</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.temp_audio_dir" title="Link to this definition"></a></dt>
+<dd><p>Directory for temporary audio files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.output_dir" title="Link to this definition"></a></dt>
+<dd><p>Directory for final output files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.rate_limits">
+<span class="sig-name descname"><span class="pre">rate_limits</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.rate_limits" title="Link to this definition"></a></dt>
+<dd><p>Rate limiting settings for API calls</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.checkpoint_dir">
+<span class="sig-name descname"><span class="pre">checkpoint_dir</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.checkpoint_dir" title="Link to this definition"></a></dt>
+<dd><p>Directory for saving checkpoints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.podcast_name">
+<span class="sig-name descname"><span class="pre">podcast_name</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.podcast_name" title="Link to this definition"></a></dt>
+<dd><p>Name of the podcast</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.intro">
+<span class="sig-name descname"><span class="pre">intro</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.intro" title="Link to this definition"></a></dt>
+<dd><p>Template for podcast intro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.outro">
+<span class="sig-name descname"><span class="pre">outro</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.outro" title="Link to this definition"></a></dt>
+<dd><p>Template for podcast outro</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.episode_structure">
+<span class="sig-name descname"><span class="pre">episode_structure</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.episode_structure" title="Link to this definition"></a></dt>
+<dd><p>Structure template for podcast episodes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">anthropic_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">checkpoint_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">elevenlabs_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">episode_structure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span></em><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.episode_structure_for_prompt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">episode_structure_for_prompt</span></span><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.episode_structure_for_prompt" title="Link to this definition"></a></dt>
+<dd><p>Format the episode structure as a string for use in prompts.</p>
+<p>Converts the episode_structure list into a newline-separated string with bullet points,
+suitable for inclusion in LLM prompts. Each section is prefixed with a hyphen for
+consistent formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bullet-pointed string representation of the episode structure</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">fast_llm_provider</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">google_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">intro</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="podcast_llm.config.config.PodcastConfig.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig" title="podcast_llm.config.config.PodcastConfig"><span class="pre">PodcastConfig</span></a></span></span><a class="reference internal" href="../_modules/podcast_llm/config/config.html#PodcastConfig.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.config.config.PodcastConfig.load" title="Link to this definition"></a></dt>
+<dd><p>Load configuration from .env and optional yaml file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>yaml_path</strong> – Optional path to yaml config file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loaded configuration object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#podcast_llm.config.config.PodcastConfig" title="podcast_llm.config.config.PodcastConfig">PodcastConfig</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">long_context_llm_provider</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">openai_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">output_format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">outro</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">podcast_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">rate_limits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span></em><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">tavily_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">temp_audio_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">tts_provider</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">tts_settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span></em><a class="headerlink" href="#id17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../license.html" class="btn btn-neutral float-left" title="License" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generate.html" class="btn btn-neutral float-right" title="podcast_llm.generate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

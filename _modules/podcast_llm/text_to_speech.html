@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.text_to_speech &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.text_to_speech</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.text_to_speech</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Text-to-speech conversion module for podcast generation.</span>
+
+<span class="sd">This module handles the conversion of text scripts into natural-sounding speech using</span>
+<span class="sd">multiple TTS providers (Google Cloud TTS and ElevenLabs). It includes functionality for:</span>
+
+<span class="sd">- Rate limiting API requests to stay within provider quotas</span>
+<span class="sd">- Exponential backoff retry logic for API resilience </span>
+<span class="sd">- Processing individual conversation lines with appropriate voices</span>
+<span class="sd">- Merging multiple audio segments into a complete podcast</span>
+<span class="sd">- Managing temporary audio file storage and cleanup</span>
+
+<span class="sd">The module supports different voices for interviewer/interviewee to create natural</span>
+<span class="sd">conversational flow and allows configuration of voice settings and audio effects</span>
+<span class="sd">through the PodcastConfig system.</span>
+
+<span class="sd">Typical usage:</span>
+<span class="sd">    config = PodcastConfig()</span>
+<span class="sd">    convert_to_speech(</span>
+<span class="sd">        config,</span>
+<span class="sd">        conversation_script,</span>
+<span class="sd">        &#39;output.mp3&#39;,</span>
+<span class="sd">        &#39;.temp_audio/&#39;,</span>
+<span class="sd">        &#39;mp3&#39;</span>
+<span class="sd">    )</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">elevenlabs</span> <span class="kn">import</span> <span class="n">client</span> <span class="k">as</span> <span class="n">elevenlabs_client</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">texttospeech</span>
+<span class="kn">from</span> <span class="nn">pydub</span> <span class="kn">import</span> <span class="n">AudioSegment</span>
+
+<span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="rate_limit_per_minute">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.rate_limit_per_minute">[docs]</a>
+<span class="k">def</span> <span class="nf">rate_limit_per_minute</span><span class="p">(</span><span class="n">max_requests_per_minute</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator that adds per-minute rate limiting to a function.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        max_requests_per_minute (int): Maximum number of requests allowed per minute</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable: Decorated function with rate limiting</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">last_request_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_interval</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">/</span> <span class="n">max_requests_per_minute</span>  <span class="c1"># Time between requests in seconds</span>
+        
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">last_request_time</span>
+            <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">time_since_last</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">last_request_time</span>
+            
+            <span class="k">if</span> <span class="n">time_since_last</span> <span class="o">&lt;</span> <span class="n">min_interval</span><span class="p">:</span>
+                <span class="n">sleep_time</span> <span class="o">=</span> <span class="n">min_interval</span> <span class="o">-</span> <span class="n">time_since_last</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
+                
+            <span class="n">last_request_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+
+
+<div class="viewcode-block" id="retry_with_exponential_backoff">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.retry_with_exponential_backoff">[docs]</a>
+<span class="k">def</span> <span class="nf">retry_with_exponential_backoff</span><span class="p">(</span><span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">base_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator that retries a function with exponential backoff when exceptions occur.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        max_retries (int): Maximum number of retry attempts</span>
+<span class="sd">        base_delay (float): Initial delay between retries in seconds. Will be exponentially increased.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable: Decorated function with retry logic</span>
+<span class="sd">        </span>
+<span class="sd">    Example:</span>
+<span class="sd">        @retry_with_exponential_backoff(max_retries=3, base_delay=1.0)</span>
+<span class="sd">        def flaky_function():</span>
+<span class="sd">            # Function that may fail intermittently</span>
+<span class="sd">            pass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">delay</span> <span class="o">=</span> <span class="n">base_delay</span>
+            <span class="n">last_exception</span> <span class="o">=</span> <span class="kc">None</span>
+            
+            <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">last_exception</span> <span class="o">=</span> <span class="n">e</span>
+                    <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">max_retries</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">last_exception</span>
+                    
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">max_retries</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1"> failed for </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">. &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;Retrying in </span><span class="si">{</span><span class="n">delay</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">s...&#39;</span>
+                    <span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+                    <span class="n">delay</span> <span class="o">*=</span> <span class="mi">2</span>  <span class="c1"># Exponential backoff</span>
+                    
+            <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Should never reach here</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+
+
+
+<div class="viewcode-block" id="clean_text_for_tts">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.clean_text_for_tts">[docs]</a>
+<span class="k">def</span> <span class="nf">clean_text_for_tts</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clean text lines for text-to-speech processing by removing special characters.</span>
+
+<span class="sd">    Takes a list of dictionaries containing speaker and text information and removes</span>
+<span class="sd">    characters that may interfere with text-to-speech synthesis, such as asterisks,</span>
+<span class="sd">    underscores, and em dashes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lines (List[dict]): List of dictionaries with structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;speaker&#39;: str,  # Speaker identifier</span>
+<span class="sd">                &#39;text&#39;: str      # Text to be cleaned</span>
+<span class="sd">            }</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[dict]: List of dictionaries with cleaned text and same structure as input</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cleaned</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">cleaned</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;speaker&#39;</span><span class="p">:</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">],</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;—&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)})</span>
+
+    <span class="k">return</span> <span class="n">cleaned</span></div>
+
+
+
+
+<div class="viewcode-block" id="merge_audio_files">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.merge_audio_files">[docs]</a>
+<span class="k">def</span> <span class="nf">merge_audio_files</span><span class="p">(</span><span class="n">audio_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audio_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merge multiple audio files into a single output file.</span>
+
+<span class="sd">    Takes a list of audio files and combines them in the provided order into a single output</span>
+<span class="sd">    file. Handles any audio format supported by pydub.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        audio_files (list): List of paths to audio files to merge</span>
+<span class="sd">        output_file (str): Path where merged audio file should be saved</span>
+<span class="sd">        audio_format (str): Format of input/output audio files (e.g. &#39;mp3&#39;, &#39;wav&#39;)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If there are any errors during the merging process</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Merging audio files...&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
+            <span class="n">combined</span> <span class="o">+=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">audio_format</span><span class="p">)</span>
+        
+        <span class="n">combined</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">audio_format</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span></div>
+
+
+
+
+<div class="viewcode-block" id="process_line_google">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.process_line_google">[docs]</a>
+<span class="nd">@retry_with_exponential_backoff</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="nd">@rate_limit_per_minute</span><span class="p">(</span><span class="n">max_requests_per_minute</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">process_line_google</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">speaker</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process a single line of text using Google Text-to-Speech API.</span>
+
+<span class="sd">    Takes a line of text and speaker identifier and generates synthesized speech using</span>
+<span class="sd">    Google&#39;s TTS service. Uses different voices based on the speaker to create natural</span>
+<span class="sd">    conversation flow.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): The text content to convert to speech</span>
+<span class="sd">        speaker (str): Speaker identifier to determine voice selection</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bytes: Raw audio data in bytes format containing the synthesized speech</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">TextToSpeechClient</span><span class="p">(</span><span class="n">client_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;api_key&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">google_api_key</span><span class="p">})</span>
+    <span class="n">tts_settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;google&#39;</span><span class="p">]</span>
+    
+    <span class="n">interviewer_voice</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">VoiceSelectionParams</span><span class="p">(</span>
+        <span class="n">language_code</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;language_code&#39;</span><span class="p">],</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;voice_mapping&#39;</span><span class="p">][</span><span class="s1">&#39;Interviewer&#39;</span><span class="p">],</span>
+        <span class="n">ssml_gender</span><span class="o">=</span><span class="n">texttospeech</span><span class="o">.</span><span class="n">SsmlVoiceGender</span><span class="o">.</span><span class="n">FEMALE</span>
+    <span class="p">)</span>
+    
+    <span class="n">interviewee_voice</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">VoiceSelectionParams</span><span class="p">(</span>
+        <span class="n">language_code</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;language_code&#39;</span><span class="p">],</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;voice_mapping&#39;</span><span class="p">][</span><span class="s1">&#39;Interviewee&#39;</span><span class="p">],</span>
+        <span class="n">ssml_gender</span><span class="o">=</span><span class="n">texttospeech</span><span class="o">.</span><span class="n">SsmlVoiceGender</span><span class="o">.</span><span class="n">MALE</span>
+    <span class="p">)</span>
+    
+    <span class="n">synthesis_input</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">SynthesisInput</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">voice</span> <span class="o">=</span> <span class="n">interviewee_voice</span>
+    <span class="k">if</span> <span class="n">speaker</span> <span class="o">==</span> <span class="s1">&#39;Interviewer&#39;</span><span class="p">:</span>
+        <span class="n">voice</span> <span class="o">=</span> <span class="n">interviewer_voice</span>
+    
+    <span class="c1"># Select the type of audio file you want returned</span>
+    <span class="n">audio_config</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">AudioConfig</span><span class="p">(</span>
+        <span class="n">audio_encoding</span><span class="o">=</span><span class="n">texttospeech</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">MP3</span><span class="p">,</span>
+        <span class="n">effects_profile_id</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;effects_profile_id&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Perform the text-to-speech request on the text input with the selected</span>
+    <span class="c1"># voice parameters and audio file type</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span>
+        <span class="nb">input</span><span class="o">=</span><span class="n">synthesis_input</span><span class="p">,</span> <span class="n">voice</span><span class="o">=</span><span class="n">voice</span><span class="p">,</span> <span class="n">audio_config</span><span class="o">=</span><span class="n">audio_config</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">audio_content</span></div>
+
+
+
+<div class="viewcode-block" id="process_line_elevenlabs">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.process_line_elevenlabs">[docs]</a>
+<span class="nd">@retry_with_exponential_backoff</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="nd">@rate_limit_per_minute</span><span class="p">(</span><span class="n">max_requests_per_minute</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">process_line_elevenlabs</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">speaker</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process a line of text into speech using ElevenLabs TTS service.</span>
+
+<span class="sd">    Takes a line of text and speaker identifier and generates synthesized speech using</span>
+<span class="sd">    ElevenLabs&#39; TTS service. Uses different voices based on the speaker to create natural</span>
+<span class="sd">    conversation flow.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (PodcastConfig): Configuration object containing API keys and settings</span>
+<span class="sd">        text (str): The text content to convert to speech</span>
+<span class="sd">        speaker (str): Speaker identifier to determine voice selection</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bytes: Raw audio data in bytes format containing the synthesized speech</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">elevenlabs_client</span><span class="o">.</span><span class="n">ElevenLabs</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">elevenlabs_api_key</span><span class="p">)</span>
+    <span class="n">tts_settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;elevenlabs&#39;</span><span class="p">]</span>
+
+    <span class="n">audio</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+        <span class="n">voice</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;voice_mapping&#39;</span><span class="p">][</span><span class="n">speaker</span><span class="p">],</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Convert audio iterator to bytes that can be written to disk</span>
+    <span class="n">audio_bytes</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">audio_bytes</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">audio_bytes</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="convert_to_speech">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.convert_to_speech">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_to_speech</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span>
+        <span class="n">conversation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">temp_audio_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">audio_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a conversation script to speech audio using Google Text-to-Speech API.</span>
+
+<span class="sd">    Takes a conversation script consisting of speaker/text pairs and generates audio files</span>
+<span class="sd">    for each line using Google&#39;s TTS service. The individual audio files are then merged</span>
+<span class="sd">    into a single output file. Uses different voices for different speakers to create a</span>
+<span class="sd">    natural conversational feel.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        conversation (str): List of dictionaries containing conversation lines with structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;speaker&#39;: str,  # Speaker identifier (&#39;Interviewer&#39; or &#39;Interviewee&#39;)</span>
+<span class="sd">                &#39;text&#39;: str      # Line content to convert to speech</span>
+<span class="sd">            }</span>
+<span class="sd">        output_file (str): Path where the final merged audio file should be saved</span>
+<span class="sd">        temp_audio_dir (str): Directory path for temporary audio file storage</span>
+<span class="sd">        audio_format (str): Format of the audio files (e.g. &#39;mp3&#39;)</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If any errors occur during TTS conversion or file operations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating audio files for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span><span class="si">}</span><span class="s2"> lines...&quot;</span><span class="p">)</span>
+        <span class="n">audio_files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">conversation</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating audio for line </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;google&#39;</span><span class="p">:</span>
+                <span class="n">audio</span> <span class="o">=</span> <span class="n">process_line_google</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;elevenlabs&#39;</span><span class="p">:</span>
+                <span class="n">audio</span> <span class="o">=</span> <span class="n">process_line_elevenlabs</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">])</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving audio chunk </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_audio_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counter</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">audio_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+            <span class="n">audio_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+            
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Merge all audio files and save the result</span>
+        <span class="n">merge_audio_files</span><span class="p">(</span><span class="n">audio_files</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">audio_format</span><span class="p">)</span>
+
+        <span class="c1"># Clean up individual audio files</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span></div>
+
+
+
+<div class="viewcode-block" id="generate_audio">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.generate_audio">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_audio</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">final_script</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate audio from a podcast script using text-to-speech.</span>
+
+<span class="sd">    Takes a final script consisting of speaker/text pairs and generates a single audio file</span>
+<span class="sd">    using Google&#39;s Text-to-Speech service. The script is first cleaned and processed to be</span>
+<span class="sd">    TTS-friendly, then converted to speech with different voices for different speakers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        final_script (list): List of dictionaries containing script lines with structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;speaker&#39;: str,  # Speaker identifier (&#39;Interviewer&#39; or &#39;Interviewee&#39;)</span>
+<span class="sd">                &#39;text&#39;: str      # Line content to convert to speech</span>
+<span class="sd">            }</span>
+<span class="sd">        output_file (str): Path where the final audio file should be saved</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Path to the generated audio file</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If any errors occur during TTS conversion or file operations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cleaned_script</span> <span class="o">=</span> <span class="n">clean_text_for_tts</span><span class="p">(</span><span class="n">final_script</span><span class="p">)</span>
+
+    <span class="n">temp_audio_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">temp_audio_dir</span><span class="p">)</span>
+    <span class="n">temp_audio_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">convert_to_speech</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">cleaned_script</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">temp_audio_dir</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">output_format</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_file</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
