@@ -63,6 +63,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/research.html">podcast_llm.research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_embeddings.html">podcast_llm.utils.embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_text.html">podcast_llm.utils.text</a></li>
@@ -176,6 +177,7 @@
     <span class="c1"># LLM config</span>
     <span class="n">fast_llm_provider</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">long_context_llm_provider</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">embeddings_model</span><span class="p">:</span> <span class="nb">str</span>
     
     <span class="c1"># TTS Config </span>
     <span class="n">tts_provider</span><span class="p">:</span> <span class="nb">str</span>
@@ -239,6 +241,7 @@
         <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;fast_llm_provider&#39;</span><span class="p">:</span> <span class="s1">&#39;openai&#39;</span><span class="p">,</span>
             <span class="s1">&#39;long_context_llm_provider&#39;</span><span class="p">:</span> <span class="s1">&#39;openai&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;embeddings_model&#39;</span><span class="p">:</span> <span class="s1">&#39;openai&#39;</span><span class="p">,</span>
             <span class="s1">&#39;tts_provider&#39;</span><span class="p">:</span> <span class="s1">&#39;google&#39;</span><span class="p">,</span>
             <span class="s1">&#39;tts_settings&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;elevenlabs&#39;</span><span class="p">:</span> <span class="p">{</span>

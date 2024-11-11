@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>podcast_llm.utils.text &mdash; Podcast LLM  documentation</title>
+  <title>podcast_llm.utils.embeddings &mdash; Podcast LLM  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
@@ -84,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">podcast_llm.utils.text</li>
+      <li class="breadcrumb-item active">podcast_llm.utils.embeddings</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -93,62 +93,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for podcast_llm.utils.text</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Utilities for text processing and formatting in podcast generation.</span>
+  <h1>Source code for podcast_llm.utils.embeddings</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions for working with embeddings models.</span>
 
-<span class="sd">This module provides utilities for working with text content in podcast scripts</span>
-<span class="sd">and outlines. It handles formatting and conversion of podcast content into</span>
-<span class="sd">different text representations.</span>
+<span class="sd">This module provides functionality for loading and managing embeddings models,</span>
+<span class="sd">which are used to convert text into vector representations. Currently supports</span>
+<span class="sd">OpenAI embeddings with potential to expand to other providers.</span>
 
-<span class="sd">Key components:</span>
-<span class="sd">- generate_markdown_script: Converts podcast outline and script into markdown format</span>
-<span class="sd">  for easy viewing and sharing</span>
-
-<span class="sd">The module helps with:</span>
-<span class="sd">- Converting internal podcast data structures to human-readable formats</span>
-<span class="sd">- Generating documentation and review materials from podcast content</span>
-<span class="sd">- Maintaining consistent text formatting across the application</span>
+<span class="sd">Functions:</span>
+<span class="sd">    get_embeddings_model: Returns an initialized embeddings model based on config.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">podcast_llm.outline</span> <span class="kn">import</span> <span class="n">PodcastOutline</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span>
 
 
-<div class="viewcode-block" id="generate_markdown_script">
-<a class="viewcode-back" href="../../../modules/utils_text.html#podcast_llm.utils.text.generate_markdown_script">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_markdown_script</span><span class="p">(</span><span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">outline</span><span class="p">:</span> <span class="n">PodcastOutline</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a markdown formatted version of the podcast script.</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_embeddings_model">
+<a class="viewcode-back" href="../../../modules/utils_embeddings.html#podcast_llm.utils.embeddings.get_embeddings_model">[docs]</a>
+<span class="k">def</span> <span class="nf">get_embeddings_model</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the configured embeddings model instance.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        topic (str): The main topic of the podcast</span>
-<span class="sd">        outline (PodcastOutline): The podcast outline containing sections and key points</span>
-<span class="sd">        script (list): List of dictionaries containing script lines with structure:</span>
-<span class="sd">            {</span>
-<span class="sd">                &#39;speaker&#39;: str,  # Speaker identifier (&#39;Interviewer&#39; or &#39;Interviewee&#39;)</span>
-<span class="sd">                &#39;text&#39;: str      # Line content</span>
-<span class="sd">            }</span>
+<span class="sd">        config (PodcastConfig): Configuration object containing embeddings settings</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: Markdown formatted script including topic, outline and conversation</span>
+<span class="sd">        BaseEmbeddings: Initialized embeddings model instance based on config.embeddings_model.</span>
+<span class="sd">            Currently supports &#39;openai&#39; which returns OpenAIEmbeddings.</span>
+<span class="sd">            Defaults to OpenAIEmbeddings if model type not recognized.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">markdown</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;# </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;openai&#39;</span><span class="p">:</span> <span class="n">OpenAIEmbeddings</span>
+    <span class="p">}</span>
 
-    <span class="c1"># Add outline</span>
-    <span class="n">markdown</span> <span class="o">+=</span> <span class="s1">&#39;## Outline</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outline</span><span class="o">.</span><span class="n">sections</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">markdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;### Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="k">for</span> <span class="n">subsection</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">subsections</span><span class="p">:</span>
-            <span class="n">markdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;- </span><span class="si">{</span><span class="n">subsection</span><span class="o">.</span><span class="n">as_str</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="n">markdown</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-
-    <span class="c1"># Add script</span>
-    <span class="n">markdown</span> <span class="o">+=</span> <span class="s1">&#39;## Script</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">script</span><span class="p">:</span>
-        <span class="n">markdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;**</span><span class="si">{</span><span class="n">line</span><span class="p">[</span><span class="s2">&quot;speaker&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">**: </span><span class="si">{</span><span class="n">line</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-
-    <span class="k">return</span> <span class="n">markdown</span></div>
+    <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">embeddings_model</span><span class="p">,</span> <span class="n">OpenAIEmbeddings</span><span class="p">)()</span></div>
 
 </pre></div>
 

@@ -63,6 +63,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_embeddings.html">podcast_llm.utils.embeddings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
@@ -156,7 +157,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Suggesting Wikipedia articles for topic: </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="n">prompthub_path</span> <span class="o">=</span> <span class="s2">&quot;evandempsey/podcast_wikipedia_suggestions&quot;</span>
+    <span class="n">prompthub_path</span> <span class="o">=</span> <span class="s2">&quot;evandempsey/podcast_wikipedia_suggestions:58c92df4&quot;</span>
     <span class="n">wikipedia_prompt</span> <span class="o">=</span> <span class="n">hub</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">prompthub_path</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got prompt from hub: </span><span class="si">{</span><span class="n">prompthub_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -329,7 +330,7 @@
 <span class="sd">            }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Suggesting search queries based on podcast outline&#39;</span><span class="p">)</span>
-    <span class="n">prompthub_path</span> <span class="o">=</span> <span class="s2">&quot;evandempsey/podcast_research_queries&quot;</span>
+    <span class="n">prompthub_path</span> <span class="o">=</span> <span class="s2">&quot;evandempsey/podcast_research_queries:561acf5f&quot;</span>
 
     <span class="n">search_queries_prompt</span> <span class="o">=</span> <span class="n">hub</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">prompthub_path</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got prompt from hub: </span><span class="si">{</span><span class="n">prompthub_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
