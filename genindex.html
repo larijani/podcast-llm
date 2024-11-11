@@ -51,12 +51,20 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/models.html">podcast_llm.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/outline.html">podcast_llm.outline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/research.html">podcast_llm.research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils_text.html">podcast_llm.utils.text</a></li>
 </ul>
 
@@ -88,6 +96,7 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
@@ -103,26 +112,54 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/models.html#podcast_llm.models.Answer">Answer (class in podcast_llm.models)</a>
+</li>
+      <li><a href="modules/models.html#id0">answer (podcast_llm.models.Answer attribute)</a>, <a href="modules/models.html#podcast_llm.models.Answer.answer">[1]</a>
+</li>
       <li><a href="modules/config.html#id0">anthropic_api_key (podcast_llm.config.config.PodcastConfig attribute)</a>, <a href="modules/config.html#podcast_llm.config.config.PodcastConfig.anthropic_api_key">[1]</a>
 </li>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastOutline.as_str">as_str (podcast_llm.outline.PodcastOutline property)</a>
+      <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.as_langchain_document">as_langchain_document() (podcast_llm.extractors.base.BaseSourceDocument method)</a>
+</li>
+      <li><a href="modules/models.html#podcast_llm.models.Answer.as_str">as_str (podcast_llm.models.Answer property)</a>
 
       <ul>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSection.as_str">(podcast_llm.outline.PodcastSection property)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastOutline.as_str">(podcast_llm.models.PodcastOutline property)</a>
 </li>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSubsection.as_str">(podcast_llm.outline.PodcastSubsection property)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSection.as_str">(podcast_llm.models.PodcastSection property)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQuery.as_str">(podcast_llm.research.SearchQuery property)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSubsection.as_str">(podcast_llm.models.PodcastSubsection property)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPage.as_str">(podcast_llm.research.WikipediaPage property)</a>
+        <li><a href="modules/models.html#podcast_llm.models.Question.as_str">(podcast_llm.models.Question property)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.Script.as_str">(podcast_llm.models.Script property)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.ScriptLine.as_str">(podcast_llm.models.ScriptLine property)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQuery.as_str">(podcast_llm.models.SearchQuery property)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPage.as_str">(podcast_llm.models.WikipediaPage property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument">AudioSourceDocument (class in podcast_llm.extractors.audio)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument">BaseSourceDocument (class in podcast_llm.extractors.base)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -133,11 +170,25 @@
 </li>
       <li><a href="modules/config.html#id1">checkpoint_dir (podcast_llm.config.config.PodcastConfig attribute)</a>, <a href="modules/config.html#podcast_llm.config.config.PodcastConfig.checkpoint_dir">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/utils_checkpointer.html#podcast_llm.utils.checkpointer.Checkpointer">Checkpointer (class in podcast_llm.utils.checkpointer)</a>
 </li>
       <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.clean_text_for_tts">clean_text_for_tts() (in module podcast_llm.text_to_speech)</a>
+</li>
+      <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.content">content (podcast_llm.extractors.audio.AudioSourceDocument attribute)</a>
+
+      <ul>
+        <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.content">(podcast_llm.extractors.base.BaseSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.content">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.content">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.content">(podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/models.html#podcast_llm.models.ContextDocument">ContextDocument (class in podcast_llm.models)</a>
 </li>
       <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.convert_to_speech">convert_to_speech() (in module podcast_llm.text_to_speech)</a>
 </li>
@@ -161,11 +212,25 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/config.html#id2">elevenlabs_api_key (podcast_llm.config.config.PodcastConfig attribute)</a>, <a href="modules/config.html#podcast_llm.config.config.PodcastConfig.elevenlabs_api_key">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/config.html#id3">episode_structure (podcast_llm.config.config.PodcastConfig attribute)</a>, <a href="modules/config.html#podcast_llm.config.config.PodcastConfig.episode_structure">[1]</a>
 </li>
       <li><a href="modules/config.html#podcast_llm.config.config.PodcastConfig.episode_structure_for_prompt">episode_structure_for_prompt (podcast_llm.config.config.PodcastConfig property)</a>
+</li>
+      <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.extract">extract() (podcast_llm.extractors.audio.AudioSourceDocument method)</a>
+
+      <ul>
+        <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.extract">(podcast_llm.extractors.base.BaseSourceDocument method)</a>
+</li>
+        <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.extract">(podcast_llm.extractors.pdf.PDFSourceDocument method)</a>
+</li>
+        <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.extract">(podcast_llm.extractors.web.WebSourceDocument method)</a>
+</li>
+        <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.extract">(podcast_llm.extractors.youtube.YouTubeSourceDocument method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/extractors_utils.html#podcast_llm.extractors.utils.extract_content_from_sources">extract_content_from_sources() (in module podcast_llm.extractors.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -217,6 +282,8 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/models.html#id6">lines (podcast_llm.models.Script attribute)</a>, <a href="modules/models.html#podcast_llm.models.Script.lines">[1]</a>
+</li>
       <li><a href="modules/utils_llm.html#podcast_llm.utils.llm.LLMWrapper">LLMWrapper (class in podcast_llm.utils.llm)</a>
 </li>
   </ul></td>
@@ -235,63 +302,107 @@
 </li>
       <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.merge_audio_files">merge_audio_files() (in module podcast_llm.text_to_speech)</a>
 </li>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastOutline.model_computed_fields">model_computed_fields (podcast_llm.outline.PodcastOutline attribute)</a>
+      <li><a href="modules/models.html#podcast_llm.models.Answer.model_computed_fields">model_computed_fields (podcast_llm.models.Answer attribute)</a>
 
       <ul>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSection.model_computed_fields">(podcast_llm.outline.PodcastSection attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.ContextDocument.model_computed_fields">(podcast_llm.models.ContextDocument attribute)</a>
 </li>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSubsection.model_computed_fields">(podcast_llm.outline.PodcastSubsection attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastOutline.model_computed_fields">(podcast_llm.models.PodcastOutline attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQueries.model_computed_fields">(podcast_llm.research.SearchQueries attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSection.model_computed_fields">(podcast_llm.models.PodcastSection attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQuery.model_computed_fields">(podcast_llm.research.SearchQuery attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSubsection.model_computed_fields">(podcast_llm.models.PodcastSubsection attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPage.model_computed_fields">(podcast_llm.research.WikipediaPage attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.Question.model_computed_fields">(podcast_llm.models.Question attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPages.model_computed_fields">(podcast_llm.research.WikipediaPages attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.Script.model_computed_fields">(podcast_llm.models.Script attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.ScriptLine.model_computed_fields">(podcast_llm.models.ScriptLine attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQueries.model_computed_fields">(podcast_llm.models.SearchQueries attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQuery.model_computed_fields">(podcast_llm.models.SearchQuery attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPage.model_computed_fields">(podcast_llm.models.WikipediaPage attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPages.model_computed_fields">(podcast_llm.models.WikipediaPages attribute)</a>
 </li>
       </ul></li>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastOutline.model_config">model_config (podcast_llm.outline.PodcastOutline attribute)</a>
+      <li><a href="modules/models.html#podcast_llm.models.Answer.model_config">model_config (podcast_llm.models.Answer attribute)</a>
 
       <ul>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSection.model_config">(podcast_llm.outline.PodcastSection attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.ContextDocument.model_config">(podcast_llm.models.ContextDocument attribute)</a>
 </li>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSubsection.model_config">(podcast_llm.outline.PodcastSubsection attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastOutline.model_config">(podcast_llm.models.PodcastOutline attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQueries.model_config">(podcast_llm.research.SearchQueries attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSection.model_config">(podcast_llm.models.PodcastSection attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQuery.model_config">(podcast_llm.research.SearchQuery attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSubsection.model_config">(podcast_llm.models.PodcastSubsection attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPage.model_config">(podcast_llm.research.WikipediaPage attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.Question.model_config">(podcast_llm.models.Question attribute)</a>
 </li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPages.model_config">(podcast_llm.research.WikipediaPages attribute)</a>
+        <li><a href="modules/models.html#podcast_llm.models.Script.model_config">(podcast_llm.models.Script attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.ScriptLine.model_config">(podcast_llm.models.ScriptLine attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQueries.model_config">(podcast_llm.models.SearchQueries attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQuery.model_config">(podcast_llm.models.SearchQuery attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPage.model_config">(podcast_llm.models.WikipediaPage attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPages.model_config">(podcast_llm.models.WikipediaPages attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/models.html#podcast_llm.models.Answer.model_fields">model_fields (podcast_llm.models.Answer attribute)</a>
+
+      <ul>
+        <li><a href="modules/models.html#podcast_llm.models.ContextDocument.model_fields">(podcast_llm.models.ContextDocument attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastOutline.model_fields">(podcast_llm.models.PodcastOutline attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSection.model_fields">(podcast_llm.models.PodcastSection attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.PodcastSubsection.model_fields">(podcast_llm.models.PodcastSubsection attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.Question.model_fields">(podcast_llm.models.Question attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.Script.model_fields">(podcast_llm.models.Script attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.ScriptLine.model_fields">(podcast_llm.models.ScriptLine attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQueries.model_fields">(podcast_llm.models.SearchQueries attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.SearchQuery.model_fields">(podcast_llm.models.SearchQuery attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPage.model_fields">(podcast_llm.models.WikipediaPage attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.WikipediaPages.model_fields">(podcast_llm.models.WikipediaPages attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastOutline.model_fields">model_fields (podcast_llm.outline.PodcastOutline attribute)</a>
-
-      <ul>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSection.model_fields">(podcast_llm.outline.PodcastSection attribute)</a>
-</li>
-        <li><a href="modules/outline.html#podcast_llm.outline.PodcastSubsection.model_fields">(podcast_llm.outline.PodcastSubsection attribute)</a>
-</li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQueries.model_fields">(podcast_llm.research.SearchQueries attribute)</a>
-</li>
-        <li><a href="modules/research.html#podcast_llm.research.SearchQuery.model_fields">(podcast_llm.research.SearchQuery attribute)</a>
-</li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPage.model_fields">(podcast_llm.research.WikipediaPage attribute)</a>
-</li>
-        <li><a href="modules/research.html#podcast_llm.research.WikipediaPages.model_fields">(podcast_llm.research.WikipediaPages attribute)</a>
-</li>
-      </ul></li>
       <li>
     module
 
       <ul>
         <li><a href="modules/config.html#module-podcast_llm.config.config">podcast_llm.config.config</a>
 </li>
+        <li><a href="modules/extractors_audio.html#module-podcast_llm.extractors.audio">podcast_llm.extractors.audio</a>
+</li>
+        <li><a href="modules/extractors_base.html#module-podcast_llm.extractors.base">podcast_llm.extractors.base</a>
+</li>
+        <li><a href="modules/extractors_pdf.html#module-podcast_llm.extractors.pdf">podcast_llm.extractors.pdf</a>
+</li>
+        <li><a href="modules/extractors_utils.html#module-podcast_llm.extractors.utils">podcast_llm.extractors.utils</a>
+</li>
+        <li><a href="modules/extractors_web.html#module-podcast_llm.extractors.web">podcast_llm.extractors.web</a>
+</li>
+        <li><a href="modules/extractors_youtube.html#module-podcast_llm.extractors.youtube">podcast_llm.extractors.youtube</a>
+</li>
         <li><a href="modules/generate.html#module-podcast_llm.generate">podcast_llm.generate</a>
+</li>
+        <li><a href="modules/models.html#module-podcast_llm.models">podcast_llm.models</a>
 </li>
         <li><a href="modules/outline.html#module-podcast_llm.outline">podcast_llm.outline</a>
 </li>
@@ -303,6 +414,8 @@
 </li>
         <li><a href="modules/utils_llm.html#module-podcast_llm.utils.llm">podcast_llm.utils.llm</a>
 </li>
+        <li><a href="modules/utils_rate_limits.html#module-podcast_llm.utils.rate_limits">podcast_llm.utils.rate_limits</a>
+</li>
         <li><a href="modules/utils_text.html#module-podcast_llm.utils.text">podcast_llm.utils.text</a>
 </li>
       </ul></li>
@@ -312,7 +425,7 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.WikipediaPage.name">name (podcast_llm.research.WikipediaPage attribute)</a>
+      <li><a href="modules/models.html#id11">name (podcast_llm.models.WikipediaPage attribute)</a>, <a href="modules/models.html#podcast_llm.models.WikipediaPage.name">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -338,9 +451,11 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.WikipediaPages.pages">pages (podcast_llm.research.WikipediaPages attribute)</a>
+      <li><a href="modules/models.html#id12">pages (podcast_llm.models.WikipediaPages attribute)</a>, <a href="modules/models.html#podcast_llm.models.WikipediaPages.pages">[1]</a>
 </li>
       <li><a href="modules/generate.html#podcast_llm.generate.parse_arguments">parse_arguments() (in module podcast_llm.generate)</a>
+</li>
+      <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument">PDFSourceDocument (class in podcast_llm.extractors.pdf)</a>
 </li>
       <li><a href="modules/research.html#podcast_llm.research.perform_tavily_queries">perform_tavily_queries() (in module podcast_llm.research)</a>
 </li>
@@ -352,12 +467,63 @@
 </li>
       </ul></li>
       <li>
+    podcast_llm.extractors.audio
+
+      <ul>
+        <li><a href="modules/extractors_audio.html#module-podcast_llm.extractors.audio">module</a>
+</li>
+      </ul></li>
+      <li>
+    podcast_llm.extractors.base
+
+      <ul>
+        <li><a href="modules/extractors_base.html#module-podcast_llm.extractors.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    podcast_llm.extractors.pdf
+
+      <ul>
+        <li><a href="modules/extractors_pdf.html#module-podcast_llm.extractors.pdf">module</a>
+</li>
+      </ul></li>
+      <li>
+    podcast_llm.extractors.utils
+
+      <ul>
+        <li><a href="modules/extractors_utils.html#module-podcast_llm.extractors.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    podcast_llm.extractors.web
+
+      <ul>
+        <li><a href="modules/extractors_web.html#module-podcast_llm.extractors.web">module</a>
+</li>
+      </ul></li>
+      <li>
+    podcast_llm.extractors.youtube
+
+      <ul>
+        <li><a href="modules/extractors_youtube.html#module-podcast_llm.extractors.youtube">module</a>
+</li>
+      </ul></li>
+      <li>
     podcast_llm.generate
 
       <ul>
         <li><a href="modules/generate.html#module-podcast_llm.generate">module</a>
 </li>
       </ul></li>
+      <li>
+    podcast_llm.models
+
+      <ul>
+        <li><a href="modules/models.html#module-podcast_llm.models">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     podcast_llm.outline
 
@@ -379,8 +545,6 @@
         <li><a href="modules/text_to_speech.html#module-podcast_llm.text_to_speech">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     podcast_llm.utils.checkpointer
 
@@ -396,6 +560,13 @@
 </li>
       </ul></li>
       <li>
+    podcast_llm.utils.rate_limits
+
+      <ul>
+        <li><a href="modules/utils_rate_limits.html#module-podcast_llm.utils.rate_limits">module</a>
+</li>
+      </ul></li>
+      <li>
     podcast_llm.utils.text
 
       <ul>
@@ -406,11 +577,11 @@
 </li>
       <li><a href="modules/config.html#podcast_llm.config.config.PodcastConfig">PodcastConfig (class in podcast_llm.config.config)</a>
 </li>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastOutline">PodcastOutline (class in podcast_llm.outline)</a>
+      <li><a href="modules/models.html#podcast_llm.models.PodcastOutline">PodcastOutline (class in podcast_llm.models)</a>
 </li>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastSection">PodcastSection (class in podcast_llm.outline)</a>
+      <li><a href="modules/models.html#podcast_llm.models.PodcastSection">PodcastSection (class in podcast_llm.models)</a>
 </li>
-      <li><a href="modules/outline.html#podcast_llm.outline.PodcastSubsection">PodcastSubsection (class in podcast_llm.outline)</a>
+      <li><a href="modules/models.html#podcast_llm.models.PodcastSubsection">PodcastSubsection (class in podcast_llm.models)</a>
 </li>
       <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.process_line_elevenlabs">process_line_elevenlabs() (in module podcast_llm.text_to_speech)</a>
 </li>
@@ -422,11 +593,15 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.SearchQueries.queries">queries (podcast_llm.research.SearchQueries attribute)</a>
+      <li><a href="modules/models.html#id9">queries (podcast_llm.models.SearchQueries attribute)</a>, <a href="modules/models.html#podcast_llm.models.SearchQueries.queries">[1]</a>
+</li>
+      <li><a href="modules/models.html#id10">query (podcast_llm.models.SearchQuery attribute)</a>, <a href="modules/models.html#podcast_llm.models.SearchQuery.query">[1]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.SearchQuery.query">query (podcast_llm.research.SearchQuery attribute)</a>
+      <li><a href="modules/models.html#podcast_llm.models.Question">Question (class in podcast_llm.models)</a>
+</li>
+      <li><a href="modules/models.html#id5">question (podcast_llm.models.Question attribute)</a>, <a href="modules/models.html#podcast_llm.models.Question.question">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -434,7 +609,7 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.rate_limit_per_minute">rate_limit_per_minute() (in module podcast_llm.text_to_speech)</a>
+      <li><a href="modules/utils_rate_limits.html#podcast_llm.utils.rate_limits.rate_limit_per_minute">rate_limit_per_minute() (in module podcast_llm.utils.rate_limits)</a>
 </li>
       <li><a href="modules/config.html#id13">rate_limits (podcast_llm.config.config.PodcastConfig attribute)</a>, <a href="modules/config.html#podcast_llm.config.config.PodcastConfig.rate_limits">[1]</a>
 </li>
@@ -444,7 +619,7 @@
 </li>
       <li><a href="modules/research.html#podcast_llm.research.research_discussion_topics">research_discussion_topics() (in module podcast_llm.research)</a>
 </li>
-      <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.retry_with_exponential_backoff">retry_with_exponential_backoff() (in module podcast_llm.text_to_speech)</a>
+      <li><a href="modules/utils_rate_limits.html#podcast_llm.utils.rate_limits.retry_with_exponential_backoff">retry_with_exponential_backoff() (in module podcast_llm.utils.rate_limits)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -452,15 +627,47 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.SearchQueries">SearchQueries (class in podcast_llm.research)</a>
+      <li><a href="modules/models.html#podcast_llm.models.Script">Script (class in podcast_llm.models)</a>
 </li>
-      <li><a href="modules/research.html#podcast_llm.research.SearchQuery">SearchQuery (class in podcast_llm.research)</a>
+      <li><a href="modules/models.html#podcast_llm.models.ScriptLine">ScriptLine (class in podcast_llm.models)</a>
 </li>
+      <li><a href="modules/models.html#podcast_llm.models.SearchQueries">SearchQueries (class in podcast_llm.models)</a>
+</li>
+      <li><a href="modules/models.html#podcast_llm.models.SearchQuery">SearchQuery (class in podcast_llm.models)</a>
+</li>
+      <li><a href="modules/models.html#id1">sections (podcast_llm.models.PodcastOutline attribute)</a>, <a href="modules/models.html#podcast_llm.models.PodcastOutline.sections">[1]</a>
+</li>
+      <li><a href="modules/models.html#podcast_llm.models.ContextDocument.source">source (podcast_llm.models.ContextDocument attribute)</a>
+</li>
+      <li><a href="modules/models.html#id7">speaker (podcast_llm.models.ScriptLine attribute)</a>, <a href="modules/models.html#podcast_llm.models.ScriptLine.speaker">[1]</a>
+</li>
+      <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.src">src (podcast_llm.extractors.audio.AudioSourceDocument attribute)</a>
+
+      <ul>
+        <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.src">(podcast_llm.extractors.base.BaseSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.src">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.src">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.src">(podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/outline.html#id0">sections (podcast_llm.outline.PodcastOutline attribute)</a>, <a href="modules/outline.html#podcast_llm.outline.PodcastOutline.sections">[1]</a>
+      <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.src_type">src_type (podcast_llm.extractors.audio.AudioSourceDocument attribute)</a>
+
+      <ul>
+        <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.src_type">(podcast_llm.extractors.base.BaseSourceDocument attribute)</a>
 </li>
-      <li><a href="modules/outline.html#id1">subsections (podcast_llm.outline.PodcastSection attribute)</a>, <a href="modules/outline.html#podcast_llm.outline.PodcastSection.subsections">[1]</a>
+        <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.src_type">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.src_type">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.src_type">(podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/models.html#id2">subsections (podcast_llm.models.PodcastSection attribute)</a>, <a href="modules/models.html#podcast_llm.models.PodcastSection.subsections">[1]</a>
 </li>
       <li><a href="modules/research.html#podcast_llm.research.suggest_wikipedia_articles">suggest_wikipedia_articles() (in module podcast_llm.research)</a>
 </li>
@@ -474,10 +681,28 @@
 </li>
       <li><a href="modules/config.html#id15">temp_audio_dir (podcast_llm.config.config.PodcastConfig attribute)</a>, <a href="modules/config.html#podcast_llm.config.config.PodcastConfig.temp_audio_dir">[1]</a>
 </li>
-      <li><a href="modules/outline.html#id2">title (podcast_llm.outline.PodcastSection attribute)</a>, <a href="modules/outline.html#podcast_llm.outline.PodcastSection.title">[1]</a>
+      <li><a href="modules/models.html#podcast_llm.models.ContextDocument.text">text (podcast_llm.models.ContextDocument attribute)</a>
 
       <ul>
-        <li><a href="modules/outline.html#id3">(podcast_llm.outline.PodcastSubsection attribute)</a>, <a href="modules/outline.html#podcast_llm.outline.PodcastSubsection.title">[1]</a>
+        <li><a href="modules/models.html#id8">(podcast_llm.models.ScriptLine attribute)</a>, <a href="modules/models.html#podcast_llm.models.ScriptLine.text">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.title">title (podcast_llm.extractors.audio.AudioSourceDocument attribute)</a>
+
+      <ul>
+        <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.title">(podcast_llm.extractors.base.BaseSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.title">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.title">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.title">(podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/models.html#podcast_llm.models.ContextDocument.title">(podcast_llm.models.ContextDocument attribute)</a>
+</li>
+        <li><a href="modules/models.html#id3">(podcast_llm.models.PodcastSection attribute)</a>, <a href="modules/models.html#podcast_llm.models.PodcastSection.title">[1]</a>
+</li>
+        <li><a href="modules/models.html#id4">(podcast_llm.models.PodcastSubsection attribute)</a>, <a href="modules/models.html#podcast_llm.models.PodcastSubsection.title">[1]</a>
 </li>
       </ul></li>
   </ul></td>
@@ -491,16 +716,34 @@
   </ul></td>
 </tr></table>
 
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.video_id">video_id (podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.WikipediaPage">WikipediaPage (class in podcast_llm.research)</a>
+      <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument">WebSourceDocument (class in podcast_llm.extractors.web)</a>
+</li>
+      <li><a href="modules/models.html#podcast_llm.models.WikipediaPage">WikipediaPage (class in podcast_llm.models)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/research.html#podcast_llm.research.WikipediaPages">WikipediaPages (class in podcast_llm.research)</a>
+      <li><a href="modules/models.html#podcast_llm.models.WikipediaPages">WikipediaPages (class in podcast_llm.models)</a>
 </li>
       <li><a href="modules/utils_llm.html#podcast_llm.utils.llm.LLMWrapper.with_structured_output">with_structured_output() (podcast_llm.utils.llm.LLMWrapper method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument">YouTubeSourceDocument (class in podcast_llm.extractors.youtube)</a>
 </li>
   </ul></td>
 </tr></table>

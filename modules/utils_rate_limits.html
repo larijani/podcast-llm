@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>podcast_llm.utils.text &mdash; Podcast LLM  documentation</title>
+  <title>podcast_llm.utils.rate_limits &mdash; Podcast LLM  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -21,7 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="podcast_llm.utils.rate_limits" href="utils_rate_limits.html" /> 
+    <link rel="next" title="podcast_llm.utils.text" href="utils_text.html" />
+    <link rel="prev" title="podcast_llm.utils.llm" href="utils_llm.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -66,11 +67,12 @@
 <li class="toctree-l1"><a class="reference internal" href="text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils_llm.html">podcast_llm.utils.llm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.utils.text</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.utils.text.generate_markdown_script"><code class="docutils literal notranslate"><span class="pre">generate_markdown_script()</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.utils.rate_limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.utils.rate_limits.rate_limit_per_minute"><code class="docutils literal notranslate"><span class="pre">rate_limit_per_minute()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.utils.rate_limits.retry_with_exponential_backoff"><code class="docutils literal notranslate"><span class="pre">retry_with_exponential_backoff()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="utils_text.html">podcast_llm.utils.text</a></li>
 </ul>
 
         </div>
@@ -87,9 +89,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">podcast_llm.utils.text</li>
+      <li class="breadcrumb-item active">podcast_llm.utils.rate_limits</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/utils_text.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/modules/utils_rate_limits.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -97,47 +99,50 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-podcast_llm.utils.text">
-<span id="podcast-llm-utils-text"></span><h1>podcast_llm.utils.text<a class="headerlink" href="#module-podcast_llm.utils.text" title="Link to this heading"></a></h1>
-<p>Utilities for text processing and formatting in podcast generation.</p>
-<p>This module provides utilities for working with text content in podcast scripts
-and outlines. It handles formatting and conversion of podcast content into
-different text representations.</p>
-<p>Key components:
-- generate_markdown_script: Converts podcast outline and script into markdown format</p>
-<blockquote>
-<div><p>for easy viewing and sharing</p>
-</div></blockquote>
-<p>The module helps with:
-- Converting internal podcast data structures to human-readable formats
-- Generating documentation and review materials from podcast content
-- Maintaining consistent text formatting across the application</p>
+  <section id="module-podcast_llm.utils.rate_limits">
+<span id="podcast-llm-utils-rate-limits"></span><h1>podcast_llm.utils.rate_limits<a class="headerlink" href="#module-podcast_llm.utils.rate_limits" title="Link to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="podcast_llm.utils.text.generate_markdown_script">
-<span class="sig-prename descclassname"><span class="pre">podcast_llm.utils.text.</span></span><span class="sig-name descname"><span class="pre">generate_markdown_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="models.html#podcast_llm.models.PodcastOutline" title="podcast_llm.models.PodcastOutline"><span class="pre">PodcastOutline</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">script</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/podcast_llm/utils/text.html#generate_markdown_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.utils.text.generate_markdown_script" title="Link to this definition"></a></dt>
-<dd><p>Generate a markdown formatted version of the podcast script.</p>
+<dt class="sig sig-object py" id="podcast_llm.utils.rate_limits.rate_limit_per_minute">
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.utils.rate_limits.</span></span><span class="sig-name descname"><span class="pre">rate_limit_per_minute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_requests_per_minute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/utils/rate_limits.html#rate_limit_per_minute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.utils.rate_limits.rate_limit_per_minute" title="Link to this definition"></a></dt>
+<dd><p>Decorator that adds per-minute rate limiting to a function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_requests_per_minute</strong> (<em>int</em>) – Maximum number of requests allowed per minute</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorated function with rate limiting</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="podcast_llm.utils.rate_limits.retry_with_exponential_backoff">
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.utils.rate_limits.</span></span><span class="sig-name descname"><span class="pre">retry_with_exponential_backoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/utils/rate_limits.html#retry_with_exponential_backoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.utils.rate_limits.retry_with_exponential_backoff" title="Link to this definition"></a></dt>
+<dd><p>Decorator that retries a function with exponential backoff when exceptions occur.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>topic</strong> (<em>str</em>) – The main topic of the podcast</p></li>
-<li><p><strong>outline</strong> (<a class="reference internal" href="models.html#podcast_llm.models.PodcastOutline" title="podcast_llm.models.PodcastOutline"><em>PodcastOutline</em></a>) – The podcast outline containing sections and key points</p></li>
-<li><p><strong>script</strong> (<em>list</em>) – <p>List of dictionaries containing script lines with structure:
-{</p>
-<blockquote>
-<div><p>’speaker’: str,  # Speaker identifier (‘Interviewer’ or ‘Interviewee’)
-‘text’: str      # Line content</p>
-</div></blockquote>
-<p>}</p>
-</p></li>
+<li><p><strong>max_retries</strong> (<em>int</em>) – Maximum number of retry attempts</p></li>
+<li><p><strong>base_delay</strong> (<em>float</em>) – Initial delay between retries in seconds. Will be exponentially increased.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Markdown formatted script including topic, outline and conversation</p>
+<dd class="field-even"><p>Decorated function with retry logic</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>Callable</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<p>&#64;retry_with_exponential_backoff(max_retries=3, base_delay=1.0)
+def flaky_function():</p>
+<blockquote>
+<div><p># Function that may fail intermittently
+pass</p>
+</div></blockquote>
 </dd></dl>
 
 </section>
@@ -146,7 +151,8 @@ different text representations.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="utils_rate_limits.html" class="btn btn-neutral float-left" title="podcast_llm.utils.rate_limits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils_llm.html" class="btn btn-neutral float-left" title="podcast_llm.utils.llm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils_text.html" class="btn btn-neutral float-right" title="podcast_llm.utils.text" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

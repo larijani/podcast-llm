@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.extractors.audio &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/models.html">podcast_llm.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.extractors.audio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.extractors.audio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Audio file extraction module.</span>
+
+<span class="sd">This module provides functionality for extracting text content from audio files</span>
+<span class="sd">by transcribing them using OpenAI&#39;s Whisper model. It handles various audio formats</span>
+<span class="sd">(mp3, wav, m4a, ogg) and manages splitting long audio files into chunks that stay</span>
+<span class="sd">within API limits.</span>
+
+<span class="sd">The module includes:</span>
+<span class="sd">- AudioSourceDocument class for handling audio file extraction</span>
+<span class="sd">- Audio file splitting based on silence detection</span>
+<span class="sd">- Transcription using OpenAI Whisper API</span>
+<span class="sd">- Temporary file management for processing</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from podcast_llm.extractors.audio import AudioSourceDocument</span>
+<span class="sd">    &gt;&gt;&gt; extractor = AudioSourceDocument(&#39;podcast.mp3&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; extractor.extract()</span>
+<span class="sd">    &gt;&gt;&gt; print(extractor.content)</span>
+<span class="sd">    &#39;Transcribed text from audio file...&#39;</span>
+
+<span class="sd">The extraction process:</span>
+<span class="sd">1. Loads the audio file using pydub</span>
+<span class="sd">2. Splits into ~10 minute segments based on silence detection</span>
+<span class="sd">3. Saves segments to temporary files</span>
+<span class="sd">4. Transcribes each segment using Whisper</span>
+<span class="sd">5. Combines transcriptions into final content</span>
+
+<span class="sd">The module handles errors gracefully and cleans up temporary files after processing.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.extractors.base</span> <span class="kn">import</span> <span class="n">BaseSourceDocument</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">pydub</span>
+<span class="kn">from</span> <span class="nn">pydub</span> <span class="kn">import</span> <span class="n">AudioSegment</span>
+<span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="AudioSourceDocument">
+<a class="viewcode-back" href="../../../modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument">[docs]</a>
+<span class="k">class</span> <span class="nc">AudioSourceDocument</span><span class="p">(</span><span class="n">BaseSourceDocument</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A document extractor for audio files.</span>
+
+<span class="sd">    This class handles extracting text content from audio files (mp3, wav, m4a, ogg) </span>
+<span class="sd">    by splitting them into manageable segments and transcribing them using OpenAI&#39;s</span>
+<span class="sd">    Whisper model. The audio is first split into 10-minute chunks to stay within </span>
+<span class="sd">    API limits.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        src (str): Path to the source audio file</span>
+<span class="sd">        src_type (str): Type of source document (&#39;Audio File&#39;)</span>
+<span class="sd">        title (str): Title combining source type and filename</span>
+<span class="sd">        content (Optional[str]): Extracted text content after transcription</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; extractor = AudioSourceDocument(&#39;podcast.mp3&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; extractor.extract()</span>
+<span class="sd">        &gt;&gt;&gt; print(extractor.content)</span>
+<span class="sd">        &#39;Transcribed text from audio file...&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the PDF extractor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source: Path to the PDF file to extract text from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_type</span> <span class="o">=</span> <span class="s1">&#39;PDF File&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">src_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_split_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">temp_dir</span><span class="p">:</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Split an audio file into 10-minute segments to stay within API limits.</span>
+
+<span class="sd">        Takes an audio file and splits it into segments of 10 minutes or less to comply</span>
+<span class="sd">        with OpenAI Whisper API limits. The segments are saved as separate MP3 files</span>
+<span class="sd">        in a temporary directory.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): Path to the input audio file</span>
+<span class="sd">            temp_dir (tempfile.TemporaryDirectory): Directory to store temporary segment files</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of paths to the generated audio segment files</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; with tempfile.TemporaryDirectory() as temp_dir:</span>
+<span class="sd">            &gt;&gt;&gt;     segments = self._split_audio(&#39;podcast.mp3&#39;, temp_dir)</span>
+<span class="sd">            &gt;&gt;&gt;     print(len(segments))</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Splitting audio file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> into segments.&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mp3&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">pydub</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">CouldntDecodeError</span><span class="p">:</span>
+            <span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mp4&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Duration of each segment in milliseconds (10 minutes = 600,000 ms)</span>
+        <span class="n">segment_duration</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># 10 minutes in milliseconds</span>
+
+        <span class="c1"># Calculate the number of segments needed</span>
+        <span class="n">num_segments</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="o">/</span> <span class="n">segment_duration</span><span class="p">)</span>
+
+        <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_segments</span><span class="p">):</span>
+            <span class="c1"># Calculate the start and end of each segment</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">segment_duration</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_duration</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">))</span>  <span class="c1"># Make sure not to exceed audio length</span>
+
+            <span class="c1"># Extract the segment</span>
+            <span class="n">segment</span> <span class="o">=</span> <span class="n">audio</span><span class="p">[</span><span class="n">start_time</span><span class="p">:</span><span class="n">end_time</span><span class="p">]</span>
+
+            <span class="c1"># Export the segment to a new MP3 file</span>
+            <span class="n">segment_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;segment_</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.mp3&quot;</span><span class="p">)</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">segment_filename</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mp3&quot;</span><span class="p">)</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment_filename</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exported segment </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">start_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">segments</span>
+
+<div class="viewcode-block" id="AudioSourceDocument.extract">
+<a class="viewcode-back" href="../../../modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.extract">[docs]</a>
+    <span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract text content from an audio file using OpenAI&#39;s Whisper API.</span>
+
+<span class="sd">        This method takes an audio file, splits it into 10-minute segments to comply with </span>
+<span class="sd">        API limits, and transcribes each segment using OpenAI&#39;s Whisper speech-to-text model.</span>
+<span class="sd">        The transcribed segments are then combined into a single text document.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The complete transcribed text from the audio file</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            openai.OpenAIError: If there is an error calling the Whisper API</span>
+<span class="sd">            IOError: If there is an error reading the audio file</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; extractor = AudioSourceDocument(&#39;podcast.mp3&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; text = extractor.extract()</span>
+<span class="sd">            &gt;&gt;&gt; print(text[:100])</span>
+<span class="sd">            &#39;Welcome to today&#39;s episode where we&#39;ll be discussing...&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading audio from file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">()</span>
+
+        <span class="c1"># Process each chunk through Whisper API</span>
+        <span class="n">transcribed_texts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">temp_dir</span><span class="p">:</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_audio</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">,</span> <span class="n">temp_dir</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">audio_file</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transcribing chunk </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                    <span class="n">transcript</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">transcriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">file</span><span class="o">=</span><span class="n">audio_file</span><span class="p">,</span>
+                        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;whisper-1&quot;</span><span class="p">,</span>
+                        <span class="n">response_format</span><span class="o">=</span><span class="s2">&quot;text&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got transcript:</span><span class="se">\n</span><span class="si">{</span><span class="n">transcript</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                    <span class="n">transcribed_texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transcript</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transcribing complete. Combining transcripts...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">transcribed_texts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

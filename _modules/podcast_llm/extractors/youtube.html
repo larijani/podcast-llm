@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.extractors.youtube &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/models.html">podcast_llm.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.extractors.youtube</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.extractors.youtube</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">YouTube content extractor for podcast generation.</span>
+
+<span class="sd">This module provides functionality to extract transcript content from YouTube videos</span>
+<span class="sd">using the YouTubeTranscriptApi. It handles parsing various YouTube URL formats and</span>
+<span class="sd">retrieving closed captions/subtitles.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from podcast_llm.extractors.youtube import YouTubeSourceDocument</span>
+<span class="sd">    &gt;&gt;&gt; extractor = YouTubeSourceDocument(&#39;https://www.youtube.com/watch?v=dQw4w9WgXcQ&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; content = extractor.extract()</span>
+<span class="sd">    &gt;&gt;&gt; print(content)</span>
+<span class="sd">    &#39;We\&#39;re no strangers to love You know the rules and so do I...&#39;</span>
+
+<span class="sd">The module supports:</span>
+<span class="sd">- Standard youtube.com URLs (https://www.youtube.com/watch?v=VIDEO_ID)</span>
+<span class="sd">- Short youtu.be URLs (https://youtu.be/VIDEO_ID) </span>
+<span class="sd">- Embedded URLs (https://www.youtube.com/embed/VIDEO_ID)</span>
+
+<span class="sd">The extracted transcripts are returned as plain text and can be used as source</span>
+<span class="sd">material for podcast episode generation. The module handles errors gracefully if</span>
+<span class="sd">transcripts are unavailable or the video ID cannot be parsed.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">podcast_llm.extractors.base</span> <span class="kn">import</span> <span class="n">BaseSourceDocument</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">youtube_transcript_api</span> <span class="kn">import</span> <span class="n">YouTubeTranscriptApi</span>
+
+
+<div class="viewcode-block" id="YouTubeSourceDocument">
+<a class="viewcode-back" href="../../../modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument">[docs]</a>
+<span class="k">class</span> <span class="nc">YouTubeSourceDocument</span><span class="p">(</span><span class="n">BaseSourceDocument</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts transcript content from YouTube videos using YouTubeTranscriptApi.</span>
+
+<span class="sd">    This class handles extracting closed caption/subtitle content from YouTube videos</span>
+<span class="sd">    by parsing various URL formats to get the video ID and retrieving the transcript.</span>
+<span class="sd">    Supports standard youtube.com URLs, youtu.be short URLs, and embedded URLs.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; extractor = YouTubeSourceDocument(&#39;https://www.youtube.com/watch?v=dQw4w9WgXcQ&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; content = extractor.extract()</span>
+<span class="sd">        &gt;&gt;&gt; print(content)</span>
+<span class="sd">        &#39;We\&#39;re no strangers to love You know the rules and so do I...&#39;</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        src (str): The YouTube video URL or ID</span>
+<span class="sd">        src_type (str): Always &#39;YouTube video&#39;</span>
+<span class="sd">        title (str): A descriptive title combining src_type and source</span>
+<span class="sd">        content (Optional[str]): The extracted transcript text</span>
+<span class="sd">        video_id (str): The parsed YouTube video ID</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_type</span> <span class="o">=</span> <span class="s1">&#39;YouTube video&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">src_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">video_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_video_id</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_extract_video_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract YouTube video ID from various URL formats.</span>
+<span class="sd">        </span>
+<span class="sd">        Handles standard youtube.com URLs, youtu.be short URLs, </span>
+<span class="sd">        and embedded URLs. Returns just the video ID portion.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The YouTube video ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Handle youtu.be short URLs</span>
+        <span class="k">if</span> <span class="s1">&#39;youtu.be&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="c1"># Handle youtube.com URLs</span>
+        <span class="k">if</span> <span class="s1">&#39;v=&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;v=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="c1"># Handle embed URLs</span>
+        <span class="k">if</span> <span class="s1">&#39;embed/&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;embed/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="c1"># If no URL patterns match, assume src is already a video ID</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span>
+
+<div class="viewcode-block" id="YouTubeSourceDocument.extract">
+<a class="viewcode-back" href="../../../modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.extract">[docs]</a>
+    <span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">transcript</span> <span class="o">=</span> <span class="n">YouTubeTranscriptApi</span><span class="o">.</span><span class="n">get_transcript</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">video_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">transcript</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

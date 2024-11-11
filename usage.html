@@ -58,12 +58,20 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/models.html">podcast_llm.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/outline.html">podcast_llm.outline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/research.html">podcast_llm.research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils_text.html">podcast_llm.utils.text</a></li>
 </ul>
 
@@ -98,7 +106,11 @@
 <p>Here’s how to use the Podcast LLM system:</p>
 <ol class="arabic">
 <li><p>Generate a podcast about a topic:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Artificial Intelligence&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Research mode (default) - automatically researches the topic</span>
+python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Artificial Intelligence&quot;</span>
+
+<span class="c1"># Context mode - uses provided sources</span>
+python<span class="w"> </span>-m<span class="w"> </span>podcast_llm.generate<span class="w"> </span><span class="s2">&quot;Machine Learning&quot;</span><span class="w"> </span>--mode<span class="w"> </span>context<span class="w"> </span>--sources<span class="w"> </span>paper.pdf<span class="w"> </span>https://example.com/article
 </pre></div>
 </div>
 </li>

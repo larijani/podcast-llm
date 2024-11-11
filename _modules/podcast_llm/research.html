@@ -51,12 +51,20 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/models.html">podcast_llm.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/outline.html">podcast_llm.outline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
 </ul>
 
@@ -94,71 +102,41 @@
 
 <span class="sd">Example:</span>
 <span class="sd">    &gt;&gt;&gt; from podcast_llm.research import suggest_wikipedia_articles</span>
+<span class="sd">    &gt;&gt;&gt; from podcast_llm.models import WikipediaPages</span>
 <span class="sd">    &gt;&gt;&gt; config = PodcastConfig()</span>
-<span class="sd">    &gt;&gt;&gt; articles = suggest_wikipedia_articles(config, &quot;Artificial Intelligence&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; articles: WikipediaPages = suggest_wikipedia_articles(config, &quot;Artificial Intelligence&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; print(articles.pages[0].name)</span>
 <span class="sd">    &#39;Artificial intelligence&#39;</span>
 
 <span class="sd">The research process includes:</span>
-<span class="sd">- Suggesting relevant Wikipedia articles</span>
-<span class="sd">- Performing targeted web searches</span>
-<span class="sd">- Extracting key information from sources</span>
-<span class="sd">- Organizing research into a structured format</span>
+<span class="sd">- Suggesting relevant Wikipedia articles via LangChain and GPT-4</span>
+<span class="sd">- Downloading Wikipedia article content</span>
+<span class="sd">- Performing targeted web searches with Tavily</span>
+<span class="sd">- Extracting key information from web articles</span>
+<span class="sd">- Organizing research into structured formats using Pydantic models</span>
 
 <span class="sd">The module uses various APIs and services to gather comprehensive background</span>
 <span class="sd">information while maintaining rate limits and handling errors gracefully.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 <span class="kn">from</span> <span class="nn">langchain</span> <span class="kn">import</span> <span class="n">hub</span>
 <span class="kn">from</span> <span class="nn">langchain_community.retrievers</span> <span class="kn">import</span> <span class="n">WikipediaRetriever</span>
+<span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">podcast_llm.outline</span> <span class="kn">import</span> <span class="n">PodcastOutline</span>
 <span class="kn">from</span> <span class="nn">tavily</span> <span class="kn">import</span> <span class="n">TavilyClient</span>
-<span class="kn">from</span> <span class="nn">newspaper</span> <span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">ArticleException</span>
 <span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span>
 <span class="kn">from</span> <span class="nn">podcast_llm.utils.llm</span> <span class="kn">import</span> <span class="n">get_fast_llm</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.models</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SearchQueries</span><span class="p">,</span>
+    <span class="n">WikipediaPages</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.extractors.web</span> <span class="kn">import</span> <span class="n">WebSourceDocument</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-<div class="viewcode-block" id="WikipediaPage">
-<a class="viewcode-back" href="../../modules/research.html#podcast_llm.research.WikipediaPage">[docs]</a>
-<span class="k">class</span> <span class="nc">WikipediaPage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Name of the wikipedia page&quot;</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
-
-    
-
-<div class="viewcode-block" id="WikipediaPages">
-<a class="viewcode-back" href="../../modules/research.html#podcast_llm.research.WikipediaPages">[docs]</a>
-<span class="k">class</span> <span class="nc">WikipediaPages</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">pages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">WikipediaPage</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;List of Wikipedia pages&quot;</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="SearchQuery">
-<a class="viewcode-back" href="../../modules/research.html#podcast_llm.research.SearchQuery">[docs]</a>
-<span class="k">class</span> <span class="nc">SearchQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Text of the search query&quot;</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;### </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
-
-    
-
-<div class="viewcode-block" id="SearchQueries">
-<a class="viewcode-back" href="../../modules/research.html#podcast_llm.research.SearchQueries">[docs]</a>
-<span class="k">class</span> <span class="nc">SearchQueries</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">queries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;List of search queries&quot;</span><span class="p">)</span></div>
-
 
 
 <div class="viewcode-block" id="suggest_wikipedia_articles">
@@ -292,7 +270,7 @@
 
 <div class="viewcode-block" id="download_page_content">
 <a class="viewcode-back" href="../../modules/research.html#podcast_llm.research.download_page_content">[docs]</a>
-<span class="k">def</span> <span class="nf">download_page_content</span><span class="p">(</span><span class="n">urls</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">download_page_content</span><span class="p">(</span><span class="n">urls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download and parse content from a list of URLs.</span>
 
@@ -316,28 +294,14 @@
     <span class="n">downloaded_articles</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-            <span class="n">article</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
-            <span class="n">article</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
-            
-            <span class="k">if</span> <span class="n">article</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
-                <span class="n">downloaded_articles</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                    <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-                    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-                    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">text</span>
-                <span class="p">})</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Successfully downloaded article: </span><span class="si">{</span><span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No text content found for URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-                
-        <span class="k">except</span> <span class="n">ArticleException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to download article from </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">web_source_doc</span> <span class="o">=</span> <span class="n">WebSourceDocument</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">web_source_doc</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+            <span class="n">downloaded_articles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">web_source_doc</span><span class="o">.</span><span class="n">as_langchain_document</span><span class="p">())</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unexpected error downloading </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Successfully downloaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">downloaded_articles</span><span class="p">)</span><span class="si">}</span><span class="s1"> articles&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">downloaded_articles</span></div>
-
 
 
 

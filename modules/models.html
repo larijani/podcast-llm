@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.models &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="podcast_llm.outline" href="outline.html" />
+    <link rel="prev" title="podcast_llm.generate" href="generate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.Answer"><code class="docutils literal notranslate"><span class="pre">Answer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Answer.answer"><code class="docutils literal notranslate"><span class="pre">Answer.answer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">Answer.answer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Answer.as_str"><code class="docutils literal notranslate"><span class="pre">Answer.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Answer.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Answer.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Answer.model_config"><code class="docutils literal notranslate"><span class="pre">Answer.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Answer.model_fields"><code class="docutils literal notranslate"><span class="pre">Answer.model_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.ContextDocument"><code class="docutils literal notranslate"><span class="pre">ContextDocument</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ContextDocument.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">ContextDocument.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ContextDocument.model_config"><code class="docutils literal notranslate"><span class="pre">ContextDocument.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ContextDocument.model_fields"><code class="docutils literal notranslate"><span class="pre">ContextDocument.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ContextDocument.source"><code class="docutils literal notranslate"><span class="pre">ContextDocument.source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ContextDocument.text"><code class="docutils literal notranslate"><span class="pre">ContextDocument.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ContextDocument.title"><code class="docutils literal notranslate"><span class="pre">ContextDocument.title</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.PodcastOutline"><code class="docutils literal notranslate"><span class="pre">PodcastOutline</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastOutline.sections"><code class="docutils literal notranslate"><span class="pre">PodcastOutline.sections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastOutline.as_str"><code class="docutils literal notranslate"><span class="pre">PodcastOutline.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastOutline.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">PodcastOutline.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastOutline.model_config"><code class="docutils literal notranslate"><span class="pre">PodcastOutline.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastOutline.model_fields"><code class="docutils literal notranslate"><span class="pre">PodcastOutline.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">PodcastOutline.sections</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.PodcastSection"><code class="docutils literal notranslate"><span class="pre">PodcastSection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSection.title"><code class="docutils literal notranslate"><span class="pre">PodcastSection.title</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSection.subsections"><code class="docutils literal notranslate"><span class="pre">PodcastSection.subsections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSection.as_str"><code class="docutils literal notranslate"><span class="pre">PodcastSection.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSection.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">PodcastSection.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSection.model_config"><code class="docutils literal notranslate"><span class="pre">PodcastSection.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSection.model_fields"><code class="docutils literal notranslate"><span class="pre">PodcastSection.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">PodcastSection.subsections</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">PodcastSection.title</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.PodcastSubsection"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSubsection.title"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection.title</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSubsection.as_str"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSubsection.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSubsection.model_config"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.PodcastSubsection.model_fields"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">PodcastSubsection.title</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.Question"><code class="docutils literal notranslate"><span class="pre">Question</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Question.question"><code class="docutils literal notranslate"><span class="pre">Question.question</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Question.as_str"><code class="docutils literal notranslate"><span class="pre">Question.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Question.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Question.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Question.model_config"><code class="docutils literal notranslate"><span class="pre">Question.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Question.model_fields"><code class="docutils literal notranslate"><span class="pre">Question.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">Question.question</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.Script"><code class="docutils literal notranslate"><span class="pre">Script</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Script.lines"><code class="docutils literal notranslate"><span class="pre">Script.lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Script.as_str"><code class="docutils literal notranslate"><span class="pre">Script.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">Script.lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Script.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Script.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Script.model_config"><code class="docutils literal notranslate"><span class="pre">Script.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.Script.model_fields"><code class="docutils literal notranslate"><span class="pre">Script.model_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.ScriptLine"><code class="docutils literal notranslate"><span class="pre">ScriptLine</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ScriptLine.speaker"><code class="docutils literal notranslate"><span class="pre">ScriptLine.speaker</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ScriptLine.text"><code class="docutils literal notranslate"><span class="pre">ScriptLine.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ScriptLine.as_str"><code class="docutils literal notranslate"><span class="pre">ScriptLine.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ScriptLine.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">ScriptLine.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ScriptLine.model_config"><code class="docutils literal notranslate"><span class="pre">ScriptLine.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.ScriptLine.model_fields"><code class="docutils literal notranslate"><span class="pre">ScriptLine.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">ScriptLine.speaker</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">ScriptLine.text</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.SearchQueries"><code class="docutils literal notranslate"><span class="pre">SearchQueries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQueries.queries"><code class="docutils literal notranslate"><span class="pre">SearchQueries.queries</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQueries.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SearchQueries.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQueries.model_config"><code class="docutils literal notranslate"><span class="pre">SearchQueries.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQueries.model_fields"><code class="docutils literal notranslate"><span class="pre">SearchQueries.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">SearchQueries.queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.SearchQuery"><code class="docutils literal notranslate"><span class="pre">SearchQuery</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQuery.query"><code class="docutils literal notranslate"><span class="pre">SearchQuery.query</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQuery.as_str"><code class="docutils literal notranslate"><span class="pre">SearchQuery.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQuery.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SearchQuery.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQuery.model_config"><code class="docutils literal notranslate"><span class="pre">SearchQuery.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.SearchQuery.model_fields"><code class="docutils literal notranslate"><span class="pre">SearchQuery.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">SearchQuery.query</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.WikipediaPage"><code class="docutils literal notranslate"><span class="pre">WikipediaPage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPage.name"><code class="docutils literal notranslate"><span class="pre">WikipediaPage.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPage.as_str"><code class="docutils literal notranslate"><span class="pre">WikipediaPage.as_str</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPage.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">WikipediaPage.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPage.model_config"><code class="docutils literal notranslate"><span class="pre">WikipediaPage.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPage.model_fields"><code class="docutils literal notranslate"><span class="pre">WikipediaPage.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">WikipediaPage.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.models.WikipediaPages"><code class="docutils literal notranslate"><span class="pre">WikipediaPages</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPages.pages"><code class="docutils literal notranslate"><span class="pre">WikipediaPages.pages</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPages.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">WikipediaPages.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPages.model_config"><code class="docutils literal notranslate"><span class="pre">WikipediaPages.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.models.WikipediaPages.model_fields"><code class="docutils literal notranslate"><span class="pre">WikipediaPages.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">WikipediaPages.pages</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">podcast_llm.models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-podcast_llm.models">
+<span id="podcast-llm-models"></span><h1>podcast_llm.models<a class="headerlink" href="#module-podcast_llm.models" title="Link to this heading"></a></h1>
+<p>Pydantic models for podcast generation.</p>
+<p>This module defines the core data models used throughout the podcast generation system.
+It uses Pydantic for data validation and serialization, providing type safety and
+structured representations of podcast components like outlines, scripts, and research
+materials.</p>
+<p>Key models include:
+- PodcastOutline: Complete episode structure with sections and subsections
+- PodcastSection: Major content sections within an episode
+- PodcastSubsection: Detailed subsections of content
+- Script: Complete podcast script with speaker turns
+- Question/Answer: Individual conversation exchanges
+- WikipediaPages: Research material from Wikipedia
+- SearchQueries: Web search queries for additional research</p>
+<p>The models enforce consistent structure and provide helper methods for formatting
+and manipulating podcast content. They serve as the foundational data structures
+that flow through the generation pipeline.</p>
+<p class="rubric">Example</p>
+<dl>
+<dt>outline = PodcastOutline(</dt><dd><dl>
+<dt>sections=[</dt><dd><dl>
+<dt>PodcastSection(</dt><dd><p>title=”Introduction”,
+subsections=[</p>
+<blockquote>
+<div><p>PodcastSubsection(title=”Topic Overview”),
+PodcastSubsection(title=”Key Concepts”)</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>)</p>
+</dd>
+</dl>
+<p>]</p>
+</dd>
+</dl>
+<p>)
+print(outline.as_str)</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.Answer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">Answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">answer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#Answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.Answer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing an answer in an interview conversation.</p>
+<p>This class models an individual answer given by an interviewee in a podcast conversation.
+It provides a structured way to store and format answer text, with a helper property
+to output the answer in a standardized string format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Answer.answer">
+<span class="sig-name descname"><span class="pre">answer</span></span><a class="headerlink" href="#podcast_llm.models.Answer.answer" title="Link to this definition"></a></dt>
+<dd><p>The actual text content of the answer being given</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">answer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.Answer.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.Answer.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Answer.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.Answer.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Answer.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.Answer.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Answer.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'answer':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">title='Text</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">answer')}</span></em><a class="headerlink" href="#podcast_llm.models.Answer.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">ContextDocument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#ContextDocument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.ContextDocument" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.ContextDocument.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.ContextDocument.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'source':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='The</span> <span class="pre">source</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">document'),</span> <span class="pre">'text':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='The</span> <span class="pre">text</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">document'),</span> <span class="pre">'title':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='The</span> <span class="pre">title</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">document')}</span></em><a class="headerlink" href="#podcast_llm.models.ContextDocument.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument.source">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.ContextDocument.source" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.ContextDocument.text" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ContextDocument.title">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.ContextDocument.title" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastOutline">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">PodcastOutline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.PodcastSection" title="podcast_llm.models.PodcastSection"><span class="pre">PodcastSection</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#PodcastOutline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.PodcastOutline" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a complete podcast episode outline.</p>
+<p>This class models the full structure of a podcast episode outline, containing
+an ordered list of major sections, each with their own subsections. It provides
+a hierarchical organization of the episode content and includes a helper property
+to format the entire outline into a standardized string representation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastOutline.sections">
+<span class="sig-name descname"><span class="pre">sections</span></span><a class="headerlink" href="#podcast_llm.models.PodcastOutline.sections" title="Link to this definition"></a></dt>
+<dd><p>Ordered list of major sections making up the episode outline</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#podcast_llm.models.PodcastSection" title="podcast_llm.models.PodcastSection">PodcastSection</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastOutline.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.PodcastOutline.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastOutline.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastOutline.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastOutline.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastOutline.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastOutline.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'sections':</span> <span class="pre">FieldInfo(annotation=List[PodcastSection],</span> <span class="pre">required=True,</span> <span class="pre">description='List</span> <span class="pre">of</span> <span class="pre">sections</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">podcast</span> <span class="pre">outline')}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastOutline.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">sections</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.PodcastSection" title="podcast_llm.models.PodcastSection"><span class="pre">PodcastSection</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">PodcastSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subsections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.PodcastSubsection" title="podcast_llm.models.PodcastSubsection"><span class="pre">PodcastSubsection</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#PodcastSection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.PodcastSection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a section within a podcast outline.</p>
+<p>This class models a major section of content within a podcast outline. Each section
+contains a title and a list of subsections, providing hierarchical structure to
+the podcast content. A helper property formats the section and its subsections
+into a standardized string representation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#podcast_llm.models.PodcastSection.title" title="Link to this definition"></a></dt>
+<dd><p>The title/heading text for this section</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection.subsections">
+<span class="sig-name descname"><span class="pre">subsections</span></span><a class="headerlink" href="#podcast_llm.models.PodcastSection.subsections" title="Link to this definition"></a></dt>
+<dd><p>List of subsections contained within this section</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#podcast_llm.models.PodcastSubsection" title="podcast_llm.models.PodcastSubsection">PodcastSubsection</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSection.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSection.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSection.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSection.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'subsections':</span> <span class="pre">FieldInfo(annotation=List[PodcastSubsection],</span> <span class="pre">required=True,</span> <span class="pre">description='List</span> <span class="pre">of</span> <span class="pre">subsections</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">podcast</span> <span class="pre">section'),</span> <span class="pre">'title':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='A</span> <span class="pre">section</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">podcast</span> <span class="pre">outline')}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSection.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">subsections</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.PodcastSubsection" title="podcast_llm.models.PodcastSubsection"><span class="pre">PodcastSubsection</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSubsection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">PodcastSubsection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#PodcastSubsection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.PodcastSubsection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a subsection within a podcast section.</p>
+<p>This class models an individual subsection of content within a larger podcast section.
+It provides a structured way to store and format subsection titles, with a helper
+property to output the subsection in a standardized string format with appropriate
+indentation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSubsection.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#podcast_llm.models.PodcastSubsection.title" title="Link to this definition"></a></dt>
+<dd><p>The title/heading text for this subsection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSubsection.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSubsection.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSubsection.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSubsection.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSubsection.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSubsection.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.PodcastSubsection.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'title':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='A</span> <span class="pre">subsection</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">podcast</span> <span class="pre">outline')}</span></em><a class="headerlink" href="#podcast_llm.models.PodcastSubsection.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.Question">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">Question</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#Question"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.Question" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a question in an interview conversation.</p>
+<p>This class models an individual question asked by an interviewer in a podcast conversation.
+It provides a structured way to store and format question text, with a helper property
+to output the question in a standardized string format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Question.question">
+<span class="sig-name descname"><span class="pre">question</span></span><a class="headerlink" href="#podcast_llm.models.Question.question" title="Link to this definition"></a></dt>
+<dd><p>The actual text content of the question being asked</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.Question.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.Question.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Question.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.Question.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Question.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.Question.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Question.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'question':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">title='Text</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">question')}</span></em><a class="headerlink" href="#podcast_llm.models.Question.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">question</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.Script">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">Script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.ScriptLine" title="podcast_llm.models.ScriptLine"><span class="pre">ScriptLine</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#Script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.Script" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a complete podcast script.</p>
+<p>This class models the full script of a podcast episode, containing an ordered list
+of dialogue lines from both interviewer and interviewee. It provides a structured
+way to store the complete conversation and includes a helper property to format
+the entire script into a standardized string representation with proper speaker
+labels and spacing.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Script.lines">
+<span class="sig-name descname"><span class="pre">lines</span></span><a class="headerlink" href="#podcast_llm.models.Script.lines" title="Link to this definition"></a></dt>
+<dd><p>Ordered list of dialogue lines making up the complete script</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#podcast_llm.models.ScriptLine" title="podcast_llm.models.ScriptLine">ScriptLine</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.Script.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.Script.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">lines</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.ScriptLine" title="podcast_llm.models.ScriptLine"><span class="pre">ScriptLine</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Script.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.Script.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Script.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.Script.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.Script.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'lines':</span> <span class="pre">FieldInfo(annotation=List[ScriptLine],</span> <span class="pre">required=True,</span> <span class="pre">title='Lines</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">podcast</span> <span class="pre">script')}</span></em><a class="headerlink" href="#podcast_llm.models.Script.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">ScriptLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speaker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#ScriptLine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.ScriptLine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a single line of dialogue in a podcast script.</p>
+<p>This class models an individual line of dialogue from either the interviewer or
+interviewee in a podcast conversation. It provides a structured way to store both
+the speaker identifier and their dialogue text, with a helper property to format
+the line in a standardized string format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine.speaker">
+<span class="sig-name descname"><span class="pre">speaker</span></span><a class="headerlink" href="#podcast_llm.models.ScriptLine.speaker" title="Link to this definition"></a></dt>
+<dd><p>Identifier for who is speaking (‘Interviewer’ or ‘Interviewee’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine.text">
+<span class="sig-name descname"><span class="pre">text</span></span><a class="headerlink" href="#podcast_llm.models.ScriptLine.text" title="Link to this definition"></a></dt>
+<dd><p>The actual dialogue content being spoken</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.ScriptLine.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.ScriptLine.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.ScriptLine.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.ScriptLine.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'speaker':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">title='The</span> <span class="pre">person</span> <span class="pre">speaking'),</span> <span class="pre">'text':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">title='A</span> <span class="pre">line</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">podcast</span> <span class="pre">script.')}</span></em><a class="headerlink" href="#podcast_llm.models.ScriptLine.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">speaker</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQueries">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">SearchQueries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.SearchQuery" title="podcast_llm.models.SearchQuery"><span class="pre">SearchQuery</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#SearchQueries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.SearchQueries" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a collection of search queries.</p>
+<p>This class models a collection of search queries used to gather research material for
+podcast content generation. It stores a list of SearchQuery objects and provides a
+structured way to work with multiple queries together.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQueries.queries">
+<span class="sig-name descname"><span class="pre">queries</span></span><a class="headerlink" href="#podcast_llm.models.SearchQueries.queries" title="Link to this definition"></a></dt>
+<dd><p>List of SearchQuery objects representing the collection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#podcast_llm.models.SearchQuery" title="podcast_llm.models.SearchQuery">SearchQuery</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQueries.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.SearchQueries.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQueries.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.SearchQueries.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQueries.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'queries':</span> <span class="pre">FieldInfo(annotation=List[SearchQuery],</span> <span class="pre">required=True,</span> <span class="pre">title='List</span> <span class="pre">of</span> <span class="pre">search</span> <span class="pre">queries')}</span></em><a class="headerlink" href="#podcast_llm.models.SearchQueries.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">queries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.SearchQuery" title="podcast_llm.models.SearchQuery"><span class="pre">SearchQuery</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">SearchQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#SearchQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.SearchQuery" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a search query.</p>
+<p>This class models an individual search query used to gather research material for
+podcast content generation. It provides a structured way to store and format query
+text, with a helper property to output the query in a standardized string format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQuery.query">
+<span class="sig-name descname"><span class="pre">query</span></span><a class="headerlink" href="#podcast_llm.models.SearchQuery.query" title="Link to this definition"></a></dt>
+<dd><p>The actual text content of the search query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQuery.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.SearchQuery.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQuery.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.SearchQuery.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQuery.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.SearchQuery.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.SearchQuery.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'query':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">title='Text</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">search</span> <span class="pre">query')}</span></em><a class="headerlink" href="#podcast_llm.models.SearchQuery.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">WikipediaPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#WikipediaPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.WikipediaPage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a Wikipedia page.</p>
+<p>This class models a Wikipedia page that has been retrieved as part of the research
+process for podcast content generation. It stores the page name and provides a
+standardized string representation through a helper property.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPage.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#podcast_llm.models.WikipediaPage.name" title="Link to this definition"></a></dt>
+<dd><p>The title/name of the Wikipedia page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPage.as_str">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPage.as_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPage.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPage.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPage.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPage.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPage.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">title='Name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">wikipedia</span> <span class="pre">page')}</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPage.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPages">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.models.</span></span><span class="sig-name descname"><span class="pre">WikipediaPages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.WikipediaPage" title="podcast_llm.models.WikipediaPage"><span class="pre">WikipediaPage</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/models.html#WikipediaPages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.models.WikipediaPages" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A model representing a collection of Wikipedia pages.</p>
+<p>This class models a collection of Wikipedia pages that have been retrieved as part of
+the research process for podcast content generation. It stores a list of WikipediaPage
+objects and provides a standardized way to work with multiple pages together.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPages.pages">
+<span class="sig-name descname"><span class="pre">pages</span></span><a class="headerlink" href="#podcast_llm.models.WikipediaPages.pages" title="Link to this definition"></a></dt>
+<dd><p>List of WikipediaPage objects representing the collection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#podcast_llm.models.WikipediaPage" title="podcast_llm.models.WikipediaPage">WikipediaPage</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPages.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPages.model_computed_fields" title="Link to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPages.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPages.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.models.WikipediaPages.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'pages':</span> <span class="pre">FieldInfo(annotation=List[WikipediaPage],</span> <span class="pre">required=True,</span> <span class="pre">title='List</span> <span class="pre">of</span> <span class="pre">Wikipedia</span> <span class="pre">pages')}</span></em><a class="headerlink" href="#podcast_llm.models.WikipediaPages.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">pages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#podcast_llm.models.WikipediaPage" title="podcast_llm.models.WikipediaPage"><span class="pre">WikipediaPage</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generate.html" class="btn btn-neutral float-left" title="podcast_llm.generate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="outline.html" class="btn btn-neutral float-right" title="podcast_llm.outline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

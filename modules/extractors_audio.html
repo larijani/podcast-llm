@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.extractors.audio &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="podcast_llm.extractors.base" href="extractors_base.html" />
+    <link rel="prev" title="podcast_llm.config" href="config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="config.html">podcast_llm.config</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.extractors.audio</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.extractors.audio.AudioSourceDocument"><code class="docutils literal notranslate"><span class="pre">AudioSourceDocument</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.extractors.audio.AudioSourceDocument.src"><code class="docutils literal notranslate"><span class="pre">AudioSourceDocument.src</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.extractors.audio.AudioSourceDocument.src_type"><code class="docutils literal notranslate"><span class="pre">AudioSourceDocument.src_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.extractors.audio.AudioSourceDocument.title"><code class="docutils literal notranslate"><span class="pre">AudioSourceDocument.title</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.extractors.audio.AudioSourceDocument.content"><code class="docutils literal notranslate"><span class="pre">AudioSourceDocument.content</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.extractors.audio.AudioSourceDocument.extract"><code class="docutils literal notranslate"><span class="pre">AudioSourceDocument.extract()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">podcast_llm.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">podcast_llm.extractors.audio</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/extractors_audio.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="podcast-llm-extractors-audio">
+<h1>podcast_llm.extractors.audio<a class="headerlink" href="#podcast-llm-extractors-audio" title="Link to this heading"></a></h1>
+<p id="module-podcast_llm.extractors.audio">Audio file extraction module.</p>
+<p>This module provides functionality for extracting text content from audio files
+by transcribing them using OpenAI’s Whisper model. It handles various audio formats
+(mp3, wav, m4a, ogg) and manages splitting long audio files into chunks that stay
+within API limits.</p>
+<p>The module includes:
+- AudioSourceDocument class for handling audio file extraction
+- Audio file splitting based on silence detection
+- Transcription using OpenAI Whisper API
+- Temporary file management for processing</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">podcast_llm.extractors.audio</span> <span class="kn">import</span> <span class="n">AudioSourceDocument</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">AudioSourceDocument</span><span class="p">(</span><span class="s1">&#39;podcast.mp3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">extractor</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="go">&#39;Transcribed text from audio file...&#39;</span>
+</pre></div>
+</div>
+<p>The extraction process:
+1. Loads the audio file using pydub
+2. Splits into ~10 minute segments based on silence detection
+3. Saves segments to temporary files
+4. Transcribes each segment using Whisper
+5. Combines transcriptions into final content</p>
+<p>The module handles errors gracefully and cleans up temporary files after processing.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="podcast_llm.extractors.audio.AudioSourceDocument">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.extractors.audio.</span></span><span class="sig-name descname"><span class="pre">AudioSourceDocument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/extractors/audio.html#AudioSourceDocument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.extractors.audio.AudioSourceDocument" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument" title="podcast_llm.extractors.base.BaseSourceDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSourceDocument</span></code></a></p>
+<p>A document extractor for audio files.</p>
+<p>This class handles extracting text content from audio files (mp3, wav, m4a, ogg)
+by splitting them into manageable segments and transcribing them using OpenAI’s
+Whisper model. The audio is first split into 10-minute chunks to stay within
+API limits.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.extractors.audio.AudioSourceDocument.src">
+<span class="sig-name descname"><span class="pre">src</span></span><a class="headerlink" href="#podcast_llm.extractors.audio.AudioSourceDocument.src" title="Link to this definition"></a></dt>
+<dd><p>Path to the source audio file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.extractors.audio.AudioSourceDocument.src_type">
+<span class="sig-name descname"><span class="pre">src_type</span></span><a class="headerlink" href="#podcast_llm.extractors.audio.AudioSourceDocument.src_type" title="Link to this definition"></a></dt>
+<dd><p>Type of source document (‘Audio File’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.extractors.audio.AudioSourceDocument.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#podcast_llm.extractors.audio.AudioSourceDocument.title" title="Link to this definition"></a></dt>
+<dd><p>Title combining source type and filename</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podcast_llm.extractors.audio.AudioSourceDocument.content">
+<span class="sig-name descname"><span class="pre">content</span></span><a class="headerlink" href="#podcast_llm.extractors.audio.AudioSourceDocument.content" title="Link to this definition"></a></dt>
+<dd><p>Extracted text content after transcription</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">AudioSourceDocument</span><span class="p">(</span><span class="s1">&#39;podcast.mp3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">extractor</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="go">&#39;Transcribed text from audio file...&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="podcast_llm.extractors.audio.AudioSourceDocument.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/podcast_llm/extractors/audio.html#AudioSourceDocument.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.extractors.audio.AudioSourceDocument.extract" title="Link to this definition"></a></dt>
+<dd><p>Extract text content from an audio file using OpenAI’s Whisper API.</p>
+<p>This method takes an audio file, splits it into 10-minute segments to comply with
+API limits, and transcribes each segment using OpenAI’s Whisper speech-to-text model.
+The transcribed segments are then combined into a single text document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The complete transcribed text from the audio file</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>openai.OpenAIError</strong> – If there is an error calling the Whisper API</p></li>
+<li><p><strong>IOError</strong> – If there is an error reading the audio file</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">extractor</span> <span class="o">=</span> <span class="n">AudioSourceDocument</span><span class="p">(</span><span class="s1">&#39;podcast.mp3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
+<span class="go">&#39;Welcome to today&#39;s episode where we&#39;ll be discussing...&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="config.html" class="btn btn-neutral float-left" title="podcast_llm.config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extractors_base.html" class="btn btn-neutral float-right" title="podcast_llm.extractors.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

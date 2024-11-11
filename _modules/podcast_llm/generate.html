@@ -51,12 +51,20 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/models.html">podcast_llm.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/outline.html">podcast_llm.outline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
 </ul>
 
@@ -89,36 +97,26 @@
 <span class="sd">Podcast generation module.</span>
 
 <span class="sd">This module provides functionality to generate complete podcast episodes from a given topic.</span>
-<span class="sd">It handles the end-to-end process including research, script writing, and audio generation.</span>
+<span class="sd">It can operate in two modes:</span>
+<span class="sd">1. Research mode: Automatically researches the topic online</span>
+<span class="sd">2. Existing context mode: Uses provided URLs and files as source material</span>
 
 <span class="sd">Example:</span>
-<span class="sd">    &gt;&gt;&gt; from podcast_llm.generate import generate</span>
+<span class="sd">    Research mode:</span>
+<span class="sd">    &gt;&gt;&gt; generate(topic=&#39;Artificial Intelligence&#39;, mode=&#39;research&#39;)</span>
+
+<span class="sd">    Existing context mode:</span>
 <span class="sd">    &gt;&gt;&gt; generate(</span>
 <span class="sd">    ...     topic=&#39;Artificial Intelligence&#39;,</span>
-<span class="sd">    ...     qa_rounds=3,</span>
-<span class="sd">    ...     use_checkpoints=True,</span>
-<span class="sd">    ...     audio_output=&#39;podcast.mp3&#39;,</span>
-<span class="sd">    ...     text_output=&#39;script.md&#39;,</span>
-<span class="sd">    ...     config=&#39;config.yaml&#39;,</span>
-<span class="sd">    ...     debug=True</span>
+<span class="sd">    ...     mode=&#39;context&#39;,</span>
+<span class="sd">    ...     sources=[&#39;article.pdf&#39;, &#39;https://example.com/ai-article&#39;]</span>
 <span class="sd">    ... )</span>
-
-<span class="sd">The generation process includes:</span>
-<span class="sd">- Background research on the topic</span>
-<span class="sd">- Outlining the episode structure </span>
-<span class="sd">- Writing draft and final scripts</span>
-<span class="sd">- Converting the script to audio using text-to-speech</span>
-<span class="sd">- Saving outputs to specified locations</span>
-
-<span class="sd">The process can be checkpointed to allow for resuming interrupted generations.</span>
-<span class="sd">Debug logging provides detailed information about the generation process.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span>
 <span class="kn">from</span> <span class="nn">podcast_llm.research</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">research_background_info</span><span class="p">,</span>
     <span class="n">research_discussion_topics</span>
@@ -135,6 +133,7 @@
 <span class="kn">from</span> <span class="nn">podcast_llm.text_to_speech</span> <span class="kn">import</span> <span class="n">generate_audio</span>
 <span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">setup_logging</span>
 <span class="kn">from</span> <span class="nn">podcast_llm.utils.text</span> <span class="kn">import</span> <span class="n">generate_markdown_script</span>
+<span class="kn">from</span> <span class="nn">podcast_llm.extractors</span> <span class="kn">import</span> <span class="n">extract_content_from_sources</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 
@@ -146,18 +145,22 @@
 <a class="viewcode-back" href="../../modules/generate.html#podcast_llm.generate.generate">[docs]</a>
 <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span>
     <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">qa_rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">use_checkpoints</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">audio_output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">text_output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">config</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;research&#39;</span><span class="p">,</span> <span class="s1">&#39;context&#39;</span><span class="p">],</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">qa_rounds</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">use_checkpoints</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">audio_output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">text_output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_CONFIG_PATH</span><span class="p">,</span>
+    <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a podcast episode.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
 <span class="sd">        topic: Topic of the podcast</span>
+<span class="sd">        mode: Generation mode - either &#39;research&#39; or &#39;context&#39;</span>
+<span class="sd">        sources: List of URLs and file paths to use as source material (for context mode)</span>
 <span class="sd">        qa_rounds: Number of Q&amp;A rounds</span>
 <span class="sd">        use_checkpoints: Whether to use checkpointing</span>
 <span class="sd">        audio_output: Path to save audio output</span>
@@ -165,7 +168,6 @@
 <span class="sd">        config: Path to config file</span>
 <span class="sd">        debug: Whether to enable debug logging</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Set logging level based on debug flag</span>
     <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">debug</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
     <span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
     
@@ -176,11 +178,49 @@
         <span class="n">enabled</span><span class="o">=</span><span class="n">use_checkpoints</span>
     <span class="p">)</span>
 
-    <span class="n">background_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">research_background_info</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;background_info&#39;</span><span class="p">)</span>
-    <span class="n">outline</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">outline_episode</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">background_info</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;outline&#39;</span><span class="p">)</span>
-    <span class="n">deep_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">research_discussion_topics</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;deep_info&#39;</span><span class="p">)</span>
-    <span class="n">draft_script</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">write_draft_script</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">,</span> <span class="n">background_info</span><span class="p">,</span> <span class="n">deep_info</span><span class="p">,</span> <span class="n">qa_rounds</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;draft_script&#39;</span><span class="p">)</span>
-    <span class="n">final_script</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">write_final_script</span><span class="p">,</span> <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">draft_script</span><span class="p">],</span> <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;final_script&#39;</span><span class="p">)</span>
+    <span class="c1"># Get background info based on mode</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;research&#39;</span><span class="p">:</span>
+        <span class="n">background_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+            <span class="n">research_background_info</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">],</span>
+            <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;background_info&#39;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># context mode</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sources must be provided when using context mode&quot;</span><span class="p">)</span>
+        <span class="n">background_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+            <span class="n">extract_content_from_sources</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">sources</span><span class="p">],</span>
+            <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;background_info&#39;</span>
+        <span class="p">)</span>
+
+    <span class="n">outline</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+        <span class="n">outline_episode</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">background_info</span><span class="p">],</span>
+        <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;outline&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Get detailed info based on mode</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;research&#39;</span><span class="p">:</span>
+        <span class="n">deep_info</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+            <span class="n">research_discussion_topics</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">],</span>
+            <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;deep_info&#39;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">deep_info</span> <span class="o">=</span> <span class="n">background_info</span>  <span class="c1"># Use the same extracted content</span>
+
+    <span class="n">draft_script</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+        <span class="n">write_draft_script</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">outline</span><span class="p">,</span> <span class="n">background_info</span><span class="p">,</span> <span class="n">deep_info</span><span class="p">,</span> <span class="n">qa_rounds</span><span class="p">],</span>
+        <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;draft_script&#39;</span>
+    <span class="p">)</span>
+    
+    <span class="n">final_script</span> <span class="o">=</span> <span class="n">checkpointer</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span>
+        <span class="n">write_final_script</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">config</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">draft_script</span><span class="p">],</span>
+        <span class="n">stage_name</span><span class="o">=</span><span class="s1">&#39;final_script&#39;</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">text_output</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">text_output</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -196,11 +236,22 @@
 <span class="k">def</span> <span class="nf">parse_arguments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Generate text using a language model&#39;</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Generate podcasts using LLMs and TTS&#39;</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s1">&#39;topic&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Topic of the podcast.&#39;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Topic of the podcast&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--mode&#39;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;research&#39;</span><span class="p">,</span> <span class="s1">&#39;context&#39;</span><span class="p">],</span>
+        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;research&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Generation mode: research (automatic research) or context (use provided sources)&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--sources&#39;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;List of URLs and file paths to use as source material (required for context mode)&#39;</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s1">&#39;--qa-rounds&#39;</span><span class="p">,</span>
@@ -210,9 +261,16 @@
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s1">&#39;--checkpoint&#39;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;checkpoint&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Whether to enable checkpointing&#39;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Enable checkpointing (default: True)&#39;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s1">&#39;--no-checkpoint&#39;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;checkpoint&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Disable checkpointing&#39;</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s1">&#39;--audio-output&#39;</span><span class="p">,</span>
@@ -240,12 +298,20 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div>
 
 
+
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../modules/generate.html#podcast_llm.generate.main">[docs]</a>
 <span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main entry point for the CLI.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_arguments</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;context&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;--sources must be provided when using context mode&quot;</span><span class="p">)</span>
+        
     <span class="n">generate</span><span class="p">(</span>
         <span class="n">topic</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">topic</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+        <span class="n">sources</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">sources</span><span class="p">,</span>
         <span class="n">qa_rounds</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">qa_rounds</span><span class="p">,</span>
         <span class="n">use_checkpoints</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">,</span>
         <span class="n">audio_output</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">audio_output</span><span class="p">,</span>
