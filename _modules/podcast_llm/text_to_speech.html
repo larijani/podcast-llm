@@ -126,9 +126,11 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">elevenlabs</span> <span class="kn">import</span> <span class="n">client</span> <span class="k">as</span> <span class="n">elevenlabs_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">texttospeech</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">texttospeech_v1beta1</span>
 <span class="kn">from</span> <span class="nn">pydub</span> <span class="kn">import</span> <span class="n">AudioSegment</span>
 
 <span class="kn">from</span> <span class="nn">podcast_llm.config</span> <span class="kn">import</span> <span class="n">PodcastConfig</span>
@@ -144,7 +146,7 @@
 
 <div class="viewcode-block" id="clean_text_for_tts">
 <a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.clean_text_for_tts">[docs]</a>
-<span class="k">def</span> <span class="nf">clean_text_for_tts</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">clean_text_for_tts</span><span class="p">(</span><span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clean text lines for text-to-speech processing by removing special characters.</span>
 
@@ -173,7 +175,7 @@
 
 <div class="viewcode-block" id="merge_audio_files">
 <a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.merge_audio_files">[docs]</a>
-<span class="k">def</span> <span class="nf">merge_audio_files</span><span class="p">(</span><span class="n">audio_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audio_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">merge_audio_files</span><span class="p">(</span><span class="n">audio_files</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audio_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merge multiple audio files into a single output file.</span>
 
@@ -194,14 +196,18 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Merging audio files...&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">combined</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
-        
-        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
-            <span class="n">combined</span> <span class="o">+=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">audio_format</span><span class="p">)</span>
-        
+
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mp3&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;wav&quot;</span><span class="p">)</span>
+
+            <span class="n">combined</span> <span class="o">+=</span> <span class="n">audio</span>
+
         <span class="n">combined</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">audio_format</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">raise</span></div>
-
 
 
 
@@ -298,6 +304,70 @@
 
 
 
+<div class="viewcode-block" id="process_lines_google_multispeaker">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.process_lines_google_multispeaker">[docs]</a>
+<span class="nd">@retry_with_exponential_backoff</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="nd">@rate_limit_per_minute</span><span class="p">(</span><span class="n">max_requests_per_minute</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">process_lines_google_multispeaker</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PodcastConfig</span><span class="p">,</span> <span class="n">chunks</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process multiple lines of text into speech using Google&#39;s multi-speaker TTS service.</span>
+
+<span class="sd">    Takes a chunk of conversation lines and generates synthesized speech using Google&#39;s</span>
+<span class="sd">    multi-speaker TTS service. Handles up to 6 turns of conversation at once for more</span>
+<span class="sd">    natural conversational flow.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (PodcastConfig): Configuration object containing API keys and settings</span>
+<span class="sd">        chunks (List): List of dictionaries containing conversation lines with structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;speaker&#39;: str,  # Speaker identifier</span>
+<span class="sd">                &#39;text&#39;: str      # Line content to convert to speech</span>
+<span class="sd">            }</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bytes: Raw audio data in bytes format containing the synthesized speech</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">TextToSpeechClient</span><span class="p">(</span><span class="n">client_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;api_key&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">google_api_key</span><span class="p">})</span>
+    <span class="n">tts_settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;google_multispeaker&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Create multi-speaker markup</span>
+    <span class="n">multi_speaker_markup</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">MultiSpeakerMarkup</span><span class="p">()</span>
+
+    <span class="c1"># Add each line as a conversation turn</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+        <span class="n">turn</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">MultiSpeakerMarkup</span><span class="o">.</span><span class="n">Turn</span><span class="p">()</span>
+        <span class="n">turn</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+        <span class="n">turn</span><span class="o">.</span><span class="n">speaker</span> <span class="o">=</span> <span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;voice_mapping&#39;</span><span class="p">][</span><span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">]]</span>
+        <span class="n">multi_speaker_markup</span><span class="o">.</span><span class="n">turns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">turn</span><span class="p">)</span>
+
+    <span class="c1"># Configure synthesis input with multi-speaker markup</span>
+    <span class="n">synthesis_input</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">SynthesisInput</span><span class="p">(</span>
+        <span class="n">multi_speaker_markup</span><span class="o">=</span><span class="n">multi_speaker_markup</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Configure voice parameters</span>
+    <span class="n">voice</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">VoiceSelectionParams</span><span class="p">(</span>
+        <span class="n">language_code</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;language_code&#39;</span><span class="p">],</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;en-US-Studio-MultiSpeaker&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Configure audio output</span>
+    <span class="n">audio_config</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">AudioConfig</span><span class="p">(</span>
+        <span class="n">audio_encoding</span><span class="o">=</span><span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">MP3</span><span class="p">,</span>
+        <span class="n">effects_profile_id</span><span class="o">=</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;effects_profile_id&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Generate speech</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span>
+        <span class="nb">input</span><span class="o">=</span><span class="n">synthesis_input</span><span class="p">,</span>
+        <span class="n">voice</span><span class="o">=</span><span class="n">voice</span><span class="p">,</span>
+        <span class="n">audio_config</span><span class="o">=</span><span class="n">audio_config</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">audio_content</span></div>
+
+
+
 <div class="viewcode-block" id="convert_to_speech">
 <a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.convert_to_speech">[docs]</a>
 <span class="k">def</span> <span class="nf">convert_to_speech</span><span class="p">(</span>
@@ -331,21 +401,39 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating audio files for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span><span class="si">}</span><span class="s2"> lines...&quot;</span><span class="p">)</span>
         <span class="n">audio_files</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">conversation</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating audio for line </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;google&#39;</span><span class="p">:</span>
-                <span class="n">audio</span> <span class="o">=</span> <span class="n">process_line_google</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;elevenlabs&#39;</span><span class="p">:</span>
-                <span class="n">audio</span> <span class="o">=</span> <span class="n">process_line_elevenlabs</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;google_multispeaker&#39;</span><span class="p">:</span>
+            <span class="c1"># We will not use a line by line strategy. </span>
+            <span class="c1"># Instead we will process in chunks of 6.</span>
+            <span class="c1"># Process conversation in chunks of 6 lines</span>
+            <span class="k">for</span> <span class="n">chunk_start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">),</span> <span class="mi">6</span><span class="p">):</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">conversation</span><span class="p">[</span><span class="n">chunk_start</span><span class="p">:</span><span class="n">chunk_start</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing chunk </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="si">}</span><span class="s2"> lines...&quot;</span><span class="p">)</span>
+                
+                <span class="n">audio</span> <span class="o">=</span> <span class="n">process_lines_google_multispeaker</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
+                
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_audio_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counter</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">audio_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                    <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+                <span class="n">audio_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+                
+                <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">conversation</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating audio for line </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
 
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving audio chunk </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_audio_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counter</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">audio_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
-                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
-            <span class="n">audio_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-            
-            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;google&#39;</span><span class="p">:</span>
+                    <span class="n">audio</span> <span class="o">=</span> <span class="n">process_line_google</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_provider</span> <span class="o">==</span> <span class="s1">&#39;elevenlabs&#39;</span><span class="p">:</span>
+                    <span class="n">audio</span> <span class="o">=</span> <span class="n">process_line_elevenlabs</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">])</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving audio chunk </span><span class="si">{</span><span class="n">counter</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_audio_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">counter</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">audio_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                    <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+                <span class="n">audio_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+                <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="c1"># Merge all audio files and save the result</span>
         <span class="n">merge_audio_files</span><span class="p">(</span><span class="n">audio_files</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">audio_format</span><span class="p">)</span>

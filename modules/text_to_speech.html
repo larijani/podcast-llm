@@ -71,6 +71,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.merge_audio_files"><code class="docutils literal notranslate"><span class="pre">merge_audio_files()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.process_line_elevenlabs"><code class="docutils literal notranslate"><span class="pre">process_line_elevenlabs()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.process_line_google"><code class="docutils literal notranslate"><span class="pre">process_line_google()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.process_lines_google_multispeaker"><code class="docutils literal notranslate"><span class="pre">process_lines_google_multispeaker()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
@@ -134,7 +135,7 @@ conversation_script,
 </dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="podcast_llm.text_to_speech.clean_text_for_tts">
-<span class="sig-prename descclassname"><span class="pre">podcast_llm.text_to_speech.</span></span><span class="sig-name descname"><span class="pre">clean_text_for_tts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/text_to_speech.html#clean_text_for_tts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.text_to_speech.clean_text_for_tts" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.text_to_speech.</span></span><span class="sig-name descname"><span class="pre">clean_text_for_tts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="reference internal" href="../_modules/podcast_llm/text_to_speech.html#clean_text_for_tts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.text_to_speech.clean_text_for_tts" title="Link to this definition"></a></dt>
 <dd><p>Clean text lines for text-to-speech processing by removing special characters.</p>
 <p>Takes a list of dictionaries containing speaker and text information and removes
 characters that may interfere with text-to-speech synthesis, such as asterisks,
@@ -224,7 +225,7 @@ TTS-friendly, then converted to speech with different voices for different speak
 
 <dl class="py function">
 <dt class="sig sig-object py" id="podcast_llm.text_to_speech.merge_audio_files">
-<span class="sig-prename descclassname"><span class="pre">podcast_llm.text_to_speech.</span></span><span class="sig-name descname"><span class="pre">merge_audio_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/podcast_llm/text_to_speech.html#merge_audio_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.text_to_speech.merge_audio_files" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.text_to_speech.</span></span><span class="sig-name descname"><span class="pre">merge_audio_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/podcast_llm/text_to_speech.html#merge_audio_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.text_to_speech.merge_audio_files" title="Link to this definition"></a></dt>
 <dd><p>Merge multiple audio files into a single output file.</p>
 <p>Takes a list of audio files and combines them in the provided order into a single output
 file. Handles any audio format supported by pydub.</p>
@@ -281,6 +282,36 @@ conversation flow.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<em>str</em>) – The text content to convert to speech</p></li>
 <li><p><strong>speaker</strong> (<em>str</em>) – Speaker identifier to determine voice selection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Raw audio data in bytes format containing the synthesized speech</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="podcast_llm.text_to_speech.process_lines_google_multispeaker">
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.text_to_speech.</span></span><span class="sig-name descname"><span class="pre">process_lines_google_multispeaker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="config.html#podcast_llm.config.config.PodcastConfig" title="podcast_llm.config.config.PodcastConfig"><span class="pre">PodcastConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/text_to_speech.html#process_lines_google_multispeaker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.text_to_speech.process_lines_google_multispeaker" title="Link to this definition"></a></dt>
+<dd><p>Process multiple lines of text into speech using Google’s multi-speaker TTS service.</p>
+<p>Takes a chunk of conversation lines and generates synthesized speech using Google’s
+multi-speaker TTS service. Handles up to 6 turns of conversation at once for more
+natural conversational flow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="config.html#podcast_llm.config.config.PodcastConfig" title="podcast_llm.config.config.PodcastConfig"><em>PodcastConfig</em></a>) – Configuration object containing API keys and settings</p></li>
+<li><p><strong>chunks</strong> (<em>List</em>) – <p>List of dictionaries containing conversation lines with structure:
+{</p>
+<blockquote>
+<div><p>’speaker’: str,  # Speaker identifier
+‘text’: str      # Line content to convert to speech</p>
+</div></blockquote>
+<p>}</p>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
