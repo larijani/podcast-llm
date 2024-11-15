@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>podcast_llm.extractors.pdf &mdash; Podcast LLM  documentation</title>
+  <title>podcast_llm.extractors.plaintext &mdash; Podcast LLM  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
@@ -85,7 +85,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">podcast_llm.extractors.pdf</li>
+      <li class="breadcrumb-item active">podcast_llm.extractors.plaintext</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -94,90 +94,140 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for podcast_llm.extractors.pdf</h1><div class="highlight"><pre>
+  <h1>Source code for podcast_llm.extractors.plaintext</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">PDF file extraction module.</span>
+<span class="sd">Plaintext file extraction module.</span>
 
-<span class="sd">This module provides functionality for extracting text content from PDF files</span>
-<span class="sd">using LangChain&#39;s PyPDFLoader. It handles loading PDFs, extracting text from</span>
-<span class="sd">each page, and combining the content into a single document.</span>
+<span class="sd">This module provides functionality for extracting text content from plaintext files</span>
+<span class="sd">like Markdown documents. It handles loading text files, preserving formatting, and</span>
+<span class="sd">converting content into a standardized document format.</span>
 
 <span class="sd">The module includes:</span>
-<span class="sd">- PDFSourceDocument class for handling PDF file extraction </span>
-<span class="sd">- Page-by-page text extraction</span>
-<span class="sd">- Combining pages with appropriate spacing</span>
-<span class="sd">- Conversion to LangChain Document format</span>
+<span class="sd">- MarkdownSourceDocument class for handling Markdown file extraction</span>
+<span class="sd">- Raw text content preservation including formatting</span>
+<span class="sd">- Conversion to standardized document format</span>
+<span class="sd">- UTF-8 encoding support</span>
 
 <span class="sd">Example:</span>
-<span class="sd">    &gt;&gt;&gt; from podcast_llm.extractors.pdf import PDFSourceDocument</span>
-<span class="sd">    &gt;&gt;&gt; extractor = PDFSourceDocument(&#39;document.pdf&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; from podcast_llm.extractors.plaintext import MarkdownSourceDocument</span>
+<span class="sd">    &gt;&gt;&gt; extractor = MarkdownSourceDocument(&#39;script.md&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; extractor.extract()</span>
 <span class="sd">    &gt;&gt;&gt; print(extractor.content)</span>
-<span class="sd">    &#39;Text content from PDF pages...&#39;</span>
+<span class="sd">    &#39;# Title\n\nMarkdown content...&#39;</span>
 
 <span class="sd">The extraction process:</span>
-<span class="sd">1. Loads the PDF using PyPDFLoader</span>
-<span class="sd">2. Extracts text from each page</span>
-<span class="sd">3. Combines pages with double newlines between them</span>
-<span class="sd">4. Returns the complete text content</span>
+<span class="sd">1. Opens the text file with UTF-8 encoding</span>
+<span class="sd">2. Reads the complete file content</span>
+<span class="sd">3. Preserves original formatting and structure</span>
+<span class="sd">4. Returns the raw text content</span>
 
 <span class="sd">The module integrates with the BaseSourceDocument interface to provide consistent</span>
-<span class="sd">handling of PDF files alongside other source types like audio and web content.</span>
+<span class="sd">handling of plaintext files alongside other source types like PDFs and web content.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
+
 <span class="kn">from</span> <span class="nn">podcast_llm.extractors.base</span> <span class="kn">import</span> <span class="n">BaseSourceDocument</span>
-<span class="kn">from</span> <span class="nn">langchain.document_loaders</span> <span class="kn">import</span> <span class="n">PyPDFLoader</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 
-<div class="viewcode-block" id="PDFSourceDocument">
-<a class="viewcode-back" href="../../../modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument">[docs]</a>
-<span class="k">class</span> <span class="nc">PDFSourceDocument</span><span class="p">(</span><span class="n">BaseSourceDocument</span><span class="p">):</span>
+<div class="viewcode-block" id="MarkdownSourceDocument">
+<a class="viewcode-back" href="../../../modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.MarkdownSourceDocument">[docs]</a>
+<span class="k">class</span> <span class="nc">MarkdownSourceDocument</span><span class="p">(</span><span class="n">BaseSourceDocument</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A document extractor for PDF files.</span>
+<span class="sd">    A document extractor for Markdown files.</span>
 
-<span class="sd">    This class handles extracting text content from PDF files using the PyPDFLoader</span>
-<span class="sd">    from LangChain. It loads the PDF, extracts text from each page, and combines</span>
-<span class="sd">    them into a single document with page breaks.</span>
+<span class="sd">    This class handles extracting text content from Markdown files by reading</span>
+<span class="sd">    the raw text content. It preserves the original Markdown formatting which</span>
+<span class="sd">    can be used for conversation structure and formatting.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        src (str): Path to the source PDF file</span>
-<span class="sd">        src_type (str): Type of source document (&#39;PDF File&#39;)</span>
+<span class="sd">        src (str): Path to the source Markdown file</span>
+<span class="sd">        src_type (str): Type of source document (&#39;Markdown File&#39;)</span>
 <span class="sd">        title (str): Title combining source type and filename</span>
 <span class="sd">        content (Optional[str]): Extracted text content after processing</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; extractor = PDFSourceDocument(&#39;document.pdf&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; extractor = MarkdownSourceDocument(&#39;script.md&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; extractor.extract()</span>
 <span class="sd">        &gt;&gt;&gt; print(extractor.content)</span>
-<span class="sd">        &#39;Text content from PDF pages...&#39;</span>
+<span class="sd">        &#39;# Title\n\nMarkdown content...&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the PDF extractor.</span>
+<span class="sd">        Initialize the text extractor.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source: Path to the PDF file to extract text from</span>
+<span class="sd">            source: Path to the Markdown file to extract text from</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">source</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">src_type</span> <span class="o">=</span> <span class="s1">&#39;PDF File&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_type</span> <span class="o">=</span> <span class="s1">&#39;Markdown File&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">src_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="PDFSourceDocument.extract">
-<a class="viewcode-back" href="../../../modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.extract">[docs]</a>
+<div class="viewcode-block" id="MarkdownSourceDocument.extract">
+<a class="viewcode-back" href="../../../modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.MarkdownSourceDocument.extract">[docs]</a>
     <span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract text content from the PDF file.</span>
+<span class="sd">        Extract text content from the Markdown file.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The extracted text content as a string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">loader</span> <span class="o">=</span> <span class="n">PyPDFLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">)</span>
-        <span class="n">pages</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TextSourceDocument">
+<a class="viewcode-back" href="../../../modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument">[docs]</a>
+<span class="k">class</span> <span class="nc">TextSourceDocument</span><span class="p">(</span><span class="n">BaseSourceDocument</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A document extractor for plain text files.</span>
+
+<span class="sd">    This class handles extracting text content from plain text files by reading</span>
+<span class="sd">    the raw text content. It provides simple text extraction without any special</span>
+<span class="sd">    formatting or processing.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        src (str): Path to the source text file</span>
+<span class="sd">        src_type (str): Type of source document (&#39;Text File&#39;)</span>
+<span class="sd">        title (str): Title combining source type and filename</span>
+<span class="sd">        content (Optional[str]): Extracted text content after processing</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; extractor = TextSourceDocument(&#39;document.txt&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; extractor.extract()</span>
+<span class="sd">        &gt;&gt;&gt; print(extractor.content)</span>
+<span class="sd">        &#39;Plain text content...&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the text extractor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source: Path to the text file to extract text from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_type</span> <span class="o">=</span> <span class="s1">&#39;Text File&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">src_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="TextSourceDocument.extract">
+<a class="viewcode-back" href="../../../modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument.extract">[docs]</a>
+    <span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract text content from the text file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The extracted text content as a string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span></div>
 </div>
 

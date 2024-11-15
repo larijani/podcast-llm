@@ -54,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_base.html">podcast_llm.extractors.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/extractors_plaintext.html">podcast_llm.extractors.plaintext</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_web.html">podcast_llm.extractors.web</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
@@ -182,6 +183,8 @@
 </li>
         <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.content">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
 </li>
+        <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument.content">(podcast_llm.extractors.plaintext.TextSourceDocument attribute)</a>
+</li>
         <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.content">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
 </li>
         <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.content">(podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
@@ -225,6 +228,10 @@
         <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.extract">(podcast_llm.extractors.base.BaseSourceDocument method)</a>
 </li>
         <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.extract">(podcast_llm.extractors.pdf.PDFSourceDocument method)</a>
+</li>
+        <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.MarkdownSourceDocument.extract">(podcast_llm.extractors.plaintext.MarkdownSourceDocument method)</a>
+</li>
+        <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument.extract">(podcast_llm.extractors.plaintext.TextSourceDocument method)</a>
 </li>
         <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.extract">(podcast_llm.extractors.web.WebSourceDocument method)</a>
 </li>
@@ -304,6 +311,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/generate.html#podcast_llm.generate.main">main() (in module podcast_llm.generate)</a>
+</li>
+      <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.MarkdownSourceDocument">MarkdownSourceDocument (class in podcast_llm.extractors.plaintext)</a>
 </li>
       <li><a href="modules/text_to_speech.html#podcast_llm.text_to_speech.merge_audio_files">merge_audio_files() (in module podcast_llm.text_to_speech)</a>
 </li>
@@ -398,6 +407,8 @@
         <li><a href="modules/extractors_base.html#module-podcast_llm.extractors.base">podcast_llm.extractors.base</a>
 </li>
         <li><a href="modules/extractors_pdf.html#module-podcast_llm.extractors.pdf">podcast_llm.extractors.pdf</a>
+</li>
+        <li><a href="modules/extractors_plaintext.html#module-podcast_llm.extractors.plaintext">podcast_llm.extractors.plaintext</a>
 </li>
         <li><a href="modules/extractors_utils.html#module-podcast_llm.extractors.utils">podcast_llm.extractors.utils</a>
 </li>
@@ -495,6 +506,13 @@
 </li>
       </ul></li>
       <li>
+    podcast_llm.extractors.plaintext
+
+      <ul>
+        <li><a href="modules/extractors_plaintext.html#module-podcast_llm.extractors.plaintext">module</a>
+</li>
+      </ul></li>
+      <li>
     podcast_llm.extractors.utils
 
       <ul>
@@ -529,6 +547,8 @@
         <li><a href="modules/models.html#module-podcast_llm.models">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     podcast_llm.outline
 
@@ -536,8 +556,6 @@
         <li><a href="modules/outline.html#module-podcast_llm.outline">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     podcast_llm.research
 
@@ -664,6 +682,8 @@
 </li>
         <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.src">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
 </li>
+        <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument.src">(podcast_llm.extractors.plaintext.TextSourceDocument attribute)</a>
+</li>
         <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.src">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
 </li>
         <li><a href="modules/extractors_youtube.html#podcast_llm.extractors.youtube.YouTubeSourceDocument.src">(podcast_llm.extractors.youtube.YouTubeSourceDocument attribute)</a>
@@ -677,6 +697,8 @@
         <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.src_type">(podcast_llm.extractors.base.BaseSourceDocument attribute)</a>
 </li>
         <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.src_type">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument.src_type">(podcast_llm.extractors.plaintext.TextSourceDocument attribute)</a>
 </li>
         <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.src_type">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
 </li>
@@ -703,12 +725,16 @@
         <li><a href="modules/models.html#id8">(podcast_llm.models.ScriptLine attribute)</a>, <a href="modules/models.html#podcast_llm.models.ScriptLine.text">[1]</a>
 </li>
       </ul></li>
+      <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument">TextSourceDocument (class in podcast_llm.extractors.plaintext)</a>
+</li>
       <li><a href="modules/extractors_audio.html#podcast_llm.extractors.audio.AudioSourceDocument.title">title (podcast_llm.extractors.audio.AudioSourceDocument attribute)</a>
 
       <ul>
         <li><a href="modules/extractors_base.html#podcast_llm.extractors.base.BaseSourceDocument.title">(podcast_llm.extractors.base.BaseSourceDocument attribute)</a>
 </li>
         <li><a href="modules/extractors_pdf.html#podcast_llm.extractors.pdf.PDFSourceDocument.title">(podcast_llm.extractors.pdf.PDFSourceDocument attribute)</a>
+</li>
+        <li><a href="modules/extractors_plaintext.html#podcast_llm.extractors.plaintext.TextSourceDocument.title">(podcast_llm.extractors.plaintext.TextSourceDocument attribute)</a>
 </li>
         <li><a href="modules/extractors_web.html#podcast_llm.extractors.web.WebSourceDocument.title">(podcast_llm.extractors.web.WebSourceDocument attribute)</a>
 </li>
