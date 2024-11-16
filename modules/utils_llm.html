@@ -68,6 +68,7 @@
 <li class="toctree-l1"><a class="reference internal" href="utils_embeddings.html">podcast_llm.utils.embeddings</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.utils.llm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.utils.llm.LLMWrapper"><code class="docutils literal notranslate"><span class="pre">LLMWrapper</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#podcast_llm.utils.llm.LLMWrapper.coerce_to_schema"><code class="docutils literal notranslate"><span class="pre">LLMWrapper.coerce_to_schema()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#podcast_llm.utils.llm.LLMWrapper.invoke"><code class="docutils literal notranslate"><span class="pre">LLMWrapper.invoke()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#podcast_llm.utils.llm.LLMWrapper.with_structured_output"><code class="docutils literal notranslate"><span class="pre">LLMWrapper.with_structured_output()</span></code></a></li>
 </ul>
@@ -130,6 +131,35 @@ while still leveraging provider-specific capabilities when beneficial.</p>
 <dt class="sig sig-object py" id="podcast_llm.utils.llm.LLMWrapper">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podcast_llm.utils.llm.</span></span><span class="sig-name descname"><span class="pre">LLMWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8192</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseRateLimiter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/utils/llm.html#LLMWrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.utils.llm.LLMWrapper" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="podcast_llm.utils.llm.LLMWrapper.coerce_to_schema">
+<span class="sig-name descname"><span class="pre">coerce_to_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">llm_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/utils/llm.html#LLMWrapper.coerce_to_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.utils.llm.LLMWrapper.coerce_to_schema" title="Link to this definition"></a></dt>
+<dd><p>Coerce raw LLM output into a structured schema object.</p>
+<p>Takes unstructured text output from the LLM and attempts to parse it into
+a structured Pydantic object based on the defined schema. Currently supports
+Question and Answer schema types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>llm_output</strong> (<em>str</em>) – Raw text output from the LLM to be coerced</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pydantic object matching the defined schema type</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseModel</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If no schema is defined</p></li>
+<li><p><strong>OutputParserException</strong> – If output cannot be coerced to the schema</p></li>
+</ul>
+</dd>
+</dl>
+<p>The coercion maps the raw text to the appropriate schema field:
+- Question schema -&gt; ‘question’ field
+- Answer schema -&gt; ‘answer’ field</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="podcast_llm.utils.llm.LLMWrapper.invoke">
 <span class="sig-name descname"><span class="pre">invoke</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PromptValue</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMessage</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RunnableConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BaseMessage</span></span></span><a class="reference internal" href="../_modules/podcast_llm/utils/llm.html#LLMWrapper.invoke"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.utils.llm.LLMWrapper.invoke" title="Link to this definition"></a></dt>
