@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.gui &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_plaintext.html">podcast_llm.extractors.plaintext</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/gui.html">podcast_llm.gui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/models.html">podcast_llm.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_embeddings.html">podcast_llm.utils.embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">podcast_llm.gui</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for podcast_llm.gui</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Graphical user interface module for podcast generation.</span>
+
+<span class="sd">This module provides a web-based GUI using Gradio for generating podcasts. It allows users</span>
+<span class="sd">to interactively specify podcast generation parameters including:</span>
+
+<span class="sd">- Topic selection</span>
+<span class="sd">- Operation mode (research or context-based)</span>
+<span class="sd">- Source materials (files and URLs) for context mode</span>
+<span class="sd">- Number of Q&amp;A rounds</span>
+<span class="sd">- Checkpointing preferences</span>
+<span class="sd">- Custom configuration</span>
+<span class="sd">- Output paths for text and audio</span>
+
+<span class="sd">The GUI provides a user-friendly way to access the podcast generation functionality</span>
+<span class="sd">without needing to use the command line interface.</span>
+
+<span class="sd">The module handles form submission, input validation, logging setup, and coordinates</span>
+<span class="sd">with the core generation functionality. It uses temporary files for logging and</span>
+<span class="sd">provides real-time feedback during the generation process.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">import</span> <span class="nn">gradio</span> <span class="k">as</span> <span class="nn">gr</span>
+<span class="kn">from</span> <span class="nn">gradio_log</span> <span class="kn">import</span> <span class="n">Log</span>
+
+<span class="kn">from</span> <span class="nn">.config.logging_config</span> <span class="kn">import</span> <span class="n">setup_logging</span>
+<span class="kn">from</span> <span class="nn">.generate</span> <span class="kn">import</span> <span class="n">generate</span>
+
+<span class="n">PACKAGE_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">DEFAULT_CONFIG_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;config.yaml&#39;</span><span class="p">)</span>
+
+<span class="n">temp_log_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+
+<div class="viewcode-block" id="submit_handler">
+<a class="viewcode-back" href="../../modules/gui.html#podcast_llm.gui.submit_handler">[docs]</a>
+<span class="k">def</span> <span class="nf">submit_handler</span><span class="p">(</span>
+    <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">mode_of_operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">source_urls</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">qa_rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">use_checkpoints</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">custom_config_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">text_output</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">audio_output</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle form submission for podcast generation.</span>
+
+<span class="sd">    Processes user inputs from the GUI form and calls the generate function with appropriate parameters.</span>
+<span class="sd">    Handles input validation, logging, and file path processing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        topic: The podcast topic</span>
+<span class="sd">        mode_of_operation: Either &#39;research&#39; or &#39;context&#39; mode</span>
+<span class="sd">        source_files: List of source file paths to use as context</span>
+<span class="sd">        source_urls: Newline-separated string of URLs to use as context</span>
+<span class="sd">        qa_rounds: Number of Q&amp;A rounds per section</span>
+<span class="sd">        use_checkpoints: Whether to enable checkpointing</span>
+<span class="sd">        custom_config_file: Optional path to custom config file</span>
+<span class="sd">        text_output: Path to save text output (optional)</span>
+<span class="sd">        audio_output: Path to save audio output (optional)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="n">temp_log_file</span><span class="p">)</span>
+    <span class="c1"># Print values and types of all arguments</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Topic: </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mode of Operation: </span><span class="si">{</span><span class="n">mode_of_operation</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mode_of_operation</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Source Files: </span><span class="si">{</span><span class="n">source_files</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">source_files</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Source URLs: </span><span class="si">{</span><span class="n">source_urls</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">source_urls</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;QA Rounds: </span><span class="si">{</span><span class="n">qa_rounds</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">qa_rounds</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Use Checkpoints: </span><span class="si">{</span><span class="n">use_checkpoints</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">use_checkpoints</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Custom Config File: </span><span class="si">{</span><span class="n">custom_config_file</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">custom_config_file</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Text Output: </span><span class="si">{</span><span class="n">text_output</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">text_output</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Audio Output: </span><span class="si">{</span><span class="n">audio_output</span><span class="si">}</span><span class="s1"> (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">audio_output</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+    <span class="n">text_output_file</span> <span class="o">=</span> <span class="n">text_output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">text_output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">audio_output_file</span> <span class="o">=</span> <span class="n">audio_output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">audio_output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="c1"># Split URLs by line and filter out non-URL lines</span>
+    <span class="n">source_urls_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> 
+        <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">source_urls</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> 
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="s1">&#39;https://&#39;</span><span class="p">))</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Combine source files and URLs into single sources list</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="p">(</span><span class="n">source_files</span> <span class="ow">or</span> <span class="p">[])</span> <span class="o">+</span> <span class="n">source_urls_list</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="n">sources</span> <span class="k">if</span> <span class="n">sources</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">generate</span><span class="p">(</span>
+        <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">mode_of_operation</span><span class="p">,</span>
+        <span class="n">sources</span><span class="o">=</span><span class="n">sources</span><span class="p">,</span>
+        <span class="n">qa_rounds</span><span class="o">=</span><span class="n">qa_rounds</span><span class="p">,</span>
+        <span class="n">use_checkpoints</span><span class="o">=</span><span class="n">use_checkpoints</span><span class="p">,</span>
+        <span class="n">audio_output</span><span class="o">=</span><span class="n">audio_output_file</span><span class="p">,</span>
+        <span class="n">text_output</span><span class="o">=</span><span class="n">text_output_file</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">custom_config_file</span> <span class="k">if</span> <span class="n">custom_config_file</span> <span class="k">else</span> <span class="n">DEFAULT_CONFIG_PATH</span><span class="p">,</span>
+        <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">log_file</span><span class="o">=</span><span class="n">temp_log_file</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../modules/gui.html#podcast_llm.gui.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main entry point for the Gradio web interface.</span>
+
+<span class="sd">    Creates and launches a Gradio interface that provides a user-friendly way to interact</span>
+<span class="sd">    with the podcast generation system. The interface includes:</span>
+<span class="sd">    - Topic input and conversation settings</span>
+<span class="sd">    - Mode selection (research vs context)</span>
+<span class="sd">    - Source file and URL inputs for context mode</span>
+<span class="sd">    - Behavior options like checkpointing</span>
+<span class="sd">    - Output configuration options</span>
+
+<span class="sd">    The interface is organized into logical sections with clear labels and tooltips.</span>
+<span class="sd">    All inputs are validated and passed to the generate() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Blocks</span><span class="p">()</span> <span class="k">as</span> <span class="n">iface</span><span class="p">:</span>
+        <span class="c1"># Title</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;# Podcast-LLM&#39;</span><span class="p">,</span> <span class="n">elem_classes</span><span class="o">=</span><span class="s1">&#39;text-center&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Conversation Options Section</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;## Conversation Options&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            <span class="n">topic_input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Textbox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Topic&#39;</span><span class="p">)</span>
+            <span class="n">qa_rounds_input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Number of rounds of Q&amp;A per section&#39;</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">minimum</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">maximum</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">precision</span><span class="o">=</span><span class="mi">0</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Mode Selection Section  </span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;## Mode of Operation&#39;</span><span class="p">)</span>
+        <span class="n">mode_of_operation</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Radio</span><span class="p">(</span>
+            <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;research&#39;</span><span class="p">,</span> <span class="s1">&#39;context&#39;</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mode&#39;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="s1">&#39;research&#39;</span><span class="p">,</span>
+            <span class="n">interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_label</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Source Inputs Section</span>
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">equal_height</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">source_files</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">File</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Source files&#39;</span><span class="p">,</span>
+                <span class="n">file_count</span><span class="o">=</span><span class="s1">&#39;multiple&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;filepath&#39;</span>
+            <span class="p">)</span>
+            <span class="n">source_urls</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">TextArea</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Source URLs&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Behavior Options Section</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;## Behaviour Options&#39;</span><span class="p">)</span>
+        <span class="n">use_checkpoints_input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Use Checkpoints&#39;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">custom_config_file_input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">File</span><span class="p">(</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Config file&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;filepath&#39;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Output Options Section</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;## Output Options&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            <span class="n">text_output_input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Textbox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Text output&#39;</span><span class="p">)</span>
+            <span class="n">audio_output_input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Textbox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Audio output&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Submit Button</span>
+        <span class="n">submit_button</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Generate Podcast&#39;</span><span class="p">)</span>
+        <span class="n">submit_button</span><span class="o">.</span><span class="n">click</span><span class="p">(</span>
+            <span class="n">fn</span><span class="o">=</span><span class="n">submit_handler</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">topic_input</span><span class="p">,</span>
+                <span class="n">mode_of_operation</span><span class="p">,</span>
+                <span class="n">source_files</span><span class="p">,</span>
+                <span class="n">source_urls</span><span class="p">,</span>
+                <span class="n">qa_rounds_input</span><span class="p">,</span>
+                <span class="n">use_checkpoints_input</span><span class="p">,</span>
+                <span class="n">custom_config_file_input</span><span class="p">,</span>
+                <span class="n">text_output_input</span><span class="p">,</span>
+                <span class="n">audio_output_input</span>
+            <span class="p">],</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="p">[]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Log Display</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;## System Log&#39;</span><span class="p">)</span>
+        <span class="n">Log</span><span class="p">(</span><span class="n">temp_log_file</span><span class="p">,</span> <span class="n">dark</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xterm_font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="n">iface</span><span class="o">.</span><span class="n">launch</span><span class="p">()</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

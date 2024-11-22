@@ -48,6 +48,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-the-web-interface">Launching the Web Interface</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
@@ -64,6 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_web.html">podcast_llm.extractors.web</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/gui.html">podcast_llm.gui</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/models.html">podcast_llm.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/outline.html">podcast_llm.outline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/research.html">podcast_llm.research</a></li>
@@ -134,6 +136,22 @@ podcast-llm<span class="w"> </span><span class="s2">&quot;Machine Learning&quot;
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The system can be configured using the <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file:</p>
+</section>
+<section id="launching-the-web-interface">
+<h2>Launching the Web Interface<a class="headerlink" href="#launching-the-web-interface" title="Link to this heading"></a></h2>
+<p>You can launch the Gradio web interface using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>podcast-llm-gui
+</pre></div>
+</div>
+<p>This launches a user-friendly web interface where you can:</p>
+<ul class="simple">
+<li><p>Enter a podcast topic</p></li>
+<li><p>Choose between research and context modes</p></li>
+<li><p>Upload source files and URLs for context mode</p></li>
+<li><p>Configure Q&amp;A rounds and checkpointing</p></li>
+<li><p>Specify output paths for text and audio</p></li>
+<li><p>Monitor generation progress in real-time</p></li>
+</ul>
 </section>
 </section>
 

@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>podcast_llm.gui &mdash; Podcast LLM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="podcast_llm.models" href="models.html" />
+    <link rel="prev" title="podcast_llm.generate" href="generate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Podcast LLM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="config.html">podcast_llm.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_audio.html">podcast_llm.extractors.audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_base.html">podcast_llm.extractors.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_pdf.html">podcast_llm.extractors.pdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_plaintext.html">podcast_llm.extractors.plaintext</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_utils.html">podcast_llm.extractors.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_web.html">podcast_llm.extractors.web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.gui</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.gui.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.gui.submit_handler"><code class="docutils literal notranslate"><span class="pre">submit_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">podcast_llm.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outline.html">podcast_llm.outline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="research.html">podcast_llm.research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_to_speech.html">podcast_llm.text_to_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_checkpointer.html">podcast_llm.utils.checkpointer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_embeddings.html">podcast_llm.utils.embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_llm.html">podcast_llm.utils.llm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_rate_limits.html">podcast_llm.utils.rate_limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils_text.html">podcast_llm.utils.text</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Podcast LLM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">podcast_llm.gui</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/gui.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-podcast_llm.gui">
+<span id="podcast-llm-gui"></span><h1>podcast_llm.gui<a class="headerlink" href="#module-podcast_llm.gui" title="Link to this heading"></a></h1>
+<p>Graphical user interface module for podcast generation.</p>
+<p>This module provides a web-based GUI using Gradio for generating podcasts. It allows users
+to interactively specify podcast generation parameters including:</p>
+<ul class="simple">
+<li><p>Topic selection</p></li>
+<li><p>Operation mode (research or context-based)</p></li>
+<li><p>Source materials (files and URLs) for context mode</p></li>
+<li><p>Number of Q&amp;A rounds</p></li>
+<li><p>Checkpointing preferences</p></li>
+<li><p>Custom configuration</p></li>
+<li><p>Output paths for text and audio</p></li>
+</ul>
+<p>The GUI provides a user-friendly way to access the podcast generation functionality
+without needing to use the command line interface.</p>
+<p>The module handles form submission, input validation, logging setup, and coordinates
+with the core generation functionality. It uses temporary files for logging and
+provides real-time feedback during the generation process.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="podcast_llm.gui.main">
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.gui.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/podcast_llm/gui.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.gui.main" title="Link to this definition"></a></dt>
+<dd><p>Main entry point for the Gradio web interface.</p>
+<p>Creates and launches a Gradio interface that provides a user-friendly way to interact
+with the podcast generation system. The interface includes:
+- Topic input and conversation settings
+- Mode selection (research vs context)
+- Source file and URL inputs for context mode
+- Behavior options like checkpointing
+- Output configuration options</p>
+<p>The interface is organized into logical sections with clear labels and tooltips.
+All inputs are validated and passed to the generate() function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="podcast_llm.gui.submit_handler">
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.gui.</span></span><span class="sig-name descname"><span class="pre">submit_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_of_operation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_urls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qa_rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_checkpoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_config_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/podcast_llm/gui.html#submit_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.gui.submit_handler" title="Link to this definition"></a></dt>
+<dd><p>Handle form submission for podcast generation.</p>
+<p>Processes user inputs from the GUI form and calls the generate function with appropriate parameters.
+Handles input validation, logging, and file path processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topic</strong> – The podcast topic</p></li>
+<li><p><strong>mode_of_operation</strong> – Either ‘research’ or ‘context’ mode</p></li>
+<li><p><strong>source_files</strong> – List of source file paths to use as context</p></li>
+<li><p><strong>source_urls</strong> – Newline-separated string of URLs to use as context</p></li>
+<li><p><strong>qa_rounds</strong> – Number of Q&amp;A rounds per section</p></li>
+<li><p><strong>use_checkpoints</strong> – Whether to enable checkpointing</p></li>
+<li><p><strong>custom_config_file</strong> – Optional path to custom config file</p></li>
+<li><p><strong>text_output</strong> – Path to save text output (optional)</p></li>
+<li><p><strong>audio_output</strong> – Path to save audio output (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generate.html" class="btn btn-neutral float-left" title="podcast_llm.generate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models.html" class="btn btn-neutral float-right" title="podcast_llm.models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Evan Dempsey 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

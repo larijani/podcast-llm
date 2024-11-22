@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_web.html">podcast_llm.extractors.web</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/extractors_youtube.html">podcast_llm.extractors.youtube</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/generate.html">podcast_llm.generate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/gui.html">podcast_llm.gui</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/models.html">podcast_llm.models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/outline.html">podcast_llm.outline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/research.html">podcast_llm.research</a></li>
@@ -168,10 +169,14 @@
         <span class="c1"># Handle youtube.com URLs</span>
         <span class="k">if</span> <span class="s1">&#39;v=&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;v=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            
+
         <span class="c1"># Handle embed URLs</span>
         <span class="k">if</span> <span class="s1">&#39;embed/&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;embed/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Handle embed URLs</span>
+        <span class="k">if</span> <span class="s1">&#39;shorts/&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;shorts/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             
         <span class="c1"># If no URL patterns match, assume src is already a video ID</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span>
