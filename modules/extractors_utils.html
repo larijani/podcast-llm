@@ -127,7 +127,7 @@ processing of remaining sources.</p>
 <dd><p>Extract content from a list of source URLs/files.</p>
 <p>Takes a list of source URLs or file paths and extracts text content from each using
 the appropriate extractor based on source type. Supports YouTube videos, web pages,
-PDFs, and audio files.</p>
+PDFs, audio files, Word documents, and plain text files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sources</strong> (<em>List</em>) – List of source URLs or file paths to extract content from</p>
@@ -138,12 +138,9 @@ PDFs, and audio files.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Exception</strong> – If extraction fails for a source, it is logged but processing continues</p>
-</dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://youtube.com/watch?v=123&#39;</span><span class="p">,</span> <span class="s1">&#39;article.pdf&#39;</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;document.docx&#39;</span><span class="p">,</span> <span class="s1">&#39;article.pdf&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">extract_content_from_sources</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
 <span class="go">2</span>

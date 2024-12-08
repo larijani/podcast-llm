@@ -66,6 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="research.html">podcast_llm.research</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">podcast_llm.text_to_speech</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.clean_text_for_tts"><code class="docutils literal notranslate"><span class="pre">clean_text_for_tts()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.combine_consecutive_speaker_chunks"><code class="docutils literal notranslate"><span class="pre">combine_consecutive_speaker_chunks()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.convert_to_speech"><code class="docutils literal notranslate"><span class="pre">convert_to_speech()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.generate_audio"><code class="docutils literal notranslate"><span class="pre">generate_audio()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#podcast_llm.text_to_speech.merge_audio_files"><code class="docutils literal notranslate"><span class="pre">merge_audio_files()</span></code></a></li>
@@ -153,6 +154,34 @@ underscores, and em dashes.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of dictionaries with cleaned text and same structure as input</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="podcast_llm.text_to_speech.combine_consecutive_speaker_chunks">
+<span class="sig-prename descclassname"><span class="pre">podcast_llm.text_to_speech.</span></span><span class="sig-name descname"><span class="pre">combine_consecutive_speaker_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/podcast_llm/text_to_speech.html#combine_consecutive_speaker_chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#podcast_llm.text_to_speech.combine_consecutive_speaker_chunks" title="Link to this definition"></a></dt>
+<dd><p>Combine consecutive chunks from the same speaker into single chunks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chunks</strong> (<em>List</em><em>[</em><em>dict</em><em>]</em>) – <p>List of dictionaries containing conversation chunks with structure:
+{</p>
+<blockquote>
+<div><p>’speaker’: str,  # Speaker identifier
+‘text’: str      # Text content</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>List of combined chunks where consecutive entries from the same speaker</dt><dd><p>are merged into single chunks</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[dict]</p>

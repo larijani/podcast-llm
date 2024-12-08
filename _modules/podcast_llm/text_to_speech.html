@@ -301,6 +301,42 @@
 
 
 
+<div class="viewcode-block" id="combine_consecutive_speaker_chunks">
+<a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.combine_consecutive_speaker_chunks">[docs]</a>
+<span class="k">def</span> <span class="nf">combine_consecutive_speaker_chunks</span><span class="p">(</span><span class="n">chunks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Combine consecutive chunks from the same speaker into single chunks.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        chunks (List[dict]): List of dictionaries containing conversation chunks with structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;speaker&#39;: str,  # Speaker identifier</span>
+<span class="sd">                &#39;text&#39;: str      # Text content</span>
+<span class="sd">            }</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List[dict]: List of combined chunks where consecutive entries from the same speaker</span>
+<span class="sd">                   are merged into single chunks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">combined_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_chunk</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">current_chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">current_chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">current_chunk</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">]:</span>
+            <span class="n">current_chunk</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">combined_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_chunk</span><span class="p">)</span>
+            <span class="n">current_chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">current_chunk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">combined_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_chunk</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">combined_chunks</span></div>
+
+
+
 <div class="viewcode-block" id="process_lines_google_multispeaker">
 <a class="viewcode-back" href="../../modules/text_to_speech.html#podcast_llm.text_to_speech.process_lines_google_multispeaker">[docs]</a>
 <span class="nd">@retry_with_exponential_backoff</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
@@ -326,6 +362,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">TextToSpeechClient</span><span class="p">(</span><span class="n">client_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;api_key&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">google_api_key</span><span class="p">})</span>
     <span class="n">tts_settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">tts_settings</span><span class="p">[</span><span class="s1">&#39;google_multispeaker&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Combine consecutive lines from same speaker</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">combine_consecutive_speaker_chunks</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
 
     <span class="c1"># Create multi-speaker markup</span>
     <span class="n">multi_speaker_markup</span> <span class="o">=</span> <span class="n">texttospeech_v1beta1</span><span class="o">.</span><span class="n">MultiSpeakerMarkup</span><span class="p">()</span>
