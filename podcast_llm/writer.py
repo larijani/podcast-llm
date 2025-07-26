@@ -147,8 +147,7 @@ def answer_question(topic: str,
                     subsection: PodcastSubsection,
                     draft_discussion: list,
                     retriever: VectorStoreRetriever,
-                    interviewee_chain: LLMChain,
-                    duration_target: Optional[int] = None) -> Answer:
+                    interviewee_chain: LLMChain) -> Answer:
     """
     Generate an answer to the current interview question.
 
@@ -164,7 +163,6 @@ def answer_question(topic: str,
         draft_discussion (list): List of previous Question and Answer objects
         retriever (VectorStoreRetriever): Retriever for getting relevant background info
         interviewee_chain (LLMChain): The LangChain chain for generating answers
-        duration_target (Optional[int]): Target duration in minutes for word count calculation
 
     Returns:
         Answer: A structured Answer object containing the generated response text
@@ -172,23 +170,7 @@ def answer_question(topic: str,
     background_information = format_vector_results(
         retriever.invoke(draft_discussion[-1].question))
 
-    # Calculate word count based on duration target
-    if duration_target:
-        if duration_target <= 5:
-            word_count = 50
-        elif duration_target <= 7:
-            word_count = 75
-        elif duration_target <= 10:
-            word_count = 100
-        elif duration_target <= 15:
-            word_count = 125
-        else:
-            word_count = 150
-        
-        logger.info(f"Duration target: {duration_target} minutes, using word count: {word_count}")
-    else:
-        word_count = 100
-        logger.info(f"No duration target, using default word count: {word_count}")
+    word_count = 100
 
     return interviewee_chain.invoke({
         'topic': topic,
@@ -207,8 +189,7 @@ def discuss(config: PodcastConfig,
             outline: PodcastOutline, 
             background_info: List[Document], 
             vector_store: InMemoryVectorStore, 
-            qa_rounds: int,
-            duration_target: Optional[int] = None) -> list:
+            qa_rounds: int) -> list:
     """
     Simulate a podcast discussion through a series of questions and answers.
 
@@ -325,8 +306,7 @@ Keep responses focused and avoid unnecessary elaboration."""
                     subsection,
                     draft_discussion,
                     retriever,
-                    interviewee_chain,
-                    duration_target
+                    interviewee_chain
                 )
                 draft_discussion.append(answer)
                 
@@ -339,8 +319,7 @@ def write_draft_script(config: PodcastConfig,
                        outline: PodcastOutline, 
                        background_info: List[Document], 
                        deep_info: List[Document], 
-                       qa_rounds: int,
-                       duration_target: Optional[int] = None):
+                       qa_rounds: int):
     """
     Write a complete draft podcast script through simulated Q&A discussion.
 
@@ -394,7 +373,7 @@ def write_draft_script(config: PodcastConfig,
         embedding=embeddings
     )
 
-    draft_script = discuss(config, topic, outline, background_info, vector_store, qa_rounds, duration_target)
+    draft_script = discuss(config, topic, outline, background_info, vector_store, qa_rounds)
     return draft_script
 
 
@@ -425,7 +404,7 @@ def rewrite_script_section(section: list, rewriter_chain) -> list:
     return [{'speaker': line.speaker, 'text': line.text} for line in rewritten.lines]
 
 
-def write_final_script(config: PodcastConfig, topic: str, draft_script: list, duration_target: Optional[int] = None, batch_size: int = 4) -> tuple[list[dict], dict]:
+def write_final_script(config: PodcastConfig, topic: str, draft_script: list, batch_size: int = 4) -> tuple[list[dict], dict]:
     """
     Rewrite a draft podcast script to improve flow, naturalness and quality.
 

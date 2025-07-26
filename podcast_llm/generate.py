@@ -55,7 +55,6 @@ def generate(
     audio_output: Optional[str] = None,
     text_output: Optional[str] = None,
     episode_guidance: Optional[str] = None,
-    duration_target: Optional[int] = None,
     config: str = DEFAULT_CONFIG_PATH,
     debug: bool = False,
     log_file: Optional[str] = None
@@ -106,7 +105,7 @@ def generate(
     yield "Generating outline..."
     outline = checkpointer.checkpoint(
         outline_episode,
-        [config, topic, background_info, episode_guidance, duration_target],
+        [config, topic, background_info, episode_guidance],
         stage_name='outline'
     )
 
@@ -124,14 +123,14 @@ def generate(
     yield "Writing draft script..."
     draft_script = checkpointer.checkpoint(
         write_draft_script,
-        [config, topic, outline, background_info, deep_info, qa_rounds, duration_target],
+        [config, topic, outline, background_info, deep_info, qa_rounds],
         stage_name='draft_script'
     )
     
     yield "Writing final script..."
     final_script = checkpointer.checkpoint(
         write_final_script,
-        [config, topic, draft_script, duration_target],
+        [config, topic, draft_script],
         stage_name='final_script'
     )
 
@@ -207,12 +206,6 @@ def parse_arguments() -> argparse.Namespace:
         action='store_true',
         help='Enable debug logging'
     )
-    parser.add_argument(
-        '--duration-target',
-        type=int,
-        default=None,
-        help='Target duration in seconds for the generated audio'
-    )
     return parser.parse_args()
 
 
@@ -231,7 +224,6 @@ def main() -> None:
         use_checkpoints=args.checkpoint,
         audio_output=args.audio_output,
         text_output=args.text_output,
-        duration_target=args.duration_target,
         config=args.config,
         debug=args.debug
     ):

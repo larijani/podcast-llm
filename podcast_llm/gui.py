@@ -46,7 +46,6 @@ def submit_handler(
     source_files: list[str],
     source_urls: str,
     qa_rounds: int,
-    duration_target: int,
     use_checkpoints: bool,
     generate_audio: bool,
     episode_guidance: str,
@@ -115,29 +114,11 @@ def submit_handler(
     sources = (source_files or []) + source_urls_list
     sources = sources if sources else None
 
-    # Adjust Q&A rounds based on duration target
+    # Set qa_rounds directly
     adjusted_qa_rounds = qa_rounds
-    if duration_target >= 20:
-        # For very long podcasts, increase Q&A rounds significantly
-        adjusted_qa_rounds = min(qa_rounds + 3, 10)
-    elif duration_target >= 15:
-        # For 15+ minute podcasts, increase Q&A rounds
-        adjusted_qa_rounds = min(qa_rounds + 2, 10)
-    elif duration_target >= 10:
-        # For 10-14 minute podcasts, slight increase in Q&A rounds
-        adjusted_qa_rounds = min(qa_rounds + 1, 8)
-    elif duration_target >= 7:
-        # For 7-9 minute podcasts, keep default Q&A rounds
-        adjusted_qa_rounds = qa_rounds
-    elif duration_target >= 5:
-        # For 5-6 minute podcasts, decrease Q&A rounds
-        adjusted_qa_rounds = max(qa_rounds - 1, 1)
-    else:
-        # For very short podcasts, decrease Q&A rounds significantly
-        adjusted_qa_rounds = max(qa_rounds - 2, 1)
-    
+
     if adjusted_qa_rounds != qa_rounds:
-        logging.info(f"Adjusted Q&A rounds from {qa_rounds} to {adjusted_qa_rounds} for {duration_target}-minute target")
+        logging.info(f"Q&A rounds set to {adjusted_qa_rounds}")
     
     final_audio_output = audio_output_file if generate_audio else None
 
@@ -151,7 +132,6 @@ def submit_handler(
         audio_output=final_audio_output,
         text_output=text_output_file,
         episode_guidance=episode_guidance.strip() if episode_guidance.strip() else None,
-        duration_target=duration_target,
         config=custom_config_file if custom_config_file else DEFAULT_CONFIG_PATH,
         debug=False,
         log_file=temp_log_file
@@ -192,23 +172,6 @@ def main():
                 maximum=10,
                 precision=0
             )
-            duration_target_input = gr.Number(
-                label='Target Duration (minutes)',
-                value=10,
-                interactive=True,
-                minimum=5,
-                maximum=60,
-                precision=0
-            )
-        
-        # Duration guidance info
-        gr.Markdown("""
-        **Duration Guidelines:**
-        - **5 minutes**: Very concise content, 1 key point per section
-        - **7 minutes**: Concise content, 1-2 key points per section  
-        - **10 minutes**: Balanced content, 2-3 key points per section
-        - **15+ minutes**: Comprehensive content with detailed explanations
-        """)
 
         # Episode Structure Guidance (Collapsible)
         with gr.Accordion("Episode Structure Guidance", open=False):
@@ -292,7 +255,6 @@ def main():
                 source_files,
                 source_urls,
                 qa_rounds_input,
-                duration_target_input,
                 use_checkpoints_input,
                 generate_audio_input,
                 episode_guidance_input,
@@ -300,7 +262,8 @@ def main():
                 text_output_input,
                 audio_output_input
             ],
-            outputs=[status_output]
+            outputs=[status_output],
+            queue=True
         )
 
         stop_button.click(fn=None, inputs=None, outputs=None, cancels=[click_event])

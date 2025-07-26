@@ -53,7 +53,7 @@ def format_wikipedia_document(doc):
     return f"### {doc.metadata['title']}\n\n{doc.page_content}"
 
 
-def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, duration_target: Optional[int] = None) -> PodcastOutline:
+def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None) -> PodcastOutline:
     """
     Generate a structured outline for a podcast episode.
 
@@ -79,7 +79,7 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
         # Fallback to local prompt with duration guidance
         from langchain_core.prompts import PromptTemplate
         outline_prompt = PromptTemplate(
-            input_variables=["episode_structure", "topic", "context_documents", "episode_guidance", "duration_guidance"],
+            input_variables=["episode_structure", "topic", "context_documents", "episode_guidance"],
             template="""You are an expert podcast producer. Create a detailed outline for a podcast episode.
 
 Episode Structure:
@@ -93,13 +93,7 @@ Background Information:
 Episode Guidance:
 {episode_guidance}
 
-Duration Guidance:
-{duration_guidance}
-
-Create a structured outline with sections and subsections that follows the episode structure above. 
-{duration_guidance}
-
-The outline should be comprehensive yet appropriate for the target duration specified."""
+Create a structured outline with sections and subsections that follows the episode structure above."""
         )
         logger.info("Using fallback local prompt with duration guidance support")
 
@@ -113,36 +107,12 @@ The outline should be comprehensive yet appropriate for the target duration spec
     if episode_guidance and episode_guidance.strip():
         guidance_text = f"\n\nAdditional guidance for Main Discussion Topics:\n{episode_guidance.strip()}"
     
-    # Prepare duration guidance
-    duration_text = ""
-    if duration_target:
-        # More specific duration guidance based on target_duration
-        if duration_target <= 5:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create very concise content with only 1 key point per section. Keep responses brief and focused. Limit each subsection to essential information only."
-        elif duration_target <= 7:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Keep content concise and focused. Limit each section to 1-2 key points. Prioritize the most important information."
-        elif duration_target <= 10:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create balanced content with 2-3 key points per section. Include practical examples but keep them brief."
-        elif duration_target <= 15:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations. Include multiple examples and deeper insights."
-        else:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations and extensive coverage."
-        
-        logger.info(f"Duration guidance generated: {duration_text}")
-    else:
-        logger.info("No duration target provided, using default guidance")
-    
-    # Debug: Log what we're passing to the prompt
     prompt_vars = {
         "episode_structure": config.episode_structure_for_prompt,
         "topic": topic,
         "context_documents": "\n\n".join([format_wikipedia_document(d) for d in background_info]),
-        "episode_guidance": guidance_text,
-        "duration_guidance": duration_text
+        "episode_guidance": guidance_text
     }
-    
-    logger.info(f"Passing to prompt - duration_guidance: '{duration_text}'")
-    logger.info(f"Prompt variables keys: {list(prompt_vars.keys())}")
     
     outline = outline_chain.invoke(prompt_vars)
 
