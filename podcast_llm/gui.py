@@ -25,6 +25,7 @@ import logging
 import os
 from pathlib import Path
 import tempfile
+from typing import Generator
 
 import gradio as gr
 from gradio_log import Log
@@ -45,13 +46,14 @@ def submit_handler(
     source_files: list[str],
     source_urls: str,
     qa_rounds: int,
-    use_checkpoints: bool,
-    custom_config_file: str | None,
-    episode_guidance: str,
     duration_target: int,
+    use_checkpoints: bool,
+    generate_audio: bool,
+    episode_guidance: str,
+    custom_config_file: str | None,
     text_output: str,
-    audio_output: str
-) -> None:
+    audio_output: str,
+) -> Generator[str, None, None]:
     """
     Handle form submission for podcast generation.
 
@@ -70,7 +72,7 @@ def submit_handler(
         audio_output: Path to save audio output (optional)
 
     Returns:
-        None
+        Generator[str, None, None]: A generator yielding progress updates.
     """
     setup_logging(log_level=logging.INFO, output_file=temp_log_file)
     # Print values and types of all arguments
@@ -131,20 +133,24 @@ def submit_handler(
     if adjusted_qa_rounds != qa_rounds:
         logging.info(f"Adjusted Q&A rounds from {qa_rounds} to {adjusted_qa_rounds} for {duration_target}-minute target")
     
-    generate(
+    final_audio_output = audio_output_file if generate_audio else None
+
+    # Use a for loop to yield progress from the generator
+    for progress_update in generate(
         topic=topic.strip(),
         mode=mode_of_operation,
         sources=sources,
         qa_rounds=adjusted_qa_rounds,
         use_checkpoints=use_checkpoints,
-        audio_output=audio_output_file,
+        audio_output=final_audio_output,
         text_output=text_output_file,
         episode_guidance=episode_guidance.strip() if episode_guidance.strip() else None,
         duration_target=duration_target,
         config=custom_config_file if custom_config_file else DEFAULT_CONFIG_PATH,
         debug=False,
         log_file=temp_log_file
-    )
+    ):
+        yield progress_update
 
 def main():
     """
@@ -217,13 +223,24 @@ def main():
             )
             source_urls = gr.TextArea(label='Source URLs')
 
+        source_files.upload(
+            lambda: "context",
+            outputs=mode_of_operation
+        )
+
         # Behavior Options Section
         gr.Markdown('## Behaviour Options')
-        use_checkpoints_input = gr.Checkbox(
-            label='Use Checkpoints',
-            value=True
-        )
-        
+        with gr.Row():
+            use_checkpoints_input = gr.Checkbox(
+                label='Use Checkpoints',
+                value=True
+            )
+            generate_audio_input = gr.Checkbox(
+                label='Generate Audio',
+                value=True,
+                info="Uncheck to generate script only"
+            )
+
         # Advanced Options (Collapsible)
         with gr.Accordion("Advanced Options", open=False):
             gr.Markdown("Upload a custom YAML config to override default settings")
@@ -246,8 +263,13 @@ def main():
         gr.Markdown('*Leave output fields empty to automatically use the topic name as filename*')
 
         # Submit Button
-        submit_button = gr.Button('Generate Podcast')
-        submit_button.click(
+        with gr.Row():
+            submit_button = gr.Button('Generate Podcast')
+            stop_button = gr.Button('Stop Processing', variant='stop')
+
+        status_output = gr.Textbox(label="Status", interactive=False)
+
+        click_event = submit_button.click(
             fn=submit_handler,
             inputs=[
                 topic_input,
@@ -255,15 +277,18 @@ def main():
                 source_files,
                 source_urls,
                 qa_rounds_input,
-                use_checkpoints_input,
-                custom_config_file_input,
-                episode_guidance_input,
                 duration_target_input,
+                use_checkpoints_input,
+                generate_audio_input,
+                episode_guidance_input,
+                custom_config_file_input,
                 text_output_input,
                 audio_output_input
             ],
-            outputs=[]
+            outputs=[status_output]
         )
+
+        stop_button.click(fn=None, inputs=None, outputs=None, cancels=[click_event])
 
         # Log Display
         gr.Markdown('## System Log')

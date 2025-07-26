@@ -21,7 +21,7 @@ Example:
 import os
 import argparse
 from pathlib import Path
-from typing import Optional, List, Literal
+from typing import Optional, List, Literal, Generator
 from podcast_llm.research import (
     research_background_info,
     research_discussion_topics
@@ -59,9 +59,9 @@ def generate(
     config: str = DEFAULT_CONFIG_PATH,
     debug: bool = False,
     log_file: Optional[str] = None
-) -> None:
+) -> Generator[str, None, None]:
     """
-    Generate a podcast episode.
+    Generate a podcast episode, yielding progress updates.
     
     Args:
         topic: Topic of the podcast
@@ -87,21 +87,24 @@ def generate(
 
     # Get background info based on mode
     if mode == 'research':
-        background_info = checkpointer.checkpoint(
+        yield "Researching background information..."
+        background_info, _ = checkpointer.checkpoint(
             research_background_info,
             [config, topic],
             stage_name='background_info'
         )
     else:  # context mode
+        yield "Extracting content from sources..."
         if not sources:
             raise ValueError("Sources must be provided when using context mode")
-        background_info = checkpointer.checkpoint(
+        background_info, _ = checkpointer.checkpoint(
             extract_content_from_sources,
             [sources],
             stage_name='background_info'
         )
 
-    outline = checkpointer.checkpoint(
+    yield "Generating outline..."
+    outline, outline_tokens = checkpointer.checkpoint(
         outline_episode,
         [config, topic, background_info, episode_guidance, duration_target],
         stage_name='outline'
@@ -109,7 +112,8 @@ def generate(
 
     # Get detailed info based on mode
     if mode == 'research':
-        deep_info = checkpointer.checkpoint(
+        yield "Researching discussion topics..."
+        deep_info, _ = checkpointer.checkpoint(
             research_discussion_topics,
             [config, topic, outline],
             stage_name='deep_info'
@@ -117,13 +121,15 @@ def generate(
     else:
         deep_info = background_info  # Use the same extracted content
 
-    draft_script = checkpointer.checkpoint(
+    yield "Writing draft script..."
+    draft_script, draft_script_tokens = checkpointer.checkpoint(
         write_draft_script,
         [config, topic, outline, background_info, deep_info, qa_rounds],
         stage_name='draft_script'
     )
     
-    final_script = checkpointer.checkpoint(
+    yield "Writing final script..."
+    final_script, final_script_tokens = checkpointer.checkpoint(
         write_final_script,
         [config, topic, draft_script],
         stage_name='final_script'
@@ -140,10 +146,12 @@ def generate(
     total_tokens = sum(usage.get('total_tokens', 0) for usage in all_token_usage.values())
 
     if text_output:
+        yield "Saving text output..."
         with open(text_output, 'w+') as f:
             f.write(generate_markdown_script(topic, outline, final_script))
 
     if audio_output:
+        yield "Generating audio..."
         tts_chars = generate_audio(config, final_script, audio_output)
     else:
         tts_chars = 0
@@ -156,6 +164,8 @@ def generate(
     logging.info(f"Total LLM Tokens: {total_tokens} (Prompt: {total_prompt_tokens}, Completion: {total_completion_tokens})")
     logging.info(f"Total TTS Characters: {tts_chars}")
     logging.info("---------------------")
+
+    yield "Done!"
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -230,7 +240,7 @@ def main() -> None:
     if args.mode == 'context' and not args.sources:
         raise ValueError("--sources must be provided when using context mode")
         
-    generate(
+    for update in generate(
         topic=args.topic,
         mode=args.mode,
         sources=args.sources,
@@ -240,7 +250,8 @@ def main() -> None:
         text_output=args.text_output,
         config=args.config,
         debug=args.debug
-    )
+    ):
+        print(update)
 
 
 if __name__ == '__main__':
