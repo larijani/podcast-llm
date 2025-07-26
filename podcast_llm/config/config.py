@@ -166,6 +166,13 @@ class PodcastConfig:
                     },
                     'language_code': 'en-US',
                     'effects_profile_id': 'small-bluetooth-speaker-class-device'
+                },
+                'openai': {
+                    'voice_mapping': {
+                        'Interviewer': 'alloy',
+                        'Interviewee': 'nova'
+                    },
+                    'model': 'tts-1'
                 }
             },
             'output_format': 'mp3',

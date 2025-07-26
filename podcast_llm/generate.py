@@ -129,14 +129,33 @@ def generate(
         stage_name='final_script'
     )
 
+    all_token_usage = {
+        'outline': outline_tokens,
+        'draft_script': draft_script_tokens,
+        'final_script': final_script_tokens
+    }
+    
+    total_prompt_tokens = sum(usage.get('prompt_tokens', 0) for usage in all_token_usage.values())
+    total_completion_tokens = sum(usage.get('completion_tokens', 0) for usage in all_token_usage.values())
+    total_tokens = sum(usage.get('total_tokens', 0) for usage in all_token_usage.values())
+
     if text_output:
         with open(text_output, 'w+') as f:
             f.write(generate_markdown_script(topic, outline, final_script))
 
     if audio_output:
-        generate_audio(config, final_script, audio_output)
+        tts_chars = generate_audio(config, final_script, audio_output)
     else:
+        tts_chars = 0
         logging.info("DONE!")
+
+    logging.info("--- Usage Metrics ---")
+    logging.info(f"Outline Generation: {all_token_usage['outline']}")
+    logging.info(f"Draft Script Generation: {all_token_usage['draft_script']}")
+    logging.info(f"Final Script Generation: {all_token_usage['final_script']}")
+    logging.info(f"Total LLM Tokens: {total_tokens} (Prompt: {total_prompt_tokens}, Completion: {total_completion_tokens})")
+    logging.info(f"Total TTS Characters: {tts_chars}")
+    logging.info("---------------------")
 
 
 def parse_arguments() -> argparse.Namespace:

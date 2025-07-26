@@ -35,6 +35,7 @@ from typing import List
 from elevenlabs import client as elevenlabs_client
 from google.cloud import texttospeech
 from google.cloud import texttospeech_v1beta1
+from openai import OpenAI
 from pydub import AudioSegment
 
 from podcast_llm.config import PodcastConfig
@@ -156,6 +157,36 @@ def process_line_google(config: PodcastConfig, text: str, speaker: str):
     )
     
     return response.audio_content
+
+
+@retry_with_exponential_backoff(max_retries=10, base_delay=2.0)
+@rate_limit_per_minute(max_requests_per_minute=20)
+def process_line_openai(config: PodcastConfig, text: str, speaker: str):
+    """
+    Process a single line of text using OpenAI Text-to-Speech API.
+
+    Args:
+        config (PodcastConfig): Configuration object containing API keys and settings
+        text (str): The text content to convert to speech
+        speaker (str): Speaker identifier to determine voice selection
+
+    Returns:
+        bytes: Raw audio data in bytes format containing the synthesized speech
+    """
+    client = OpenAI(api_key=config.openai_api_key)
+    tts_settings = config.tts_settings['openai']
+    
+    response = client.audio.speech.create(
+        model=tts_settings['model'],
+        voice=tts_settings['voice_mapping'][speaker],
+        input=text
+    )
+    
+    audio_bytes = BytesIO()
+    for chunk in response.iter_bytes():
+        audio_bytes.write(chunk)
+    
+    return audio_bytes.getvalue()
 
 
 @retry_with_exponential_backoff(max_retries=10, base_delay=2.0)
@@ -320,7 +351,8 @@ def convert_to_speech(
     tts_audio_formats = {
         'elevenlabs': 'mp3',
         'google': 'mp3',
-        'google_multispeaker': 'mp3'
+        'google_multispeaker': 'mp3',
+        'openai': 'mp3'
     }
 
     try:
@@ -352,6 +384,8 @@ def convert_to_speech(
                     audio = process_line_google(config, line['text'], line['speaker'])
                 elif config.tts_provider == 'elevenlabs':
                     audio = process_line_elevenlabs(config, line['text'], line['speaker'])
+                elif config.tts_provider == 'openai':
+                    audio = process_line_openai(config, line['text'], line['speaker'])
 
                 logger.info(f"Saving audio chunk {counter}...")
                 file_name = os.path.join(temp_audio_dir, f"{counter:03d}.{tts_audio_formats[config.tts_provider]}")
@@ -374,7 +408,7 @@ def convert_to_speech(
         raise
 
 
-def generate_audio(config: PodcastConfig, final_script: list, output_file: str) -> str:
+def generate_audio(config: PodcastConfig, final_script: list, output_file: str) -> int:
     """
     Generate audio from a podcast script using text-to-speech.
 
@@ -400,6 +434,11 @@ def generate_audio(config: PodcastConfig, final_script: list, output_file: str) 
 
     temp_audio_dir = Path(config.temp_audio_dir)
     temp_audio_dir.mkdir(parents=True, exist_ok=True)
+    
+    total_chars = sum(len(line['text']) for line in cleaned_script)
+    
     convert_to_speech(config, cleaned_script, output_file, config.temp_audio_dir, config.output_format)
+    
+    logger.info(f"Total characters for TTS: {total_chars}")
 
-    return output_file
+    return total_chars

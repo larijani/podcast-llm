@@ -53,7 +53,7 @@ def format_wikipedia_document(doc):
     return f"### {doc.metadata['title']}\n\n{doc.page_content}"
 
 
-def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, duration_target: Optional[int] = None) -> PodcastOutline:
+def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, duration_target: Optional[int] = None) -> tuple[PodcastOutline, dict]:
     """
     Generate a structured outline for a podcast episode.
 
@@ -104,4 +104,8 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
     })
 
     logger.info(outline.as_str)
-    return outline
+    
+    token_usage = outline_llm.last_token_usage
+    logger.info(f"Token usage for outline generation: {token_usage}")
+
+    return outline, token_usage

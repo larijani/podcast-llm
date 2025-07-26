@@ -231,12 +231,13 @@ def discuss(config: PodcastConfig,
     retriever = vector_store.as_retriever(k=4)
 
     draft_discussion = []
+    total_token_usage = {}
 
     for section in outline.sections:
         for subsection in section.subsections:
             logger.info(f"Discussing section '{section.title}' subsection '{subsection.title}'")
             for _ in range(qa_rounds):
-                draft_discussion.append(ask_question(
+                question = ask_question(
                     topic, 
                     outline, 
                     section,
@@ -244,8 +245,9 @@ def discuss(config: PodcastConfig,
                     background_info, 
                     draft_discussion, 
                     interviewer_chain
-                ))
-                draft_discussion.append(answer_question(
+                )
+                draft_discussion.append(question)
+                answer = answer_question(
                     topic,
                     outline,
                     section,
@@ -253,9 +255,17 @@ def discuss(config: PodcastConfig,
                     draft_discussion,
                     retriever,
                     interviewee_chain
-                ))
+                )
+                draft_discussion.append(answer)
+                
+                # Aggregate token usage
+                for key, value in interviewer_chain.llm.last_token_usage.items():
+                    total_token_usage[key] = total_token_usage.get(key, 0) + value
+                for key, value in interviewee_chain.llm.last_token_usage.items():
+                    total_token_usage[key] = total_token_usage.get(key, 0) + value
 
-    return draft_discussion
+    logger.info(f"Token usage for draft script generation: {total_token_usage}")
+    return draft_discussion, total_token_usage
 
 
 def write_draft_script(config: PodcastConfig,
@@ -317,8 +327,8 @@ def write_draft_script(config: PodcastConfig,
         embedding=embeddings
     )
 
-    draft_script = discuss(config, topic, outline, background_info, vector_store, qa_rounds)
-    return draft_script
+    draft_script, total_token_usage = discuss(config, topic, outline, background_info, vector_store, qa_rounds)
+    return draft_script, total_token_usage
 
 
 @retry_with_exponential_backoff(max_retries=10, base_delay=2.0)
@@ -348,7 +358,7 @@ def rewrite_script_section(section: list, rewriter_chain) -> list:
     return [{'speaker': line.speaker, 'text': line.text} for line in rewritten.lines]
 
 
-def write_final_script(config: PodcastConfig, topic: str, draft_script: list, batch_size: int = 4) -> list:
+def write_final_script(config: PodcastConfig, topic: str, draft_script: list, batch_size: int = 4) -> tuple[list[dict], dict]:
     """
     Rewrite a draft podcast script to improve flow, naturalness and quality.
 
@@ -404,4 +414,6 @@ def write_final_script(config: PodcastConfig, topic: str, draft_script: list, ba
         'text': config.outro.format(topic=topic, podcast_name=config.podcast_name)
     })
         
-    return final_script
+    token_usage = rewriter_chain.llm.last_token_usage
+    logger.info(f"Token usage for final script generation: {token_usage}")
+    return final_script, token_usage

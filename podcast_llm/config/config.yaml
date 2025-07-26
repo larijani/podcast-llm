@@ -4,14 +4,19 @@ long_context_llm_provider: openai
 embeddings_model: openai
 
 # Text-to-Speech Configuration
-tts_provider: elevenlabs  # Options: 'google', 'elevenlabs', 'google_multispeaker'
+tts_provider: openai  # Options: 'google', 'elevenlabs', 'google_multispeaker', 'openai'
 
 tts_settings:
+  openai:
+    voice_mapping:
+      Interviewer: Echo
+      Interviewee: nova
+    model: gpt-4o-mini-tts # tts-1  tts-1-hd  gpt-4o-mini-tts
   elevenlabs:
     voice_mapping:
       Interviewer: UgBBYS2sOqTuMpoF3BR0 #Mark
       Interviewee: 56AoDkrOh6qfVPDXZ7Pt #Cassidy
-    model: eleven_flash_v2
+    model: eleven_flash_v2_5
   google:
     voice_mapping:
       Interviewer: en-US-Journey-F

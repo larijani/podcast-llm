@@ -76,6 +76,7 @@ class LLMWrapper(Runnable):
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.last_token_usage = {}
         self.rate_limiter = rate_limiter
         self.parser = StrOutputParser()
         self.schema = None
@@ -171,7 +172,16 @@ class LLMWrapper(Runnable):
             logger.debug(f"Modified prompt:\n{prompt.to_string()}")
 
         try:
-            return self.llm.invoke(input=prompt, config=config)
+            if self.provider == 'google' and self.schema is not None:
+                response = self.llm.invoke(input=prompt, config=config)
+                self.last_token_usage = response.response_metadata.get('usage_metadata', {})
+                return response
+
+            response = self.llm.invoke(input=prompt, config=config)
+            if hasattr(response, 'response_metadata'):
+                self.last_token_usage = response.response_metadata.get('token_usage', {})
+
+            return response
         except OutputParserException as ex:
             logger.debug(f"Error parsing LLM output. Coercing to fit schema.\n{ex.llm_output}")
             return self.coerce_to_schema(ex.llm_output)
