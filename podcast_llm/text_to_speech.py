@@ -408,7 +408,7 @@ def convert_to_speech(
         raise
 
 
-def generate_audio(config: PodcastConfig, final_script: list, output_file: str) -> int:
+def generate_audio(config: PodcastConfig, final_script: list, output_file: str) -> str:
     """
     Generate audio from a podcast script using text-to-speech.
 
@@ -434,11 +434,6 @@ def generate_audio(config: PodcastConfig, final_script: list, output_file: str) 
 
     temp_audio_dir = Path(config.temp_audio_dir)
     temp_audio_dir.mkdir(parents=True, exist_ok=True)
-    
-    total_chars = sum(len(line['text']) for line in cleaned_script)
-    
     convert_to_speech(config, cleaned_script, output_file, config.temp_audio_dir, config.output_format)
-    
-    logger.info(f"Total characters for TTS: {total_chars}")
 
-    return total_chars
+    return output_file

@@ -231,7 +231,6 @@ def discuss(config: PodcastConfig,
     retriever = vector_store.as_retriever(k=4)
 
     draft_discussion = []
-    total_token_usage = {}
 
     for section in outline.sections:
         for subsection in section.subsections:
@@ -258,14 +257,8 @@ def discuss(config: PodcastConfig,
                 )
                 draft_discussion.append(answer)
                 
-                # Aggregate token usage
-                for key, value in interviewer_chain.llm.last_token_usage.items():
-                    total_token_usage[key] = total_token_usage.get(key, 0) + value
-                for key, value in interviewee_chain.llm.last_token_usage.items():
-                    total_token_usage[key] = total_token_usage.get(key, 0) + value
 
-    logger.info(f"Token usage for draft script generation: {total_token_usage}")
-    return draft_discussion, total_token_usage
+    return draft_discussion
 
 
 def write_draft_script(config: PodcastConfig,
@@ -327,8 +320,8 @@ def write_draft_script(config: PodcastConfig,
         embedding=embeddings
     )
 
-    draft_script, total_token_usage = discuss(config, topic, outline, background_info, vector_store, qa_rounds)
-    return draft_script, total_token_usage
+    draft_script = discuss(config, topic, outline, background_info, vector_store, qa_rounds)
+    return draft_script
 
 
 @retry_with_exponential_backoff(max_retries=10, base_delay=2.0)
@@ -414,6 +407,4 @@ def write_final_script(config: PodcastConfig, topic: str, draft_script: list, ba
         'text': config.outro.format(topic=topic, podcast_name=config.podcast_name)
     })
         
-    token_usage = rewriter_chain.llm.last_token_usage
-    logger.info(f"Token usage for final script generation: {token_usage}")
-    return final_script, token_usage
+    return final_script

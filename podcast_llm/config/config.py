@@ -169,10 +169,10 @@ class PodcastConfig:
                 },
                 'openai': {
                     'voice_mapping': {
-                        'Interviewer': 'alloy',
+                        'Interviewer': 'echo',
                         'Interviewee': 'nova'
                     },
-                    'model': 'tts-1'
+                    'model': 'gpt-4o-mini-tts'
                 }
             },
             'output_format': 'mp3',

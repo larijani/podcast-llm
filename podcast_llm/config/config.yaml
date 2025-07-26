@@ -9,9 +9,9 @@ tts_provider: openai  # Options: 'google', 'elevenlabs', 'google_multispeaker', 
 tts_settings:
   openai:
     voice_mapping:
-      Interviewer: Echo
+      Interviewer: alloy
       Interviewee: nova
-    model: gpt-4o-mini-tts # tts-1  tts-1-hd  gpt-4o-mini-tts
+    model: gpt-4o-mini-tts #tts-1 tts-1-hd
   elevenlabs:
     voice_mapping:
       Interviewer: UgBBYS2sOqTuMpoF3BR0 #Mark

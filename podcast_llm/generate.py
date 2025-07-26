@@ -88,7 +88,7 @@ def generate(
     # Get background info based on mode
     if mode == 'research':
         yield "Researching background information..."
-        background_info, _ = checkpointer.checkpoint(
+        background_info = checkpointer.checkpoint(
             research_background_info,
             [config, topic],
             stage_name='background_info'
@@ -97,14 +97,14 @@ def generate(
         yield "Extracting content from sources..."
         if not sources:
             raise ValueError("Sources must be provided when using context mode")
-        background_info, _ = checkpointer.checkpoint(
+        background_info = checkpointer.checkpoint(
             extract_content_from_sources,
             [sources],
             stage_name='background_info'
         )
 
     yield "Generating outline..."
-    outline, outline_tokens = checkpointer.checkpoint(
+    outline = checkpointer.checkpoint(
         outline_episode,
         [config, topic, background_info, episode_guidance, duration_target],
         stage_name='outline'
@@ -113,57 +113,34 @@ def generate(
     # Get detailed info based on mode
     if mode == 'research':
         yield "Researching discussion topics..."
-        deep_info, _ = checkpointer.checkpoint(
+        deep_info = checkpointer.checkpoint(
             research_discussion_topics,
             [config, topic, outline],
             stage_name='deep_info'
         )
     else:
-        deep_info = background_info  # Use the same extracted content
+        deep_info = background_info
 
     yield "Writing draft script..."
-    draft_script, draft_script_tokens = checkpointer.checkpoint(
+    draft_script = checkpointer.checkpoint(
         write_draft_script,
         [config, topic, outline, background_info, deep_info, qa_rounds],
         stage_name='draft_script'
     )
     
     yield "Writing final script..."
-    final_script, final_script_tokens = checkpointer.checkpoint(
+    final_script = checkpointer.checkpoint(
         write_final_script,
         [config, topic, draft_script],
         stage_name='final_script'
     )
 
-    all_token_usage = {
-        'outline': outline_tokens,
-        'draft_script': draft_script_tokens,
-        'final_script': final_script_tokens
-    }
-    
-    total_prompt_tokens = sum(usage.get('prompt_tokens', 0) for usage in all_token_usage.values())
-    total_completion_tokens = sum(usage.get('completion_tokens', 0) for usage in all_token_usage.values())
-    total_tokens = sum(usage.get('total_tokens', 0) for usage in all_token_usage.values())
-
     if text_output:
-        yield "Saving text output..."
         with open(text_output, 'w+') as f:
             f.write(generate_markdown_script(topic, outline, final_script))
 
     if audio_output:
-        yield "Generating audio..."
-        tts_chars = generate_audio(config, final_script, audio_output)
-    else:
-        tts_chars = 0
-        logging.info("DONE!")
-
-    logging.info("--- Usage Metrics ---")
-    logging.info(f"Outline Generation: {all_token_usage['outline']}")
-    logging.info(f"Draft Script Generation: {all_token_usage['draft_script']}")
-    logging.info(f"Final Script Generation: {all_token_usage['final_script']}")
-    logging.info(f"Total LLM Tokens: {total_tokens} (Prompt: {total_prompt_tokens}, Completion: {total_completion_tokens})")
-    logging.info(f"Total TTS Characters: {tts_chars}")
-    logging.info("---------------------")
+        generate_audio(config, final_script, audio_output)
 
     yield "Done!"
 
@@ -230,6 +207,12 @@ def parse_arguments() -> argparse.Namespace:
         action='store_true',
         help='Enable debug logging'
     )
+    parser.add_argument(
+        '--duration-target',
+        type=int,
+        default=None,
+        help='Target duration in seconds for the generated audio'
+    )
     return parser.parse_args()
 
 
@@ -248,6 +231,7 @@ def main() -> None:
         use_checkpoints=args.checkpoint,
         audio_output=args.audio_output,
         text_output=args.text_output,
+        duration_target=args.duration_target,
         config=args.config,
         debug=args.debug
     ):
