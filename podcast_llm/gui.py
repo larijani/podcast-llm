@@ -81,8 +81,21 @@ def submit_handler(
     logging.info(f'Text Output: {text_output} (type: {type(text_output)})')
     logging.info(f'Audio Output: {audio_output} (type: {type(audio_output)})')
 
-    text_output_file = text_output.strip() if text_output.strip() else None
-    audio_output_file = audio_output.strip() if audio_output.strip() else None
+    # Ensure text output has .md extension
+    if text_output.strip():
+        text_output_file = text_output.strip()
+        if not text_output_file.endswith('.md'):
+            text_output_file += '.md'
+    else:
+        text_output_file = None
+    
+    # Ensure audio output has .mp3 extension
+    if audio_output.strip():
+        audio_output_file = audio_output.strip()
+        if not audio_output_file.endswith('.mp3'):
+            audio_output_file += '.mp3'
+    else:
+        audio_output_file = None
 
     # Split URLs by line and filter out non-URL lines
     source_urls_list = [
@@ -176,8 +189,8 @@ def main():
         # Output Options Section
         gr.Markdown('## Output Options')
         with gr.Row():
-            text_output_input = gr.Textbox(label='Text output')
-            audio_output_input = gr.Textbox(label='Audio output')
+            text_output_input = gr.Textbox(label='Text output (.md)')
+            audio_output_input = gr.Textbox(label='Audio output (.mp3)')
 
         # Submit Button
         submit_button = gr.Button('Generate Podcast')
@@ -199,9 +212,13 @@ def main():
 
         # Log Display
         gr.Markdown('## System Log')
-        Log(temp_log_file, dark=True, xterm_font_size=12)
+        with gr.Row():
+            Log(temp_log_file, dark=True, xterm_font_size=12, height=400)
+        
+        # Add spacing to prevent footer overlap
+        gr.Markdown('<div style="height: 100px;"></div>')
 
-    iface.launch()
+    iface.launch(inbrowser=True)
 
 
 if __name__ == '__main__':

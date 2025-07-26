@@ -232,7 +232,7 @@ def get_fast_llm(config: PodcastConfig, rate_limiter: BaseRateLimiter | None = N
     """
     fast_llm_models = {
         'openai': 'gpt-4o-mini',
-        'google': 'gemini-1.5-flash', 
+        'google': 'gemini-2.5-flash', 
         'anthropic': 'claude-3-5-sonnet-20241022'
     }
     
@@ -267,9 +267,9 @@ def get_long_context_llm(config: PodcastConfig, rate_limiter: BaseRateLimiter | 
     - Anthropic: claude-3-5-sonnet
     """
     long_context_llm_models = {
-        'openai': 'gpt-4o',
-        'google': 'gemini-1.5-pro-latest',
-        'anthropic': 'claude-3-5-sonnet-20241022'
+        'openai': 'gpt-4.1',
+        'google': 'gemini-2.5-pro-latest',
+        'anthropic': 'claude-sonnet-4-20250514'
     }
 
     if config.long_context_llm_provider not in long_context_llm_models:

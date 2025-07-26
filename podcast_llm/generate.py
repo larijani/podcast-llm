@@ -133,6 +133,8 @@ def generate(
 
     if audio_output:
         generate_audio(config, final_script, audio_output)
+    else:
+        logging.info("DONE!")
 
 
 def parse_arguments() -> argparse.Namespace:

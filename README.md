@@ -24,29 +24,7 @@ An intelligent system that automatically generates engaging podcast conversation
 - Configurable voices and audio settings
 - Gradio UI
 
-## Examples
 
-Listen to sample podcasts generated using Podcast-LLM:
-
-### Structured JSON Output from LLMs (Google multispeaker voices)
-
-[![Play Podcast Sample](https://img.shields.io/badge/Play%20Podcast-brightgreen?style=for-the-badge&logo=soundcloud)](https://soundcloud.com/evan-dempsey-153309617/llm-structured-output)
-
-### UFO Crash Retrieval (Elevenlabs voices)
-
-[![Play Podcast Sample](https://img.shields.io/badge/Play%20Podcast-brightgreen?style=for-the-badge&logo=soundcloud)](https://soundcloud.com/evan-dempsey-153309617/ufo-crash-retrieval-elevenlabs-voices)
-
-### The Behenian Fixed Stars (Google multispeaker voices)
-
-[![Play Podcast Sample](https://img.shields.io/badge/Play%20Podcast-brightgreen?style=for-the-badge&logo=soundcloud)](https://soundcloud.com/evan-dempsey-153309617/behenian-fixed-stars)
-
-### Podcast-LLM Overview (Google multispeaker voices)
-
-[![Play Podcast Sample](https://img.shields.io/badge/Play%20Podcast-brightgreen?style=for-the-badge&logo=soundcloud)](https://soundcloud.com/evan-dempsey-153309617/podcast-llm-with-anthropic-and-google-multispeaker)
-
-### Robotic Process Automation (Google voices)
-
-[![Play Podcast Sample](https://img.shields.io/badge/Play%20Podcast-brightgreen?style=for-the-badge&logo=soundcloud)](https://soundcloud.com/evan-dempsey-153309617/robotic-process-automation-google-voices)
 
 
 ## Web Interface

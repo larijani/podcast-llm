@@ -368,6 +368,8 @@ def convert_to_speech(
         for file in audio_files:
             os.remove(file)
 
+        logger.info("DONE!")
+
     except Exception as e:
         raise
 
