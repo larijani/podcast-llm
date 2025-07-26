@@ -24,6 +24,7 @@ Example:
 
 
 import logging
+from typing import Optional
 from langchain import hub
 from podcast_llm.config import PodcastConfig
 from podcast_llm.utils.llm import get_long_context_llm
@@ -52,7 +53,7 @@ def format_wikipedia_document(doc):
     return f"### {doc.metadata['title']}\n\n{doc.page_content}"
 
 
-def outline_episode(config: PodcastConfig, topic: str, background_info: list) -> PodcastOutline:
+def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, duration_target: Optional[int] = None) -> PodcastOutline:
     """
     Generate a structured outline for a podcast episode.
 
@@ -78,10 +79,28 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list) ->
         PodcastOutline
     )
 
+    # Prepare episode guidance for the prompt
+    guidance_text = ""
+    if episode_guidance and episode_guidance.strip():
+        guidance_text = f"\n\nAdditional guidance for Main Discussion Topics:\n{episode_guidance.strip()}"
+    
+    # Prepare duration guidance
+    duration_text = ""
+    if duration_target:
+        # More specific duration guidance
+        if duration_target <= 7:
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Keep content concise and focused. Limit each section to 1-2 key points."
+        elif duration_target <= 15:
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create balanced content with 2-3 key points per section."
+        else:
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations."
+    
     outline = outline_chain.invoke({
         "episode_structure": config.episode_structure_for_prompt,
         "topic": topic,
-        "context_documents": "\n\n".join([format_wikipedia_document(d) for d in background_info])
+        "context_documents": "\n\n".join([format_wikipedia_document(d) for d in background_info]),
+        "episode_guidance": guidance_text,
+        "duration_guidance": duration_text
     })
 
     logger.info(outline.as_str)

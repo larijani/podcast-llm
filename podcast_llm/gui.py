@@ -31,6 +31,7 @@ from gradio_log import Log
 
 from .config.logging_config import setup_logging
 from .generate import generate
+from .utils.checkpointer import to_snake_case
 
 PACKAGE_ROOT = Path(__file__).parent
 DEFAULT_CONFIG_PATH = os.path.join(PACKAGE_ROOT, 'config', 'config.yaml')
@@ -46,6 +47,8 @@ def submit_handler(
     qa_rounds: int,
     use_checkpoints: bool,
     custom_config_file: str | None,
+    episode_guidance: str,
+    duration_target: int,
     text_output: str,
     audio_output: str
 ) -> None:
@@ -87,7 +90,8 @@ def submit_handler(
         if not text_output_file.endswith('.md'):
             text_output_file += '.md'
     else:
-        text_output_file = None
+        # Use topic as filename if text output is empty
+        text_output_file = f"{to_snake_case(topic)}.md"
     
     # Ensure audio output has .mp3 extension
     if audio_output.strip():
@@ -95,7 +99,8 @@ def submit_handler(
         if not audio_output_file.endswith('.mp3'):
             audio_output_file += '.mp3'
     else:
-        audio_output_file = None
+        # Use topic as filename if audio output is empty
+        audio_output_file = f"{to_snake_case(topic)}.mp3"
 
     # Split URLs by line and filter out non-URL lines
     source_urls_list = [
@@ -108,14 +113,34 @@ def submit_handler(
     sources = (source_files or []) + source_urls_list
     sources = sources if sources else None
 
+    # Adjust Q&A rounds based on duration target
+    adjusted_qa_rounds = qa_rounds
+    if duration_target >= 20:
+        # For very long podcasts, increase Q&A rounds significantly
+        adjusted_qa_rounds = min(qa_rounds + 3, 10)
+    elif duration_target >= 15:
+        # For longer podcasts, increase Q&A rounds
+        adjusted_qa_rounds = min(qa_rounds + 2, 10)
+    elif duration_target <= 5:
+        # For very short podcasts, decrease Q&A rounds significantly
+        adjusted_qa_rounds = max(qa_rounds - 2, 1)
+    elif duration_target <= 8:
+        # For shorter podcasts, decrease Q&A rounds
+        adjusted_qa_rounds = max(qa_rounds - 1, 1)
+    
+    if adjusted_qa_rounds != qa_rounds:
+        logging.info(f"Adjusted Q&A rounds from {qa_rounds} to {adjusted_qa_rounds} for {duration_target}-minute target")
+    
     generate(
         topic=topic.strip(),
         mode=mode_of_operation,
         sources=sources,
-        qa_rounds=qa_rounds,
+        qa_rounds=adjusted_qa_rounds,
         use_checkpoints=use_checkpoints,
         audio_output=audio_output_file,
         text_output=text_output_file,
+        episode_guidance=episode_guidance.strip() if episode_guidance.strip() else None,
+        duration_target=duration_target,
         config=custom_config_file if custom_config_file else DEFAULT_CONFIG_PATH,
         debug=False,
         log_file=temp_log_file
@@ -155,6 +180,23 @@ def main():
                 maximum=10,
                 precision=0
             )
+            duration_target_input = gr.Number(
+                label='Target Duration (minutes)',
+                value=10,
+                interactive=True,
+                minimum=5,
+                maximum=60,
+                precision=0
+            )
+        
+        # Episode Structure Guidance (Collapsible)
+        with gr.Accordion("Episode Structure Guidance", open=False):
+            episode_guidance_input = gr.TextArea(
+                label='Custom Discussion Points',
+                placeholder='Enter bullet points to guide the episode structure...\nExample:\n• Focus on practical applications\n• Include real-world examples\n• Address common challenges',
+                info='These points will be added as subsections under "Main Discussion Topics"',
+                lines=5
+            )
 
         # Mode Selection Section  
         gr.Markdown('## Mode of Operation')
@@ -181,16 +223,27 @@ def main():
             label='Use Checkpoints',
             value=True
         )
-        custom_config_file_input = gr.File(
-            label='Config file',
-            type='filepath'
-        )
+        
+        # Advanced Options (Collapsible)
+        with gr.Accordion("Advanced Options", open=False):
+            gr.Markdown("Upload a custom YAML config to override default settings")
+            custom_config_file_input = gr.File(
+                label='Custom Config File (Optional)',
+                type='filepath'
+            )
 
         # Output Options Section
         gr.Markdown('## Output Options')
         with gr.Row():
-            text_output_input = gr.Textbox(label='Text output (.md)')
-            audio_output_input = gr.Textbox(label='Audio output (.mp3)')
+            text_output_input = gr.Textbox(
+                label='Text output (.md)', 
+                placeholder='Leave empty to use topic name'
+            )
+            audio_output_input = gr.Textbox(
+                label='Audio output (.mp3)', 
+                placeholder='Leave empty to use topic name'
+            )
+        gr.Markdown('*Leave output fields empty to automatically use the topic name as filename*')
 
         # Submit Button
         submit_button = gr.Button('Generate Podcast')
@@ -204,6 +257,8 @@ def main():
                 qa_rounds_input,
                 use_checkpoints_input,
                 custom_config_file_input,
+                episode_guidance_input,
+                duration_target_input,
                 text_output_input,
                 audio_output_input
             ],

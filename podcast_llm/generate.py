@@ -54,6 +54,8 @@ def generate(
     use_checkpoints: bool = True,
     audio_output: Optional[str] = None,
     text_output: Optional[str] = None,
+    episode_guidance: Optional[str] = None,
+    duration_target: Optional[int] = None,
     config: str = DEFAULT_CONFIG_PATH,
     debug: bool = False,
     log_file: Optional[str] = None
@@ -101,7 +103,7 @@ def generate(
 
     outline = checkpointer.checkpoint(
         outline_episode,
-        [config, topic, background_info],
+        [config, topic, background_info, episode_guidance, duration_target],
         stage_name='outline'
     )
 

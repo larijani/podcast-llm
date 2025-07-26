@@ -9,9 +9,9 @@ tts_provider: elevenlabs  # Options: 'google', 'elevenlabs', 'google_multispeake
 tts_settings:
   elevenlabs:
     voice_mapping:
-      Interviewer: Chris
-      Interviewee: Charlie
-    model: eleven_multilingual_v2
+      Interviewer: UgBBYS2sOqTuMpoF3BR0 #Mark
+      Interviewee: 56AoDkrOh6qfVPDXZ7Pt #Cassidy
+    model: eleven_flash_v2
   google:
     voice_mapping:
       Interviewer: en-US-Journey-F
