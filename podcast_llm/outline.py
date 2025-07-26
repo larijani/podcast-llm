@@ -36,28 +36,29 @@ from podcast_llm.models import (
 logger = logging.getLogger(__name__)
 
 
-def format_wikipedia_document(doc):
+def format_document_for_prompt(doc):
     """
-    Format a Wikipedia document for use in prompt context.
+    Format a document for use in prompt context.
 
-    Takes a Wikipedia document object and formats its metadata and content into a 
+    Takes a document object and formats its metadata and content into a
     structured string format suitable for inclusion in LLM prompts. The format
     includes a header with the article title followed by the full article content.
 
     Args:
-        doc: Wikipedia document object containing metadata and page content
+        doc: A Document object containing metadata and page content
 
     Returns:
         str: Formatted string with article title and content
     """
-    return f"### {doc.metadata['title']}\n\n{doc.page_content}"
+    title = doc.metadata.get('title') or doc.metadata.get('original_title', 'Untitled Document')
+    return f"### {title}\n\n{doc.page_content}"
 
 
 def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None) -> PodcastOutline:
     """
     Generate a structured outline for a podcast episode.
 
-    Takes a topic and background research information, then uses LangChain and GPT-4 
+    Takes a topic and background research information, then uses LangChain and GPT-4
     to generate a detailed podcast outline with sections and subsections. The outline
     is structured using Pydantic models for type safety and validation.
 
@@ -69,7 +70,7 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
         PodcastOutline: Structured outline object containing sections and subsections
     """
     logger.info(f'Generating outline for podcast on: {topic}')
-    
+
     prompthub_path = "evandempsey/podcast_outline:6ceaa688"
     try:
         outline_prompt = hub.pull(prompthub_path)
@@ -106,14 +107,14 @@ Create a structured outline with sections and subsections that follows the episo
     guidance_text = ""
     if episode_guidance and episode_guidance.strip():
         guidance_text = f"\n\nAdditional guidance for Main Discussion Topics:\n{episode_guidance.strip()}"
-    
+
     prompt_vars = {
         "episode_structure": config.episode_structure_for_prompt,
         "topic": topic,
-        "context_documents": "\n\n".join([format_wikipedia_document(d) for d in background_info]),
+        "context_documents": "\n\n".join([format_document_for_prompt(d) for d in background_info]),
         "episode_guidance": guidance_text
     }
-    
+
     outline = outline_chain.invoke(prompt_vars)
 
     logger.info(outline.as_str)

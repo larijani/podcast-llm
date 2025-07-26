@@ -31,28 +31,25 @@ from typing import List, Optional
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import InMemoryVectorStore
 from langchain_core.documents import Document
-from podcast_llm.outline import (
-    format_wikipedia_document
-)
 import logging
 from langchain import hub
 from langchain_openai import ChatOpenAI
-from podcast_llm.outline import PodcastOutline
-from langchain_core.rate_limiters import InMemoryRateLimiter
-from langchain.chains.llm import LLMChain
-from langchain_core.vectorstores.base import VectorStoreRetriever
-from podcast_llm.config import PodcastConfig
 from podcast_llm.utils.embeddings import get_embeddings_model
 from podcast_llm.utils.llm import get_long_context_llm
+from podcast_llm.outline import format_document_for_prompt
 from podcast_llm.models import (
+    Answer,
+    Question,
     PodcastOutline,
     PodcastSection,
     PodcastSubsection,
-    Script,
-    Question,
-    Answer
+    Script
 )
+from langchain_core.rate_limiters import InMemoryRateLimiter
+from podcast_llm.config import PodcastConfig
 from podcast_llm.utils.rate_limits import retry_with_exponential_backoff
+from langchain_core.vectorstores import VectorStoreRetriever
+from langchain.chains.llm import LLMChain
 
 
 logger = logging.getLogger(__name__)
@@ -135,7 +132,7 @@ def ask_question(topic: str,
         'outline': outline.as_str,
         'section': section.title,
         'subsection': subsection.title,
-        'background_info': "\n\n".join([format_wikipedia_document(d) for d in background_info]),
+        'background_info': "\n\n".join([format_document_for_prompt(d) for d in background_info]),
         'conversation_history': format_conversation_history(draft_discussion)
     })
 

@@ -22,25 +22,20 @@ import os
 import argparse
 from pathlib import Path
 from typing import Optional, List, Literal, Generator
-from podcast_llm.research import (
-    research_background_info,
-    research_discussion_topics
-)
-from podcast_llm.writer import (
-    write_draft_script,
-    write_final_script
-)
-from podcast_llm.outline import outline_episode
+from podcast_llm.config import PodcastConfig, setup_logging
 from podcast_llm.utils.checkpointer import (
     Checkpointer,
     to_snake_case
 )
 from podcast_llm.text_to_speech import generate_audio
-from podcast_llm.config import PodcastConfig, setup_logging
 from podcast_llm.utils.text import generate_markdown_script
 from podcast_llm.extractors import extract_content_from_sources
+from podcast_llm.research import research_background_info, research_discussion_topics, summarize_research_material
+from podcast_llm.outline import outline_episode
+from podcast_llm.writer import write_draft_script, write_final_script
 import logging
 
+logger = logging.getLogger(__name__)
 
 PACKAGE_ROOT = Path(__file__).parent
 DEFAULT_CONFIG_PATH = os.path.join(PACKAGE_ROOT, 'config', 'config.yaml')
@@ -123,7 +118,6 @@ def generate(
                 f.write(f"**Source:** {doc.metadata.get('source', 'N/A')}\n\n")
                 f.write(f"{doc.page_content}\n\n")
                 f.write("---\n\n")
-        logger.info(f"Saved summarized research material for debugging to: {summary_output_path}")
 
     yield "Generating outline..."
     outline = checkpointer.checkpoint(
