@@ -191,7 +191,7 @@ class PodcastConfig:
                     'base_delay': 2.0
                 }
             },
-            'podcast_name': 'Podcast LLM',
+            'podcast_name': 'Podcasts Are Us',
             'intro': "Welcome to {podcast_name}. Today we've invited an expert to talk about {topic}.",
             'outro': "That's all for today. Thank you for listening to {podcast_name}. See you next time when we'll talk about whatever you want.",
             'episode_structure': [

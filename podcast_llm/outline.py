@@ -87,13 +87,17 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
     # Prepare duration guidance
     duration_text = ""
     if duration_target:
-        # More specific duration guidance
-        if duration_target <= 7:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Keep content concise and focused. Limit each section to 1-2 key points."
+        # More specific duration guidance based on target_duration
+        if duration_target <= 5:
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create very concise content with only 1 key point per section. Keep responses brief and focused. Limit each subsection to essential information only."
+        elif duration_target <= 7:
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Keep content concise and focused. Limit each section to 1-2 key points. Prioritize the most important information."
+        elif duration_target <= 10:
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create balanced content with 2-3 key points per section. Include practical examples but keep them brief."
         elif duration_target <= 15:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create balanced content with 2-3 key points per section."
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations. Include multiple examples and deeper insights."
         else:
-            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations."
+            duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations and extensive coverage."
     
     outline = outline_chain.invoke({
         "episode_structure": config.episode_structure_for_prompt,

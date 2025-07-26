@@ -124,7 +124,7 @@ def generate(
     yield "Writing draft script..."
     draft_script = checkpointer.checkpoint(
         write_draft_script,
-        [config, topic, outline, background_info, deep_info, qa_rounds],
+        [config, topic, outline, background_info, deep_info, qa_rounds, duration_target],
         stage_name='draft_script'
     )
     

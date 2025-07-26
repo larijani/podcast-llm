@@ -121,14 +121,20 @@ def submit_handler(
         # For very long podcasts, increase Q&A rounds significantly
         adjusted_qa_rounds = min(qa_rounds + 3, 10)
     elif duration_target >= 15:
-        # For longer podcasts, increase Q&A rounds
+        # For 15+ minute podcasts, increase Q&A rounds
         adjusted_qa_rounds = min(qa_rounds + 2, 10)
-    elif duration_target <= 5:
+    elif duration_target >= 10:
+        # For 10-14 minute podcasts, slight increase in Q&A rounds
+        adjusted_qa_rounds = min(qa_rounds + 1, 8)
+    elif duration_target >= 7:
+        # For 7-9 minute podcasts, keep default Q&A rounds
+        adjusted_qa_rounds = qa_rounds
+    elif duration_target >= 5:
+        # For 5-6 minute podcasts, decrease Q&A rounds
+        adjusted_qa_rounds = max(qa_rounds - 1, 1)
+    else:
         # For very short podcasts, decrease Q&A rounds significantly
         adjusted_qa_rounds = max(qa_rounds - 2, 1)
-    elif duration_target <= 8:
-        # For shorter podcasts, decrease Q&A rounds
-        adjusted_qa_rounds = max(qa_rounds - 1, 1)
     
     if adjusted_qa_rounds != qa_rounds:
         logging.info(f"Adjusted Q&A rounds from {qa_rounds} to {adjusted_qa_rounds} for {duration_target}-minute target")
@@ -195,6 +201,15 @@ def main():
                 precision=0
             )
         
+        # Duration guidance info
+        gr.Markdown("""
+        **Duration Guidelines:**
+        - **5 minutes**: Very concise content, 1 key point per section
+        - **7 minutes**: Concise content, 1-2 key points per section  
+        - **10 minutes**: Balanced content, 2-3 key points per section
+        - **15+ minutes**: Comprehensive content with detailed explanations
+        """)
+
         # Episode Structure Guidance (Collapsible)
         with gr.Accordion("Episode Structure Guidance", open=False):
             episode_guidance_input = gr.TextArea(

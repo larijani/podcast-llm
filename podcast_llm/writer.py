@@ -27,7 +27,7 @@ Example:
 
 
 import logging
-from typing import List
+from typing import List, Optional
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import InMemoryVectorStore
 from langchain_core.documents import Document
@@ -147,7 +147,8 @@ def answer_question(topic: str,
                     subsection: PodcastSubsection,
                     draft_discussion: list,
                     retriever: VectorStoreRetriever,
-                    interviewee_chain: LLMChain) -> Answer:
+                    interviewee_chain: LLMChain,
+                    duration_target: Optional[int] = None) -> Answer:
     """
     Generate an answer to the current interview question.
 
@@ -163,6 +164,7 @@ def answer_question(topic: str,
         draft_discussion (list): List of previous Question and Answer objects
         retriever (VectorStoreRetriever): Retriever for getting relevant background info
         interviewee_chain (LLMChain): The LangChain chain for generating answers
+        duration_target (Optional[int]): Target duration in minutes for word count calculation
 
     Returns:
         Answer: A structured Answer object containing the generated response text
@@ -170,12 +172,27 @@ def answer_question(topic: str,
     background_information = format_vector_results(
         retriever.invoke(draft_discussion[-1].question))
 
+    # Calculate word count based on duration target
+    if duration_target:
+        if duration_target <= 5:
+            word_count = 50
+        elif duration_target <= 7:
+            word_count = 75
+        elif duration_target <= 10:
+            word_count = 100
+        elif duration_target <= 15:
+            word_count = 125
+        else:
+            word_count = 150
+    else:
+        word_count = 100
+
     return interviewee_chain.invoke({
         'topic': topic,
         'outline': outline.as_str,
         'section': section.title,
         'subsection': subsection.title,
-        'word_count': 100,
+        'word_count': word_count,
         'background_information': background_information,
         'conversation_history': format_conversation_history(draft_discussion),
         'question': draft_discussion[-1].as_str
@@ -187,7 +204,8 @@ def discuss(config: PodcastConfig,
             outline: PodcastOutline, 
             background_info: List[Document], 
             vector_store: InMemoryVectorStore, 
-            qa_rounds: int) -> list:
+            qa_rounds: int,
+            duration_target: Optional[int] = None) -> list:
     """
     Simulate a podcast discussion through a series of questions and answers.
 
@@ -253,7 +271,8 @@ def discuss(config: PodcastConfig,
                     subsection,
                     draft_discussion,
                     retriever,
-                    interviewee_chain
+                    interviewee_chain,
+                    duration_target
                 )
                 draft_discussion.append(answer)
                 
@@ -266,7 +285,8 @@ def write_draft_script(config: PodcastConfig,
                        outline: PodcastOutline, 
                        background_info: List[Document], 
                        deep_info: List[Document], 
-                       qa_rounds: int):
+                       qa_rounds: int,
+                       duration_target: Optional[int] = None):
     """
     Write a complete draft podcast script through simulated Q&A discussion.
 
@@ -320,7 +340,7 @@ def write_draft_script(config: PodcastConfig,
         embedding=embeddings
     )
 
-    draft_script = discuss(config, topic, outline, background_info, vector_store, qa_rounds)
+    draft_script = discuss(config, topic, outline, background_info, vector_store, qa_rounds, duration_target)
     return draft_script
 
 
