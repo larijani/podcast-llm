@@ -131,7 +131,7 @@ def generate(
     yield "Writing final script..."
     final_script = checkpointer.checkpoint(
         write_final_script,
-        [config, topic, draft_script],
+        [config, topic, draft_script, duration_target],
         stage_name='final_script'
     )
 

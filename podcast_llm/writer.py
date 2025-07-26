@@ -184,8 +184,11 @@ def answer_question(topic: str,
             word_count = 125
         else:
             word_count = 150
+        
+        logger.info(f"Duration target: {duration_target} minutes, using word count: {word_count}")
     else:
         word_count = 100
+        logger.info(f"No duration target, using default word count: {word_count}")
 
     return interviewee_chain.invoke({
         'topic': topic,
@@ -228,12 +231,63 @@ def discuss(config: PodcastConfig,
     logger.info(f"Simulating discussion on: {topic}")
 
     interviewer_prompthub_path = "evandempsey/podcast_interviewer_role:bc03af97"
-    interviewer_prompt = hub.pull(interviewer_prompthub_path)
-    logger.info(f"Got prompt from hub: {interviewer_prompthub_path}")
+    try:
+        interviewer_prompt = hub.pull(interviewer_prompthub_path)
+        logger.info(f"Got prompt from hub: {interviewer_prompthub_path}")
+    except Exception as e:
+        logger.warning(f"Failed to pull interviewer prompt from hub: {e}")
+        # Fallback to local prompt with duration guidance
+        from langchain_core.prompts import PromptTemplate
+        interviewer_prompt = PromptTemplate(
+            input_variables=["topic", "outline", "section", "subsection", "background_info", "conversation_history"],
+            template="""You are an expert podcast interviewer. Generate a natural follow-up question for the current discussion.
+
+Topic: {topic}
+Outline: {outline}
+Current Section: {section}
+Current Subsection: {subsection}
+
+Background Information:
+{background_info}
+
+Conversation History:
+{conversation_history}
+
+Generate a concise, engaging question that advances the discussion while staying focused on the current subsection. 
+Keep questions brief and to the point to maintain the conversation flow."""
+        )
+        logger.info("Using fallback local interviewer prompt")
 
     interviewee_prompthub_path = "evandempsey/podcast_interviewee_role:0832c140"
-    interviewee_prompt = hub.pull(interviewee_prompthub_path)
-    logger.info(f"Got prompt from hub: {interviewee_prompthub_path}")
+    try:
+        interviewee_prompt = hub.pull(interviewee_prompthub_path)
+        logger.info(f"Got prompt from hub: {interviewee_prompthub_path}")
+    except Exception as e:
+        logger.warning(f"Failed to pull interviewee prompt from hub: {e}")
+        # Fallback to local prompt with duration guidance
+        from langchain_core.prompts import PromptTemplate
+        interviewee_prompt = PromptTemplate(
+            input_variables=["topic", "outline", "section", "subsection", "word_count", "background_information", "conversation_history", "question"],
+            template="""You are an expert podcast interviewee. Provide a natural, informative response to the interviewer's question.
+
+Topic: {topic}
+Outline: {outline}
+Current Section: {section}
+Current Subsection: {subsection}
+Target Word Count: {word_count}
+
+Background Information:
+{background_information}
+
+Conversation History:
+{conversation_history}
+
+Question: {question}
+
+Provide a concise, engaging response that directly addresses the question while staying within the target word count. 
+Keep responses focused and avoid unnecessary elaboration."""
+        )
+        logger.info("Using fallback local interviewee prompt")
 
     rate_limiter = InMemoryRateLimiter(
         requests_per_second=0.2,
@@ -371,7 +425,7 @@ def rewrite_script_section(section: list, rewriter_chain) -> list:
     return [{'speaker': line.speaker, 'text': line.text} for line in rewritten.lines]
 
 
-def write_final_script(config: PodcastConfig, topic: str, draft_script: list, batch_size: int = 4) -> tuple[list[dict], dict]:
+def write_final_script(config: PodcastConfig, topic: str, draft_script: list, duration_target: Optional[int] = None, batch_size: int = 4) -> tuple[list[dict], dict]:
     """
     Rewrite a draft podcast script to improve flow, naturalness and quality.
 
@@ -382,6 +436,7 @@ def write_final_script(config: PodcastConfig, topic: str, draft_script: list, ba
 
     Args:
         draft_script (list): List of Question/Answer objects representing the full draft script
+        duration_target (Optional[int]): Target duration in minutes for content length control
         batch_size (int, optional): Number of Q/A exchanges to process in each batch. Defaults to 4.
 
     Returns:
@@ -394,8 +449,24 @@ def write_final_script(config: PodcastConfig, topic: str, draft_script: list, ba
     logger.info("Processing draft script in batches")
 
     rewriter_prompthub_path = "evandempsey/podcast_rewriter:181421e2"
-    rewriter_prompt = hub.pull(rewriter_prompthub_path)
-    logger.info(f"Got prompt from hub: {rewriter_prompthub_path}")
+    try:
+        rewriter_prompt = hub.pull(rewriter_prompthub_path)
+        logger.info(f"Got prompt from hub: {rewriter_prompthub_path}")
+    except Exception as e:
+        logger.warning(f"Failed to pull rewriter prompt from hub: {e}")
+        # Fallback to local prompt with duration guidance
+        from langchain_core.prompts import PromptTemplate
+        rewriter_prompt = PromptTemplate(
+            input_variables=["script"],
+            template="""You are an expert podcast script editor. Rewrite the following script section to improve flow and naturalness while keeping responses concise.
+
+Script Section:
+{script}
+
+Rewrite this section to improve conversational flow, word choice, and overall quality. 
+Keep responses concise and focused. Avoid unnecessary elaboration."""
+        )
+        logger.info("Using fallback local rewriter prompt")
 
     rate_limiter = InMemoryRateLimiter(
         requests_per_second=0.2,

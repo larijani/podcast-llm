@@ -71,8 +71,37 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
     logger.info(f'Generating outline for podcast on: {topic}')
     
     prompthub_path = "evandempsey/podcast_outline:6ceaa688"
-    outline_prompt = hub.pull(prompthub_path, )
-    logger.info(f"Got prompt from hub: {prompthub_path}")
+    try:
+        outline_prompt = hub.pull(prompthub_path)
+        logger.info(f"Got prompt from hub: {prompthub_path}")
+    except Exception as e:
+        logger.warning(f"Failed to pull prompt from hub: {e}")
+        # Fallback to local prompt with duration guidance
+        from langchain_core.prompts import PromptTemplate
+        outline_prompt = PromptTemplate(
+            input_variables=["episode_structure", "topic", "context_documents", "episode_guidance", "duration_guidance"],
+            template="""You are an expert podcast producer. Create a detailed outline for a podcast episode.
+
+Episode Structure:
+{episode_structure}
+
+Topic: {topic}
+
+Background Information:
+{context_documents}
+
+Episode Guidance:
+{episode_guidance}
+
+Duration Guidance:
+{duration_guidance}
+
+Create a structured outline with sections and subsections that follows the episode structure above. 
+{duration_guidance}
+
+The outline should be comprehensive yet appropriate for the target duration specified."""
+        )
+        logger.info("Using fallback local prompt with duration guidance support")
 
     outline_llm = get_long_context_llm(config)
     outline_chain = outline_prompt | outline_llm.with_structured_output(
@@ -98,14 +127,24 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
             duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations. Include multiple examples and deeper insights."
         else:
             duration_text = f"\n\nTarget duration: {duration_target} minutes. Create comprehensive content with detailed explanations and extensive coverage."
+        
+        logger.info(f"Duration guidance generated: {duration_text}")
+    else:
+        logger.info("No duration target provided, using default guidance")
     
-    outline = outline_chain.invoke({
+    # Debug: Log what we're passing to the prompt
+    prompt_vars = {
         "episode_structure": config.episode_structure_for_prompt,
         "topic": topic,
         "context_documents": "\n\n".join([format_wikipedia_document(d) for d in background_info]),
         "episode_guidance": guidance_text,
         "duration_guidance": duration_text
-    })
+    }
+    
+    logger.info(f"Passing to prompt - duration_guidance: '{duration_text}'")
+    logger.info(f"Prompt variables keys: {list(prompt_vars.keys())}")
+    
+    outline = outline_chain.invoke(prompt_vars)
 
     logger.info(outline.as_str)
     return outline

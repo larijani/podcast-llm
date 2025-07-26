@@ -3,308 +3,452 @@
 ## Outline
 
 ### Section 1: Episode Introduction
-- -- Welcome and Topic Overview
-- -- Why Multichannel Measurement and Attribution Matter
-- -- What Is IE MCM in Today’s Marketing Landscape?
+- -- Welcome and Overview of IE MCM
+- -- Why Multichannel Measurement Matters
+- -- What to Expect in This Episode
 
-### Section 2: Main Discussion Topics
-- -- The Building Blocks: Identity, Data, and Attribution
-- -- How IE MCM Connects Online and Offline Events
-- -- Channel Coverage: Where Can You Measure?
-- -- Attribution Models: From First Click to Data-Driven
-- -- Solving the Challenges: Identity Alignment & Cross-Channel Complexity
-- -- The Power of Dashboards: Bringing Insights to Life
-- -- Case Study Spotlight: Cross-Channel Attribution for a Mortgage Provider
-- -- Debates and Misconceptions in Multichannel Measurement
+### Section 2: Foundations of Multichannel Measurement (MCM)
+- -- Defining Multichannel Measurement and Attribution
+- -- The Customer Journey: Online and Offline Touchpoints
+- -- The Role of Identity Alignment
 
-### Section 3: Conclusion
-- -- Key Takeaways on IE MCM and Attribution
-- -- Looking Ahead: The Future of Multichannel Measurement
-- -- Final Thoughts and Sign Off
+### Section 3: How Multichannel Measurement Works in Practice
+- -- Connecting Events: From Impressions to Conversion
+- -- Data Onboarding and Integration
+- -- Key Data Sources and Feeds
+
+### Section 4: Attribution Models Explained
+- -- Rule-Based vs Model-Based Attribution
+- -- Popular Attribution Models: First Click, Last Click, Weighted, and Data-Driven
+- -- Unique Features of Epsilon’s Approach
+
+### Section 5: Channel Coverage and Data Granularity
+- -- Supported Channels: Digital, Offline, and CTV
+- -- Field-Level Data and Identity Resolution
+- -- Frequency and Depth of Reporting
+
+### Section 6: Implementation: From Discovery to Dashboard
+- -- Discovery Sessions and Data Audits
+- -- Developing Attribution Code and Models
+- -- Visualizing Results in Tableau Dashboards
+
+### Section 7: Real-World Application and Insights
+- -- Case Study: Mortgage Provider Journey
+- -- Key Learnings and Outcomes
+- -- Addressing Common Misconceptions
+
+### Section 8: Conclusion
+- -- Top Takeaways from Today
+- -- Future of Multichannel Measurement
+- -- Final Thoughts and Sign-Off
 
 ## Script
 
 **Interviewer**: Welcome to Podcast LLM. Today we've invited an expert to talk about IE MCM.
 
-**Interviewer**: Alright, let's dive in. For folks who might be new here, can you break down what IE MCM actually is? And, you know, why should marketers really care about this whole multichannel measurement thing?
+**Interviewer**: Alright, let's dive right in—can you give us, you know, the quick version: what is IE MCM, and why should marketers care?
 
-**Interviewee**: Yeah, definitely. So, IE MCM stands for Integrated Epsilon Multichannel Measurement. Basically, it's a system to track and attribute marketing touchpoints across every channel—so online stuff, offline stuff, the whole mix.
+**Interviewee**: Yeah, so IE MCM stands for Integrated Epsilon Multichannel Measurement. It's really about bringing together every touchpoint—email, direct mail, display ads, search, even stuff offline—and actually connecting them to real conversions.
 
-**Interviewer**: Every channel? You mean, like, someone sees an ad on their phone, then maybe gets an email—
+**Interviewer**: So not just the digital bits, right?
 
-**Interviewee**: —or they visit your website, maybe even walk into a physical store before buying. Exactly! People bounce around a lot before making a decision.
+**Interviewee**: Right, not just digital. Marketers get to see what’s working, not just online, but everywhere—the whole journey. These days, people jump between devices, channels... you know how it is.
 
-**Interviewer**: Right, so if you're only looking at one channel, you’re missing... what, most of what’s really happening?
+**Interviewer**: Yeah, it's like, one minute they're on their phone, next they're in a store.
 
-**Interviewee**: Pretty much! If you're tracking just, say, email, you're not seeing the whole journey. IE MCM basically connects all those dots for you so you can actually see how your marketing is working together.
+**Interviewee**: Exactly. And because of that, having the whole picture is, honestly, just crucial. You’re spending smarter, targeting better, and you can actually justify the budget you’re asking for.
 
-**Interviewer**: And that's... that's a big deal now because consumers are everywhere at once, right?
+**Interviewer**: So, it's sort of like, putting on night-vision goggles for marketing—you’re not just guessing anymore.
 
-**Interviewee**: Exactly! In today’s world, that holistic view? It’s a total game changer for marketers. Every dollar you spend can work harder when you actually know where it’s going and what it’s doing.
+**Interviewee**: Yeah! It’s the opposite of flying blind.
 
-**Interviewer**: So, you hinted at this, but what actually happens if marketers don’t track across all these channels? Like, what goes wrong?
+**Interviewer**: Alright, so let me dig in a bit... Why does multichannel measurement matter more now than, say, five years ago? What's actually changed?
 
-**Interviewee**: Oh, where do I start—this is where it gets rough. If you don’t have real multichannel measurement, you end up making decisions with... well, honestly, bad data.
+**Interviewee**: Honestly, the customer journey now? It’s wild. People don’t just see one ad and buy. They might see a display ad, then open an email, then maybe Google your company, and then—
 
-**Interviewer**: Bad data like thinking a channel isn’t working, but really it’s just not being tracked?
+**Interviewer**: —And then walk into a store, right?
 
-**Interviewee**: Exactly! Say your paid search looks like it’s underperforming, but maybe it actually drove someone into your store. If you miss that, you might cut funding, not realizing it was actually doing a lot behind the scenes.
+**Interviewee**: Exactly! And if you’re only tracking one of those, you’re missing out. It’s like looking at just one tree and missing the whole forest.
 
-**Interviewer**: So you could be pouring money into email because it looks like it’s winning—
+**Interviewer**: And with all the privacy stuff, cookies going away—
 
-**Interviewee**: —when it’s just the last nudge before a sale that really started with a different channel. You end up missing hidden ROI, and sometimes even cutting stuff that’s actually helping you win.
+**Interviewee**: Yeah, that makes it even tougher to connect the dots. But with multichannel measurement, you’re able to actually see how everything works together. So you’re not wasting money, and you can optimize the whole journey.
 
-**Interviewer**: That sounds... risky. Like, you’re running a race but you have no idea where the baton is.
+**Interviewer**: So if you’re not doing this, you’re kind of just... leaving money on the table?
 
-**Interviewee**: Exactly! It’s like trying to win a relay race blindfolded. You’re running hard, but you just can’t see where the handoff really happens.
+**Interviewee**: Pretty much. You’re missing out on a lot of value.
 
-**Interviewer**: So, what makes IE MCM different from, you know, the usual attribution tools or measurement solutions out there? Like, what’s actually new here—what sets it apart in today’s marketing world?
+**Interviewer**: Alright, thanks for setting the scene! So, for everyone who's just tuning in... what can they expect from this episode? Any juicy insights or surprises you think will really stand out as we get into multichannel measurement?
 
-**Interviewee**: Oh, yeah, that’s a great place to start. The big thing with IE MCM is how it brings together both online and offline data, which—honestly—most other tools just can’t manage.
+**Interviewee**: Yeah, definitely. I mean, we’re not just going to talk theory here. Listeners are going to get the real nuts and bolts—like how multichannel measurement actually works day-to-day.
 
-**Interviewer**: Wait, both? So, like, digital ads AND in-store stuff?
+**Interviewer**: So, not just the textbook stuff?
 
-**Interviewee**: Exactly! We’re talking everything from digital ads, emails, even in-store visits. IE MCM ties all those touchpoints together using Epsilon’s proprietary CORE ID tech.
+**Interviewee**: Exactly! We’ll get into how to actually connect online and offline data—think website clicks, but also stuff like in-store visits—
 
-**Interviewer**: Ah, so not just cookies or last-click tracking, then?
+**Interviewer**: Oh, so like tying together someone seeing a Facebook ad and then walking into a store?
 
-**Interviewee**: Right, none of that old-school, cookie-only stuff. With CORE ID, you get this persistent, people-based identity. And then PeopleCloud comes in—it powers model scoring and activation at scale, with super high match rates.
+**Interviewee**: Yes, exactly. And we’ll break down what attribution models really mean—there’s so much confusion there!—and how you can actually see all this laid out in a dashboard.
 
-**Interviewer**: Model scoring... so that means it can, what, actually predict and activate campaigns for real people?
+**Interviewer**: I love a good dashboard story.
 
-**Interviewee**: Yeah, exactly! Plus, you’re not stuck with a one-size-fits-all approach. You get access to custom attribution models—rule-based, data-driven, whatever fits YOUR customer journey.
+**Interviewee**: Me too. And we’ve got some great war stories, like this mortgage provider who completely overhauled their whole marketing approach after seeing what was really working.
 
-**Interviewer**: So it actually adapts to how customers move, not just what some algorithm thinks they’ll do?
+**Interviewer**: Wait, that sounds wild. You mean, they changed everything?
 
-**Interviewee**: That’s the leap. So, instead of using siloed or cookie-based tools, you get a real, unified view of your customers. It’s a massive shift.
+**Interviewee**: Oh yeah, and I think people will be surprised at just how detailed you can get. Not just which channel worked, but how every single touchpoint actually nudged someone toward a sale.
 
-**Interviewer**: Let’s get into the weeds for a second: How does IE MCM actually link a person’s identity across all those different channels and devices, especially with all the privacy stuff and data fragmentation going on now?
+**Interviewer**: So, you’re saying it’s not just about picking a winning channel, but understanding the whole journey?
 
-**Interviewee**: Yeah, this is really where IE MCM stands out. CORE ID is like the backbone—it’s a persistent, people-based identity that stitches together all these signals: emails, cookies, device IDs, loyalty cards, even hashed PII like names and addresses.
+**Interviewee**: That’s it! And we’ll even dig into the common mistakes and myths—
 
-**Interviewer**: So even if someone switches devices or shops online and in person, you’re... still able to keep track of who’s who?
+**Interviewer**: Finally! Someone needs to clear those up.
 
-**Interviewee**: Exactly. They’re constantly updating and reconciling those signals as people move across channels. But—and this is important—it’s all done ethically.
+**Interviewee**: We’re going to tackle them head-on.
 
-**Interviewer**: Right, because privacy is huge now. How do they keep it safe?
+**Interviewer**: Alright, let’s rewind a bit. Give it to me straight: how do you define multichannel measurement and attribution, in plain English? And, what’s the difference between just tracking channels and actually doing attribution?
 
-**Interviewee**: Everything’s hashed, anonymized, and totally compliant with privacy laws like GDPR and CCPA. Instead of depending on fragile cookies or device graphs, CORE ID gives you a strong, durable identity graph.
+**Interviewee**: Great question. So, multichannel measurement is just tracking every way you connect with your customer—emails, ads, mailers, in-store visits, all of it.
 
-**Interviewer**: So, you get accurate measurement, but customers’ info is still protected?
+**Interviewer**: Alright, so just keeping tabs on the touchpoints.
 
-**Interviewee**: Exactly. You get that unified customer view, but never at the expense of privacy. That’s the magic—accurate results without creeping anyone out.
+**Interviewee**: Right. But attribution takes it to the next level. It’s not just about seeing what happened; it’s about figuring out which of those touchpoints deserve credit for a sale.
 
-**Interviewer**: Alright, let's dive into something that's always stumped marketers—connecting online and offline events. Can you walk us through how IE MCM actually links, say, someone seeing a digital ad to them making a purchase in-store? What's really going on behind the scenes to make that happen?
+**Interviewer**: So, tracking is saying, “here’s what happened,” but attribution is more, “here’s what mattered”?
 
-**Interviewee**: Yeah, totally. So this is where IE MCM kinda shows off, honestly. Picture this: you’re scrolling on your phone, you see a display ad—maybe you even click on it, poke around the website—and then, a few days later, you wander into an actual store and make a purchase.
+**Interviewee**: Exactly! Without attribution, you’re basically just collecting receipts—you’re not really learning what actually moved the needle.
 
-**Interviewer**: Right, and most systems would just... lose track of you at that point, right?
+**Interviewer**: Alright, so, let’s dive into the customer journey for a second. Can you kind of walk us through what a real journey looks like when someone’s bouncing between online and offline touchpoints? Maybe give an example—like, how do all those different moments actually connect before someone finally converts?
 
-**Interviewee**: Exactly! That's the usual problem. But with IE MCM, every single touchpoint gets logged—so, the ad view, the website visit, even opening an email—all of it is tied to something called a persistent CORE ID.
+**Interviewee**: Oh yeah, this is where it gets really good. Imagine someone shopping for a mortgage—first, they spot a display ad on their phone.
 
-**Interviewer**: CORE ID—so, what is that, like an email address or...?
+**Interviewer**: Oh, so they’re just scrolling, and—bam—there’s the ad?
 
-**Interviewee**: Yeah, sometimes it’s your email, sometimes a loyalty card number, or even just a device ID. The magic is, when you go in-store and use your loyalty card or give your email for a digital receipt, that purchase gets matched back to your CORE ID.
+**Interviewee**: Exactly. And then, maybe a week later, they get a flyer in the mail. They tuck it away, but it sticks in their mind. After that, they’re curious—so they hop onto their laptop, start Googling rates.
 
-**Interviewer**: So you get a full timeline: ad view, site visit, and then—bam—store purchase?
+**Interviewer**: And they probably see a paid search ad too, right?
 
-**Interviewee**: Exactly! IE MCM connects all those dots, even if the channels don’t naturally talk to each other. It does the heavy lifting of stitching everything together. So marketers finally see the real story, not just the last click before you buy.
+**Interviewee**: Yes! They click that, read some more, and then—here’s the kicker—they walk into a branch to actually apply.
 
-**Interviewer**: That’s wild. Okay, switching gears—channel coverage. What channels can IE MCM actually measure these days? And, I mean, are there any unexpected ones that might surprise marketers?
+**Interviewer**: So every one of those steps leaves a sort of breadcrumb, right?
 
-**Interviewee**: So, it’s pretty broad, honestly. IE MCM is like the Swiss Army knife of measurement. Out of the box, you’ve got display, video, paid search—the usual stuff. Website activity too, whether you’re on desktop or mobile.
+**Interviewee**: Exactly. Each touchpoint, whether it’s digital or physical, is a little breadcrumb. And with multichannel measurement, we can tie all those breadcrumbs together. That’s where identity resolution comes in—it’s how we know these touchpoints all belong to the same person, not five different people.
 
-**Interviewer**: And it’s not just your own site, right? What about external media?
+**Interviewer**: So it’s not just guessing or relying on that last click anymore.
 
-**Interviewee**: Right, it gets interesting here. IE MCM can track media served by Epsilon, even across different devices, plus external media through big DSPs like Yahoo and The Trade Desk. Paid search too, but just clicks for now. And all the website interactions get picked up with a first-party tag.
+**Interviewee**: Nope! It’s more like being a detective—putting the whole story together, not just the ending.
 
-**Interviewer**: Okay, but what about offline stuff? Can it handle, like, in-store purchases or call center calls?
+**Interviewer**: You mentioned identity resolution. Can you break down how that actually works? Like, what kind of data are you stitching together to make sure you’re connecting the right dots between online and offline actions?
 
-**Interviewee**: Yeah, that’s where it gets spicy! IE MCM can pull in offline events—so, in-store purchases, call center interactions—and tie those back to your digital touchpoints. TV measurement, too, at the individual level. And household-level is coming soon.
+**Interviewee**: Yeah, totally. Identity alignment is, honestly, the secret sauce here. Behind the scenes, we’re connecting emails, device IDs, cookies, loyalty numbers—
 
-**Interviewer**: Wait, so you can actually measure TV at the individual level? That’s rare!
+**Interviewer**: Even physical addresses?
 
-**Interviewee**: Super rare! Most tools can’t do TV at all. So if you’re running omnichannel campaigns, the real question isn’t 'Can we measure it?'—it’s 'What CAN'T we measure?' And honestly, that list is getting shorter by the day.
+**Interviewee**: Exactly. Anything that can tie back to a real person. For example, Epsilon’s CORE ID pulls all those signals together into one persistent profile. So, if someone opens an email, clicks a display ad, and then uses their loyalty card in-store, we know—it’s the same person.
 
-**Interviewer**: Alright, attribution models—let's dive in. So, IE MCM offers everything from first click to, you know, these data-driven approaches. Can you just walk us through what these different models actually mean, in practice? And, I guess, how should a marketer decide which one to use?
+**Interviewer**: So it’s way more accurate than just relying on cookies or device IDs.
 
-**Interviewee**: Yeah, totally! Attribution models are basically the rules that decide how much credit each touchpoint gets for a conversion.
+**Interviewee**: Way more. The key is constantly validating and updating those links, so you’re not just guessing. That way, marketers get a real, people-based view—
 
-**Interviewer**: So—like, which ad or interaction gets the win, right?
+**Interviewer**: —instead of a bunch of random, fragmented data points.
 
-**Interviewee**: Exactly! First click is the simplest: 100% of the credit goes to the very first touchpoint. It’s great for seeing what sparks someone’s interest, but it ignores the rest of the journey.
+**Interviewee**: Exactly. It’s about seeing the whole picture, not just the highlights.
 
-**Interviewer**: And last click is kind of the opposite, right? Only the final step gets the glory.
+**Interviewer**: Alright, let's get into the weeds for a second. How do you actually connect all those different marketing touchpoints—stuff like ad impressions, email opens, and even offline purchases—how do you tie them all to a single conversion?
 
-**Interviewee**: Yes! That’s the classic one—last click. It gives all the credit to the last thing someone did before buying. That’s why, you know, emails and search ads often look like they’re winning.
+**Interviewee**: Yeah, great question. So, first thing we do is pull in all your data—media tags from your website, files from your CRM, even offline sales records. Basically, everything you can throw at us.
 
-**Interviewer**: But real journeys aren’t usually that simple, are they?
+**Interviewer**: Even the old-school stuff? Like handwritten sales forms?
 
-**Interviewee**: No, not at all! That’s where weighted models come in. Linear models, for example, spread the credit out evenly across every touchpoint. Position-based models might give more weight to the first and last touches, and less to everything in between.
+**Interviewee**: Oh, definitely. If it exists, we want it. Every single interaction gets tied to a persistent ID—something like Epsilon’s CORE ID.
 
-**Interviewer**: So, it’s kind of like giving out slices of a pie—some bigger, some smaller, depending on where they fall in the journey.
+**Interviewer**: So you’re basically tagging every event to that one ID?
 
-**Interviewee**: Exactly! And then you have data-driven models—which are, honestly, the gold standard. They use actual data to figure out which touchpoints matter most, taking into account all the twists and turns people take.
+**Interviewee**: Exactly, yeah. Then, for each person, we put all those events in order—email opens, display ad views, direct mail, all of it. We build a timeline for each customer.
 
-**Interviewer**: And IE MCM’s secret sauce is that it pulls in online and offline data, right?
+**Interviewer**: So when someone finally buys something—
 
-**Interviewee**: Yep! So, it’s not just tracking what happens online, but also in-store or on the phone—wherever those interactions happen.
+**Interviewee**: —we can look back and see the whole chain of events that led up to that conversion. It’s like, you get to see who saw what, when, and even where. No more guessing about what worked.
 
-**Interviewer**: How does someone pick? I mean, with all these options, it sounds kind of overwhelming.
+**Interviewer**: So it’s not just the last click that gets credit.
 
-**Interviewee**: It can be! If your customer journeys are short and pretty straightforward, then a rule-based model—like first or last click—might work fine. But if your journeys are longer or more complicated, or you really want to know what’s driving impact, then data-driven is where you want to be.
+**Interviewee**: Right, you get the real story, not just the last step.
 
-**Interviewer**: And you’re not stuck with one forever, right?
+**Interviewer**: Alright, but let’s be real. What are the biggest headaches during data onboarding and integration, especially when you’re dealing with both online and offline stuff?
 
-**Interviewee**: Not at all! That’s the cool thing about IE MCM—you can actually test out different models and see which one fits your business best.
+**Interviewee**: Oh, where do I start? Onboarding is where all the skeletons come out, honestly.
 
-**Interviewer**: Alright, so shifting gears a bit. Identity alignment and cross-channel complexity—these sound like massive headaches. What are some of the toughest problems you run into when trying to match people across all these channels? And how does IE MCM handle it?
+**Interviewer**: Messy data, I’m guessing?
 
-**Interviewee**: Oh, this is the tricky part! The biggest challenge is fragmentation. People use tons of devices, they clear cookies, they shop online and in stores—sometimes even share devices with family members.
+**Interviewee**: That’s the big one. Dirty or inconsistent records—like mismatched emails, missing info, weird formatting from different systems.
 
-**Interviewer**: So, traditional tools just... can’t keep up, can they?
+**Interviewer**: And offline data's even messier, right?
 
-**Interviewee**: Nope. Most traditional tools rely on cookies, which are honestly on their way out. IE MCM tackles this with something called CORE ID. It’s persistent and people-based, so it pieces together data from emails, device IDs, loyalty cards—all kinds of sources.
+**Interviewee**: Totally. Handwritten forms, laggy POS uploads, typos everywhere. Plus, you’ve got data silos—some teams act like they’re guarding treasure.
 
-**Interviewer**: So if I switch from my phone to my laptop, CORE ID still knows it’s me?
+**Interviewer**: So, just getting everything lined up to one ID takes a ton of work.
 
-**Interviewee**: Exactly. Even if you change devices or channels, CORE ID keeps tracking your journey. And the system is always updating and reconciling the data, so you’re less likely to lose track of someone’s path.
+**Interviewee**: It’s a lot of cleaning, matching, and honestly, some good old-fashioned detective work. But if you skip it, the whole model falls apart.
 
-**Interviewer**: But what about privacy? That’s a huge concern these days.
+**Interviewer**: So, let’s get into the weeds here—where does all your data actually come from for multichannel measurement? And how do you keep all those data feeds from... well, clashing with each other?
 
-**Interviewee**: Totally. Everything is hashed, anonymized, and built to comply with privacy laws. It’s not perfect—no system is—but IE MCM gets you about as close to a unified view as you can in today’s messy, fragmented world.
+**Interviewee**: Oh, it’s a bit of a circus, honestly! We grab data from anywhere that leaves a marketing footprint: email blasts, direct mail drops, display ad clicks, search campaigns—you name it. Even old-school stuff, like in-store purchases or call center logs. If it leaves a trail, we want it.
 
-**Interviewer**: Okay, let's dig into dashboards for a second. How does having all that attribution data right there, visualized in something like Tableau—how does that actually change the way marketers make decisions, you know, day-to-day?
+**Interviewer**: Wait, so you’re pulling from both online and offline channels? That sounds like a nightmare to piece together.
 
-**Interviewee**: Oh, it changes everything. I mean, before dashboards, you’re just... lost in spreadsheets, right?
+**Interviewee**: Yeah, exactly! That’s the tricky part. We pull in structured data feeds—CSVs, CRM dumps, tag data, sometimes even third-party lists. The real trick is getting everything to speak the same language.
 
-**Interviewer**: Rows and rows of numbers—yeah, total headache.
+**Interviewer**: How do you do that? I mean, getting email opens and in-store buys to line up?
 
-**Interviewee**: Exactly! But once you get it all visualized, suddenly you can see which channels are really pulling their weight. And you can spot trends, drill down into specific campaigns, or even look at how different customer segments are behaving.
+**Interviewee**: We use a common ID—usually something like a CORE ID—and timestamp every single event. That way, you can stack everything side by side, apples to apples.
 
-**Interviewer**: So you’re saying it’s not just about looking pretty? You get real, actionable insights?
+**Interviewer**: But I bet there’s a lot of wrestling with messy formats, right?
 
-**Interviewee**: Oh, definitely. I’ve seen brands who were totally convinced paid search was their MVP channel—
+**Interviewee**: Oh, tons. Field names, date formats, missing info—it’s a puzzle. But once you wrangle it all into place, you get this beautiful, unified picture of the customer journey.
 
-**Interviewer**: —let me guess, then the dashboard told a different story?
+**Interviewer**: Alright, let’s switch gears. Attribution models. Can you break down the difference between rule-based and model-based attribution for us?
 
-**Interviewee**: Exactly! The dashboard showed that, actually, social was doing all the heavy lifting with new customers. Or sometimes a channel everyone thought was ‘meh’ turned out to be a superstar for a key segment.
+**Interviewee**: Sure! Rule-based is kinda like following a set recipe—first click, last click, linear, you decide the rules up front. It’s simple, transparent, but not always the most accurate.
 
-**Interviewer**: That must be a big shock—
+**Interviewer**: So, model-based is more... flexible?
 
-**Interviewee**: —it is! And the best part? You can filter in real time, see what’s working for prospects versus existing customers, and those hidden wins just jump out at you.
+**Interviewee**: Yeah, it’s more like letting the data tell you the story. You use algorithms to figure out which touchpoints actually mattered. It’s deeper, but harder to explain to your boss sometimes.
 
-**Interviewer**: So you’re not waiting around for a monthly report anymore.
+**Interviewer**: So when would you use one over the other?
 
-**Interviewee**: Right! You can pivot your entire strategy as soon as the data comes in. It’s like turning on the lights.
+**Interviewee**: If you want something quick and easy to understand—or if your data is limited—go with rule-based. But if you’re ready to dig deeper and you’ve got the data muscle, model-based gets you closer to the truth.
 
-**Interviewer**: Alright, let’s get into that mortgage provider case study. Can you walk us through what their cross-channel customer journey looked like?
+**Interviewer**: Do you think brands should always jump right to model-based?
 
-**Interviewee**: Yeah, that one was wild. So, imagine someone starts with a display ad, maybe clicks through a social campaign, ends up on the website—
+**Interviewee**: Honestly? No. I usually say start with rule-based—get your bearings, see how things connect. Then, once you’re comfortable, move up to model-based for the real detective work.
 
-**Interviewer**: —fills out a lead form, right?
+**Interviewer**: So, can you walk us through the most common rule-based attribution models? You know, things like first click, last click, and weighted. Maybe toss in a real-world example—how would each one paint a different picture for the exact same campaign?
 
-**Interviewee**: Exactly, but here’s where it gets interesting: the real magic happened offline. People would call a call center, visit a branch, or get follow-up emails and even direct mail.
+**Interviewee**: Totally, yeah. So, first click—basically, it gives all the credit to whatever started things off. Say someone sees a display ad and that’s what gets them interested.
 
-**Interviewer**: So you’re saying it wasn’t just a digital journey?
+**Interviewer**: Okay, so all the glory goes to the first impression?
 
-**Interviewee**: Not at all. IE MCM stitched together every touchpoint, online and offline. The insights were fascinating: digital channels warmed up the leads, but the actual conversions? Those happened offline. Calls and in-branch visits were crucial.
+**Interviewee**: Exactly. Meanwhile, last click is the opposite. It gives all the credit to the final touchpoint—maybe a paid search ad, right before the person makes the purchase.
 
-**Interviewer**: And did the dashboards help reveal that?
+**Interviewer**: So, it’s like the closer gets all the applause, even if the rest of the team set it up.
 
-**Interviewee**: Oh, totally. For example, paid social had a huge influence early on, but it almost never got credit for the final conversion. The dashboard made it obvious: if you only looked at last-touch, you’d miss the real value of those initial channels.
+**Interviewee**: Right! And then there’s weighted models—think linear, where every touchpoint gets a slice of the credit, or position-based, where maybe the first and last get more, but the middle touches aren’t left out.
 
-**Interviewer**: So, the takeaway is you can’t just throw all your money at the one channel that looks good on paper.
+**Interviewer**: So, tell me, how would all that play out in, let’s say, a mortgage campaign?
 
-**Interviewee**: Right. The data made it crystal clear: you need to invest in both digital and offline touchpoints. Otherwise, you’re just missing half the picture.
+**Interviewee**: Alright, picture this: first click says, 'That display ad started it all.' Last click? 'Search closed the deal.' Weighted? That’s where email and maybe a couple retargeting ads get their share of the credit because they nudged the customer along the way.
 
-**Interviewer**: Alright, so there’s a ton of debate about multichannel attribution. Some people say it’s just way too complicated—or even, you know, "impossible." Others think it’s just a buzzword for spending more money on marketing. What’s the biggest thing people get wrong about multichannel measurement?
+**Interviewer**: So depending on which model you use, you could end up optimizing for very different things—
 
-**Interviewee**: Oh, where do I even start? The biggest one I hear is that multichannel attribution is, like, some sort of magic trick. Or, worse, total snake oil.
+**Interviewee**: Exactly, you might double down on awareness channels, or just focus on the closer, or try to improve the whole journey.
 
-**Interviewer**: Snake oil, really?
+**Interviewer**: Alright, you’ve made the differences pretty clear. Now, what makes Epsilon’s attribution approach stand out? Can you break down some of the proprietary tech or features that set you apart?
 
-**Interviewee**: Yeah! People go, “It’s too messy, so why even bother?” But honestly, sure, it’s complex, but it’s not impossible. The goal isn’t to be perfect—it’s about getting closer to the truth.
+**Interviewee**: Yeah, so Epsilon’s got a few tricks up its sleeve. The biggest one? CORE ID. It’s this persistent, people-based ID that links together all kinds of data—online, offline, you name it—at the individual level.
 
-**Interviewer**: Just getting closer, not perfect? That’s kind of a relief.
+**Interviewer**: So, not just cookies or device IDs?
 
-**Interviewee**: Yeah, you can drive yourself crazy chasing the 'exact' answer. Another big myth is that this is all just a ploy for agencies to—
+**Interviewee**: Exactly. We’re talking emails, direct mail, even in-store purchases—all tied back to one person. And then there’s our PeopleCloud platform, which basically scores and stores this data so we can run both the old-school rule-based models and the really advanced, model-based ones.
 
-**Interviewer**: —to get a bigger budget, right?
+**Interviewer**: So you’re actually seeing the impact of every touch, even offline stuff that most tools miss?
 
-**Interviewee**: Exactly! But real multichannel measurement is about spending smarter, not more. It actually helps you spot where you’re wasting money, so you can cut out what isn’t working.
+**Interviewee**: Yeah, and that’s what really sets us apart. Most attribution tools just can’t do that level of identity resolution or cover as many channels. That’s Epsilon’s edge.
 
-**Interviewer**: So it’s about making your budget go further, not just inflating it.
+**Interviewer**: Alright, let's dive into channel coverage for a minute—what channels can you, uh, actually measure with IE MCM? And are there any gotchas, like, when it comes to digital, offline, or maybe connected TV?
 
-**Interviewee**: That’s it. Ignoring cross-channel influence is way riskier than wrestling with the messiness. Even small steps in attribution can drive big gains.
+**Interviewee**: Oh, for sure. IE MCM actually casts a really wide net. We're talking digital stuff—display, video, paid search, email, your website, all that.
 
-**Interviewer**: Okay, so if you had to sum it all up—what should marketers really remember about IE MCM and, you know, modern attribution?
+**Interviewer**: So, all the usual suspects on the digital side.
 
-**Interviewee**: Alright, here’s my take: First, you can’t ignore the whole customer journey anymore. People are everywhere—online, offline, switching devices—and if you’re not connecting those dots, your data’s... well, it’s lying to you.
+**Interviewee**: Yep! And it doesn't stop there. We've got offline channels too, like direct mail, in-store purchases. And—this is cool—even connected TV, or CTV.
 
-**Interviewer**: Your data’s lying? That’s a strong way to put it.
+**Interviewer**: Wait, CTV too? That’s impressive. But is it tracked by household, or...?
 
-**Interviewee**: I mean it! IE MCM’s superpower is bringing all those touchpoints together, using privacy-safe IDs, so you can actually see what’s working.
+**Interviewee**: Ah, good catch. Right now, it’s measured at the individual level—so if two people in a house watch, it tracks them separately. Household tracking, though, is definitely on our roadmap.
 
-**Interviewer**: And you’re not saying it has to be perfect.
+**Interviewer**: Interesting. And are there, like, hoops you have to jump through for certain channels?
 
-**Interviewee**: Not at all. It’s about progress, not perfection. Make better decisions, move faster, find value you couldn’t see before.
+**Interviewee**: Yeah, some channels need their own tagging, or you might have to feed in files, especially with offline stuff. Offline data can be a bit of a beast to wrangle.
 
-**Interviewer**: So, multichannel attribution isn’t some luxury now—it’s just, what, part of the basics?
+**Interviewer**: But overall, you’d say the coverage is solid?
 
-**Interviewee**: Table stakes. If you want to win in marketing today, you can’t afford to skip it.
+**Interviewee**: Absolutely. The magic really happens when you tie everything back to a persistent ID. That’s what gives you that unified view—no matter where someone interacted.
 
-**Interviewer**: So, looking ahead... what do you think is going to be the biggest change—or maybe innovation—in multichannel measurement in the next few years?
+**Interviewer**: Love it. You brought up field-level data and identity resolution before—can you unpack what kinds of fields you’re capturing, and just how granular this data actually gets when you’re connecting events to people?
 
-**Interviewee**: Oh, there’s a lot brewing! For one, I think we’re going to move from just individual measurement to household-level as the norm.
+**Interviewee**: Totally. Field-level data means we’re tracking all the details—timestamps, device types, campaign IDs, creative versions, geo info... and the big one: identifiers like email or loyalty IDs.
 
-**Interviewer**: Wait, so you mean tracking everyone in the house, not just one person?
+**Interviewer**: So, if I, say, open an email or visit a store—
 
-**Interviewee**: Yeah! Especially as TV and connected TV—CTV—get rolled in with everything else. That means we’ll start seeing insights about, you know, how people share devices or watch together.
+**Interviewee**: —Yep, every event like that is logged with all those pieces. Who, what, when, where, how—all of it.
 
-**Interviewer**: Interesting. And what about privacy? That’s getting tighter, right?
+**Interviewer**: Wow. So you can get super specific, right? Like, slice by channel, time of day—whatever you want.
 
-**Interviewee**: Totally. Privacy rules are only getting stricter. So, companies will have to lean more into first-party data, ethical ways of resolving IDs, and these things called 'clean rooms' for secure data collaboration.
+**Interviewee**: Exactly. The data’s granular down to each individual event, per person. That’s how you get real people-based attribution.
 
-**Interviewer**: Clean rooms? That sounds... mysterious.
+**Interviewer**: So, how often do your clients get access to those detailed reports? Is it set in stone, or can they tweak how often they get updates—or even how much detail they see?
 
-**Interviewee**: It’s less exciting than it sounds—basically a safe way for companies to compare data without exposing anyone’s personal info.
+**Interviewee**: Oh, totally flexible! Most folks get their fresh data in Tableau once a month—
 
-**Interviewer**: Got it. And AI—what’s happening there?
+**Interviewer**: But if someone wants it more often—like weekly?
 
-**Interviewee**: That’s the other big one. We’re heading towards real-time, AI-powered attribution. Imagine being able to optimize campaigns as the customer journey unfolds—on the fly.
+**Interviewee**: They can absolutely do that. Some even go daily, depending on what they need. It really comes down to their setup and what makes sense for their team.
 
-**Interviewer**: So, instant feedback. That’s wild. Are we talking just digital, or does this pull in offline stuff too?
+**Interviewer**: And they can change what the reports show, right? Like filter by channel or campaign?
 
-**Interviewee**: Oh, both! The line between online and offline is blurring even more. Things like call center data, in-store activity, even IoT devices—they’ll all get stitched together.
+**Interviewee**: Yeah, exactly! There are custom filters, so you can slice the data however you want—by channel, by campaign, by segment. No generic reports here.
 
-**Interviewer**: Wow, so marketers need to be ready for some big changes.
+**Interviewer**: So it’s not just a one-size-fits-all approach.
 
-**Interviewee**: Yeah, and honestly, they should start investing now in ID graphs that can flex and adapt—future-proof stuff. And really get comfortable with privacy-first measurement.
+**Interviewee**: Right. The whole point is to make the data actually useful for whoever’s looking at it.
 
-**Interviewer**: So the old 'set it and forget it' days are over?
+**Interviewer**: Nice. Okay, switching gears—when you kick off a new project, what actually happens in those first discovery sessions and data audits? Can you walk us through it?
 
-**Interviewee**: Completely. Agility is the new secret weapon.
+**Interviewee**: Yeah, those are super important. First, we get everyone in a room and start asking questions—like, what are your real goals? Which channels are you running? Who’s your audience?
 
-**Interviewer**: Love it. Okay, last question before we wrap up—if someone’s just starting out with multichannel measurement, what’s the one mindset, or maybe a habit, that you think really matters for long-term success?
+**Interviewer**: So you’re digging into strategy right from the start.
 
-**Interviewee**: Honestly? Curiosity is way more important than perfection. Don’t get stuck trying to build the ultimate model on day one.
+**Interviewee**: Exactly. And we’ll look at any past attribution work—what’s gone well, what’s… not so much.
 
-**Interviewer**: So—start with what you can measure?
+**Interviewer**: Then comes the data audit, right?
 
-**Interviewee**: Exactly. Start where you are, ask tough questions, keep digging for what’s really going on behind the numbers.
+**Interviewee**: Yep. That’s where we roll up our sleeves and check all the data sources. We’re looking for missing fields, tracking issues, stuff that’ll trip us up later.
 
-**Interviewer**: And expect to change things as you go?
+**Interviewer**: Like missing campaign tags, or IDs that don’t match up?
 
-**Interviewee**: All the time. Treat your measurement stack like a living thing—it needs tuning as channels, privacy, and customer habits shift.
+**Interviewee**: That’s it. If we don’t catch that stuff now, the whole attribution model can fall apart. So it’s kind of a mix—
 
-**Interviewer**: Stay humble, right?
+**Interviewer**: Therapy session and detective work all in one?
 
-**Interviewee**: Yes! Be open to surprises, because sometimes your best channel is hiding right in front of you.
+**Interviewee**: Exactly! That’s what sets up everything else.
 
-**Interviewer**: So the winners are the ones who keep learning?
+**Interviewer**: So, once you’ve finished the data audit—what happens next? How do you actually start building out the attribution models and code? I’m curious, what does that whole process look like behind the scenes?
 
-**Interviewee**: They never stop. That’s the real long-term edge.
+**Interviewee**: Yeah, so once the audit’s wrapped, that’s when the real work kicks in. We roll up our sleeves and start building. First step? Picking the right attribution approach. Sometimes it’s last click, sometimes linear, or maybe even something totally custom, depending on what the business actually needs.
+
+**Interviewer**: So you don’t just pick one model and run with it for everyone?
+
+**Interviewee**: No, not at all. It’s really tailored. After that, we start writing code—Python or SQL, usually. The code does the heavy lifting: matching IDs, timestamping every event, and figuring out who gets credit for what conversion.
+
+**Interviewer**: So it’s kind of like feeding the data through a machine that sorts it all out?
+
+**Interviewee**: Exactly! The cleaned data goes in, and what you get out is a breakdown—channel by channel, conversion by conversion. And if it’s model-based attribution, sometimes we’ll even train a machine learning model to pick up on patterns that you’d miss just eyeballing the data.
+
+**Interviewer**: Oh, so there’s a bit of data science magic in there as well.
+
+**Interviewee**: Yeah, a little bit of magic—and a lot of testing. We QA everything, test with sample records, and tweak things until the numbers actually make sense.
+
+**Interviewer**: And that’s before the dashboards come into play, right?
+
+**Interviewee**: Right. Only once it all checks out do we plug it into Tableau for the dashboards. Honestly, it’s part engineering, part art, and more late-night debugging than I’d like to admit.
+
+**Interviewer**: Okay, let’s get into those dashboards. What makes the Tableau dashboards you build actually useful for clients? Any features you love—or stories of how clients have used them to make real decisions?
+
+**Interviewee**: Tableau really changes the game. It takes all that heavy data and makes it simple. Clients can instantly compare rule-based versus model-based attribution, or filter by customer segments—like prospects versus existing customers.
+
+**Interviewer**: So they can really slice and dice the data however they want?
+
+**Interviewee**: Exactly! They can drill down into channels, spot underperforming campaigns in minutes, and even shift budget right there—no more waiting for some monthly report to show up.
+
+**Interviewer**: That must feel empowering for them.
+
+**Interviewee**: It is. The interactivity is key. You’re not just reading a bunch of numbers—you’re exploring the story behind them. And everything’s in one place. No spreadsheet hell.
+
+**Interviewer**: Alright, so let's get into that mortgage provider case study. Can you—just walk us through the kind of customer journey they had?
+
+**Interviewee**: Sure, yeah. Their journey was honestly...all over the place. People would see a display ad, then—maybe a week later—get a direct mail flyer, and then...
+
+**Interviewer**: Pop onto the website?
+
+**Interviewee**: Exactly! Some clicked on paid search ads, some got emails. The whole gamut. But here’s the thing—what made it click was using multichannel measurement. That’s when we realized, wait, nearly every conversion touched at least three different channels.
+
+**Interviewer**: Three? That many?
+
+**Interviewee**: Yeah, and get this—the real surprise was how direct mail plus digital worked together. Like, someone would get a postcard, then later hit a Google search? And boom—that combo was huge for conversions.
+
+**Interviewer**: So if you’d only looked at digital, you’d miss that, right?
+
+**Interviewee**: Completely. Without connecting the dots, they would’ve missed that synergy. Attribution showed us it wasn’t just the last click that mattered. Sometimes, it was that direct mail piece—right before a search—that actually closed the deal.
+
+**Interviewer**: So, it kind of flipped the whole campaign strategy on its head?
+
+**Interviewee**: Totally. The way they planned budgets and sequenced campaigns changed overnight.
+
+**Interviewer**: What about surprises? Any big learnings that caught your team off guard?
+
+**Interviewee**: Oh, yeah—plenty. We went in thinking digital would be the star of the show. But honestly? That mix of direct mail and digital outperformed any single channel.
+
+**Interviewer**: So, even old-school mail had a comeback moment?
+
+**Interviewee**: Absolutely. And there’s more—the idea that 'last touch wins' got turned upside down. We saw early display ads or mailers setting up conversions days later.
+
+**Interviewer**: So those early touchpoints were kind of the unsung heroes?
+
+**Interviewee**: Exactly! Offline stuff played a much bigger—and quieter—role than we thought. It made us totally rethink how we weighed and sequenced each channel.
+
+**Interviewer**: Alright, let's clear the air here—there are so many myths about multichannel measurement and attribution floating around. What’s the wildest or most common one you hear?
+
+**Interviewee**: Oh, where do I even start? The one that always gets me is when people think attribution is just picking last click or first click. You know, like—
+
+**Interviewer**: As if it’s that simple, right?
+
+**Interviewee**: Exactly! Real attribution digs much deeper. It’s about mapping the whole customer journey, figuring out who actually deserves credit at each step. Not just that last moment before a sale.
+
+**Interviewer**: Yeah, and I’ve heard offline stuff is impossible to measure. That’s a big one too.
+
+**Interviewee**: Totally false. If you’ve got the right data and identity markers, offline is absolutely measurable. People are surprised by that every time.
+
+**Interviewer**: And what about the idea that attribution is just plug-and-play? Like you turn it on and—
+
+**Interviewee**: —Instant answers! No way. It’s a lot of messy data wrangling and ongoing tweaking. I always tell clients, it’s not magic. But if you stick with it, the clarity you get is worth all the hassle.
+
+**Interviewer**: Alright, so after busting all those myths, if you had to give marketers just a couple key takeaways to get started with multichannel measurement—what should they focus on first?
+
+**Interviewee**: First thing: don’t ignore the groundwork. Clean your data, map it out, and tie it to a real identity—like CORE ID or something equivalent.
+
+**Interviewer**: So, start with the basics, right?
+
+**Interviewee**: Exactly. And then, before you jump into all the fancy, complex models, start simple. Use rule-based attribution—trust me, you’ll learn so much just from that.
+
+**Interviewer**: And I bet there’s something about offline touchpoints in there too?
+
+**Interviewee**: You read my mind. Offline matters more than most people realize. Don’t leave it out. If you focus there, you’ll already be ahead of a lot of marketers.
+
+**Interviewer**: Okay, so let's talk about the future. Where do you see multichannel measurement heading in the next few years? Any big tech shifts or trends on your radar?
+
+**Interviewee**: Oh, things are about to get... pretty intense, honestly. We're going to see privacy rules tighten up even more—
+
+**Interviewer**: Wait, even more than now? That seems... tough!
+
+**Interviewee**: Yeah, it’ll push everyone to double down on first-party data. Persistent IDs, like CORE ID, are gonna be huge. And then there’s AI—
+
+**Interviewer**: Of course, AI! What’s it going to change?
+
+**Interviewee**: A lot. AI will start automating all that messy data wrangling, attribution modeling... the stuff that eats up hours.
+
+**Interviewer**: So, less grunt work for people?
+
+**Interviewee**: Exactly. And get ready for even more channels joining the party. Think smart TVs, voice assistants, even IoT gadgets.
+
+**Interviewer**: Wow, so measuring across your fridge and your TV?
+
+**Interviewee**: Pretty much! Eventually, real-time, people-based measurement will just be the expectation, not a fancy extra.
+
+**Interviewer**: And the marketers who crack identity and data integration...
+
+**Interviewee**: ...they’ll pull way ahead. No question.
+
+**Interviewer**: Alright, before we finish up—any advice for marketers who are feeling totally lost in all this data chaos?
+
+**Interviewee**: Yeah, don’t get stuck waiting for things to be perfect. Seriously, everyone’s data is kind of messy.
+
+**Interviewer**: So just start somewhere?
+
+**Interviewee**: Exactly. Clean up what you can, choose a couple channels to focus on. Celebrate those small wins, you know?
+
+**Interviewer**: Because those add up—
+
+**Interviewee**: Right! Clarity compounds. Every step makes it easier. You’ll get there.
 
 **Interviewer**: That's all for today. Thank you for listening to Podcast LLM. See you next time when we'll talk about whatever you want.
 
