@@ -105,49 +105,23 @@ class PodcastOutline(BaseModel):
 
 
 class WikipediaPage(BaseModel):
-    """
-    A model representing a Wikipedia page.
+    """A single suggested Wikipedia page."""
+    name: str = Field(..., description="The exact title of the Wikipedia page")
+    reason: str = Field(..., description="A brief explanation of why this page is relevant")
 
-    This class models a Wikipedia page that has been retrieved as part of the research
-    process for podcast content generation. It stores the page name and provides a
-    standardized string representation through a helper property.
-
-    Attributes:
-        name (str): The title/name of the Wikipedia page
-    """
-    name: str = Field(..., title="Name of the wikipedia page")
-
-    @property
-    def as_str(self) -> str:
-        return f"{self.name}".strip()
-    
 
 class WikipediaPages(BaseModel):
-    """
-    A model representing a collection of Wikipedia pages.
+    """A list of suggested Wikipedia pages."""
+    pages: List[WikipediaPage] = Field(..., description="A list of suggested Wikipedia pages")
 
-    This class models a collection of Wikipedia pages that have been retrieved as part of 
-    the research process for podcast content generation. It stores a list of WikipediaPage 
-    objects and provides a standardized way to work with multiple pages together.
 
-    Attributes:
-        pages (List[WikipediaPage]): List of WikipediaPage objects representing the collection
-    """
-    pages: List[WikipediaPage] = Field(..., title="List of Wikipedia pages")
-
+class SummarizedDocument(BaseModel):
+    """A summarized document with key topics."""
+    summary: str = Field(..., description="A dense, informative summary of the document, focused on the key topics.")
 
 class SearchQuery(BaseModel):
-    """
-    A model representing a search query.
-
-    This class models an individual search query used to gather research material for
-    podcast content generation. It provides a structured way to store and format query
-    text, with a helper property to output the query in a standardized string format.
-
-    Attributes:
-        query (str): The actual text content of the search query
-    """
-    query: str = Field(..., title="Text of the search query")
+    """A single suggested search query."""
+    query: str = Field(..., description="The exact search query to be used")
 
     @property
     def as_str(self) -> str:

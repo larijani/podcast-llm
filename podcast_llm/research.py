@@ -36,12 +36,75 @@ from podcast_llm.config import PodcastConfig
 from podcast_llm.utils.llm import get_fast_llm
 from podcast_llm.models import (
     SearchQueries,
-    WikipediaPages
+    WikipediaPages,
+    SummarizedDocument
 )
 from podcast_llm.extractors.web import WebSourceDocument
+from langchain.prompts import PromptTemplate
+from podcast_llm.utils.llm import get_long_context_llm
 
 
 logger = logging.getLogger(__name__)
+
+
+def summarize_document(config: PodcastConfig, document: Document, topic: str, key_topics_count: str) -> Document:
+    """Summarizes a single document, focusing on extracting key topics."""
+    logger.debug(f"Summarizing document: {document.metadata.get('title', 'Unknown Title')}")
+
+    # This prompt is not from the hub, it's defined locally.
+    summarization_prompt_template = """
+    You are an expert researcher. Summarize the following document to extract the most critical topics for a podcast about '{topic}'.
+    Focus on extracting the {key_topics_count} most important themes, facts, and talking points.
+    Ensure the summary is dense with information but easy to understand.
+
+    DOCUMENT:
+    {document_content}
+    """
+    prompt = PromptTemplate.from_template(summarization_prompt_template)
+    
+    summarizer_llm = get_long_context_llm(config)
+    summarization_chain = prompt | summarizer_llm.with_structured_output(SummarizedDocument)
+
+    summary_result = summarization_chain.invoke({
+        "topic": topic,
+        "key_topics_count": key_topics_count,
+        "document_content": document.page_content
+    })
+
+    # Create a new Document object with the summary
+    return Document(
+        page_content=summary_result.summary,
+        metadata={"source": document.metadata.get('source', 'summarized'), "original_title": document.metadata.get('title', 'N/A')}
+    )
+
+
+def summarize_research_material(config: PodcastConfig, topic: str, background_info: list, key_topics_count: str) -> list:
+    """
+    Summarizes a list of research documents to reduce context length while preserving key information.
+    
+    Args:
+        config: The podcast configuration.
+        topic: The podcast topic.
+        background_info: A list of documents to summarize.
+        key_topics_count: A string indicating the number of key topics to focus on (e.g., "1-3").
+        
+    Returns:
+        A list of summarized research documents.
+    """
+    logger.info(f"Summarizing {len(background_info)} documents to focus on {key_topics_count} key topics.")
+    
+    summarized_docs = []
+    for doc in background_info:
+        try:
+            summarized_doc = summarize_document(config, doc, topic, key_topics_count)
+            summarized_docs.append(summarized_doc)
+        except Exception as e:
+            logger.error(f"Failed to summarize document {doc.metadata.get('source', 'N/A')}: {e}")
+            # Optionally, you could include the original document if summarization fails
+            # summarized_docs.append(doc)
+            
+    logger.info(f"Successfully summarized {len(summarized_docs)} documents.")
+    return summarized_docs
 
 
 def suggest_wikipedia_articles(config: PodcastConfig, topic: str) -> WikipediaPages:

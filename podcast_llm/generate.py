@@ -57,7 +57,9 @@ def generate(
     episode_guidance: Optional[str] = None,
     config: str = DEFAULT_CONFIG_PATH,
     debug: bool = False,
-    log_file: Optional[str] = None
+    log_file: Optional[str] = None,
+    summarization_enabled: bool = True,
+    key_topics_count: str = "3-5",
 ) -> Generator[str, None, None]:
     """
     Generate a podcast episode, yielding progress updates.
@@ -101,6 +103,27 @@ def generate(
             [sources],
             stage_name='background_info'
         )
+
+    # Summarize background information if enabled
+    if summarization_enabled:
+        yield "Summarizing research material..."
+        background_info = checkpointer.checkpoint(
+            summarize_research_material,
+            [config, topic, background_info, key_topics_count],
+            stage_name='summarized_info'
+        )
+
+        # Save summarized research for debugging
+        summary_output_path = checkpointer.checkpoint_dir / f"{checkpointer.checkpoint_key}_summarized_research.md"
+        with open(summary_output_path, "w") as f:
+            f.write(f"# Summarized Research for Topic: {topic}\n\n")
+            for i, doc in enumerate(background_info):
+                f.write(f"## Summary of Source {i+1}\n")
+                f.write(f"**Original Title:** {doc.metadata.get('original_title', 'N/A')}\n")
+                f.write(f"**Source:** {doc.metadata.get('source', 'N/A')}\n\n")
+                f.write(f"{doc.page_content}\n\n")
+                f.write("---\n\n")
+        logger.info(f"Saved summarized research material for debugging to: {summary_output_path}")
 
     yield "Generating outline..."
     outline = checkpointer.checkpoint(

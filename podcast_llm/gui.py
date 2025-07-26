@@ -52,6 +52,8 @@ def submit_handler(
     custom_config_file: str | None,
     text_output: str,
     audio_output: str,
+    summarization_enabled: bool,
+    key_topics_count: str,
 ) -> Generator[str, None, None]:
     """
     Handle form submission for podcast generation.
@@ -134,7 +136,9 @@ def submit_handler(
         episode_guidance=episode_guidance.strip() if episode_guidance.strip() else None,
         config=custom_config_file if custom_config_file else DEFAULT_CONFIG_PATH,
         debug=False,
-        log_file=temp_log_file
+        log_file=temp_log_file,
+        summarization_enabled=summarization_enabled,
+        key_topics_count=key_topics_count,
     ):
         yield progress_update
 
@@ -173,6 +177,21 @@ def main():
                 precision=0
             )
 
+        # Summarization Options Section
+        with gr.Accordion("Summarization and Topic Focus", open=True):
+            with gr.Row():
+                summarization_enabled_input = gr.Checkbox(
+                    label="Enable Summarization",
+                    value=True,
+                    info="Summarize source material to focus on key topics. Recommended for large sources."
+                )
+                key_topics_count_input = gr.Radio(
+                    choices=["1-3", "3-5", "5+"],
+                    label="Number of Key Topics",
+                    value="3-5",
+                    info="Guide the LLM to focus on this many main topics in the outline."
+                )
+        
         # Episode Structure Guidance (Collapsible)
         with gr.Accordion("Episode Structure Guidance", open=False):
             episode_guidance_input = gr.TextArea(
@@ -260,7 +279,9 @@ def main():
                 episode_guidance_input,
                 custom_config_file_input,
                 text_output_input,
-                audio_output_input
+                audio_output_input,
+                summarization_enabled_input,
+                key_topics_count_input,
             ],
             outputs=[status_output],
             queue=True
