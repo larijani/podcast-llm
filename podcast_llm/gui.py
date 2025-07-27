@@ -37,7 +37,8 @@ from .utils.checkpointer import to_snake_case
 PACKAGE_ROOT = Path(__file__).parent
 DEFAULT_CONFIG_PATH = os.path.join(PACKAGE_ROOT, 'config', 'config.yaml')
 
-temp_log_file = tempfile.NamedTemporaryFile(mode='w', delete=False).name
+# Create a temporary log file for this run
+temp_log_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix=".log").name
 
 
 def submit_handler(
@@ -76,6 +77,15 @@ def submit_handler(
     Returns:
         Generator[str, None, None]: A generator yielding progress updates.
     """
+    # Overwrite the temp_log_file path for this specific run
+    temp_log_file = f"run_{to_snake_case(topic)}.log"
+
+    # Clear the log file by opening in write mode, which truncates it
+    with open(temp_log_file, 'w') as f:
+        pass  # Just opening in 'w' mode is enough to clear it
+
+    # Set up logging
+    log_level = logging.INFO
     setup_logging(log_level=logging.INFO, output_file=temp_log_file)
     # Print values and types of all arguments
     logging.info(f'Topic: {topic} (type: {type(topic)})')
@@ -89,23 +99,31 @@ def submit_handler(
     logging.info(f'Audio Output: {audio_output} (type: {type(audio_output)})')
     logging.info(f'Target Duration: {target_duration} (type: {type(target_duration)})')
 
-    # Ensure text output has .md extension
+    # Load config to get output directory
+    from podcast_llm.config import PodcastConfig
+    config = PodcastConfig.load(custom_config_file if custom_config_file else DEFAULT_CONFIG_PATH)
+
+    # Ensure output directory exists
+    output_dir = Path(config.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Ensure text output has .md extension and is in output directory
     if text_output.strip():
         text_output_file = text_output.strip()
         if not text_output_file.endswith('.md'):
             text_output_file += '.md'
+        text_output_file = str(output_dir / text_output_file)
     else:
-        # Use topic as filename if text output is empty
-        text_output_file = f"{to_snake_case(topic)}.md"
-    
-    # Ensure audio output has .mp3 extension
+        text_output_file = str(output_dir / f"{to_snake_case(topic)}.md")
+
+    # Ensure audio output has .mp3 extension and is in output directory
     if audio_output.strip():
         audio_output_file = audio_output.strip()
         if not audio_output_file.endswith('.mp3'):
             audio_output_file += '.mp3'
+        audio_output_file = str(output_dir / audio_output_file)
     else:
-        # Use topic as filename if audio output is empty
-        audio_output_file = f"{to_snake_case(topic)}.mp3"
+        audio_output_file = str(output_dir / f"{to_snake_case(topic)}.mp3")
 
     # Split URLs by line and filter out non-URL lines
     source_urls_list = [
