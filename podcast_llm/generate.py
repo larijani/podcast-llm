@@ -122,7 +122,7 @@ def generate(
     yield "Generating outline..."
     outline = checkpointer.checkpoint(
         outline_episode,
-        [config, topic, background_info, episode_guidance],
+        [config, topic, background_info, episode_guidance, key_topics_count],
         stage_name='outline'
     )
 

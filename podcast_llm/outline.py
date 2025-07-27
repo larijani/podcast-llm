@@ -31,6 +31,7 @@ from podcast_llm.utils.llm import get_long_context_llm
 from podcast_llm.models import (
     PodcastOutline
 )
+from langchain_core.prompts import PromptTemplate
 
 
 logger = logging.getLogger(__name__)
@@ -54,7 +55,7 @@ def format_document_for_prompt(doc):
     return f"### {title}\n\n{doc.page_content}"
 
 
-def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None) -> PodcastOutline:
+def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, key_topics_count: str = "3-5") -> PodcastOutline:
     """
     Generate a structured outline for a podcast episode.
 
@@ -70,33 +71,28 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
         PodcastOutline: Structured outline object containing sections and subsections
     """
     logger.info(f'Generating outline for podcast on: {topic}')
+    
+    # This prompt is not from the hub, it's defined locally.
+    outline_prompt_template = """
+    You are an expert podcast producer. Your task is to create a podcast outline about '{topic}'.
+    
+    Based on the provided research, identify the '{key_topics_count}' most critical and engaging main discussion topics.
+    DO NOT generate more than the requested number of main topics.
+    For each main topic, create 2-3 concise and relevant sub-sections.
 
-    prompthub_path = "evandempsey/podcast_outline:6ceaa688"
-    try:
-        outline_prompt = hub.pull(prompthub_path)
-        logger.info(f"Got prompt from hub: {prompthub_path}")
-    except Exception as e:
-        logger.warning(f"Failed to pull prompt from hub: {e}")
-        # Fallback to local prompt with duration guidance
-        from langchain_core.prompts import PromptTemplate
-        outline_prompt = PromptTemplate(
-            input_variables=["episode_structure", "topic", "context_documents", "episode_guidance"],
-            template="""You are an expert podcast producer. Create a detailed outline for a podcast episode.
+    Here is the general structure to follow:
+    {episode_structure}
 
-Episode Structure:
-{episode_structure}
+    Here is the summarized research material:
+    {context_documents}
+    
+    Additional Guidance:
+    {episode_guidance}
 
-Topic: {topic}
-
-Background Information:
-{context_documents}
-
-Episode Guidance:
-{episode_guidance}
-
-Create a structured outline with sections and subsections that follows the episode structure above."""
-        )
-        logger.info("Using fallback local prompt with duration guidance support")
+    Create the outline now.
+    """
+    outline_prompt = PromptTemplate.from_template(outline_prompt_template)
+    logger.info("Using local outline prompt to enforce topic count.")
 
     outline_llm = get_long_context_llm(config)
     outline_chain = outline_prompt | outline_llm.with_structured_output(
@@ -112,9 +108,10 @@ Create a structured outline with sections and subsections that follows the episo
         "episode_structure": config.episode_structure_for_prompt,
         "topic": topic,
         "context_documents": "\n\n".join([format_document_for_prompt(d) for d in background_info]),
-        "episode_guidance": guidance_text
+        "episode_guidance": guidance_text,
+        "key_topics_count": key_topics_count,
     }
-
+    
     outline = outline_chain.invoke(prompt_vars)
 
     logger.info(outline.as_str)
