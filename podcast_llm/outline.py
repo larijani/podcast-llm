@@ -55,7 +55,7 @@ def format_document_for_prompt(doc):
     return f"### {title}\n\n{doc.page_content}"
 
 
-def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, key_topics_count: str = "3-5") -> PodcastOutline:
+def outline_episode(config: PodcastConfig, topic: str, background_info: list, episode_guidance: Optional[str] = None, key_topics_count: str = "3-5", target_duration: Optional[int] = None) -> PodcastOutline:
     """
     Generate a structured outline for a podcast episode.
 
@@ -66,11 +66,22 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
     Args:
         topic (str): The main topic for the podcast episode
         background_info (list): List of Wikipedia document objects containing research material
+        episode_guidance (Optional[str]): Custom guidance for the episode
+        key_topics_count (str): Number of key topics to focus on
+        target_duration (Optional[int]): Target duration in minutes for the entire podcast
 
     Returns:
         PodcastOutline: Structured outline object containing sections and subsections
     """
     logger.info(f'Generating outline for podcast on: {topic}')
+    
+    # Calculate word count based on target duration
+    if target_duration:
+        # Estimate: 150 words per minute for conversational speech
+        target_words = target_duration * 150
+        logger.info(f"Target duration: {target_duration} minutes, Target words: {target_words}")
+    else:
+        target_words = None
     
     # This prompt is not from the hub, it's defined locally.
     outline_prompt_template = """
@@ -79,6 +90,8 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
     Based on the provided research, identify the '{key_topics_count}' most critical and engaging main discussion topics.
     DO NOT generate more than the requested number of main topics.
     For each main topic, create 2-3 concise and relevant sub-sections.
+
+    {duration_constraint}
 
     Here is the general structure to follow:
     {episode_structure}
@@ -104,12 +117,25 @@ def outline_episode(config: PodcastConfig, topic: str, background_info: list, ep
     if episode_guidance and episode_guidance.strip():
         guidance_text = f"\n\nAdditional guidance for Main Discussion Topics:\n{episode_guidance.strip()}"
 
+    # Prepare duration constraint
+    duration_constraint = ""
+    if target_duration:
+        duration_constraint = f"""
+CRITICAL LENGTH REQUIREMENT:
+- This outline must result in a {target_duration}-minute podcast (approximately {target_words} words)
+- Keep all content concise and focused
+- Avoid overly detailed explanations or multiple examples
+- Each subsection should be designed for brief, impactful discussion
+- Focus only on the most essential points that can be covered in {target_duration} minutes
+"""
+
     prompt_vars = {
         "episode_structure": config.episode_structure_for_prompt,
         "topic": topic,
         "context_documents": "\n\n".join([format_document_for_prompt(d) for d in background_info]),
         "episode_guidance": guidance_text,
         "key_topics_count": key_topics_count,
+        "duration_constraint": duration_constraint,
     }
     
     outline = outline_chain.invoke(prompt_vars)

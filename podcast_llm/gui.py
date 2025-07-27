@@ -54,6 +54,7 @@ def submit_handler(
     audio_output: str,
     summarization_enabled: bool,
     key_topics_count: str,
+    target_duration: int,
 ) -> Generator[str, None, None]:
     """
     Handle form submission for podcast generation.
@@ -86,6 +87,7 @@ def submit_handler(
     logging.info(f'Custom Config File: {custom_config_file} (type: {type(custom_config_file)})')
     logging.info(f'Text Output: {text_output} (type: {type(text_output)})')
     logging.info(f'Audio Output: {audio_output} (type: {type(audio_output)})')
+    logging.info(f'Target Duration: {target_duration} (type: {type(target_duration)})')
 
     # Ensure text output has .md extension
     if text_output.strip():
@@ -139,6 +141,7 @@ def submit_handler(
         log_file=temp_log_file,
         summarization_enabled=summarization_enabled,
         key_topics_count=key_topics_count,
+        target_duration=target_duration,
     ):
         yield progress_update
 
@@ -192,8 +195,20 @@ def main():
                     info="Guide the LLM to focus on this many main topics in the outline."
                 )
         
+        # Duration Control
+        with gr.Accordion("Duration Control", open=True):
+            with gr.Row():
+                target_duration_input = gr.Number(
+                    label="Target Duration (minutes)",
+                    value=5,
+                    minimum=1,
+                    maximum=60,
+                    step=1,
+                    info="Target length for the entire podcast. This will guide the outline generation."
+                )
+
         # Episode Structure Guidance (Collapsible)
-        with gr.Accordion("Episode Structure Guidance", open=False):
+        with gr.Accordion("Custom Episode Guidance", open=False):
             episode_guidance_input = gr.TextArea(
                 label='Custom Discussion Points',
                 placeholder='Enter bullet points to guide the episode structure...\nExample:\n• Focus on practical applications\n• Include real-world examples\n• Address common challenges',
@@ -282,6 +297,7 @@ def main():
                 audio_output_input,
                 summarization_enabled_input,
                 key_topics_count_input,
+                target_duration_input,
             ],
             outputs=[status_output],
             queue=True

@@ -55,6 +55,7 @@ def generate(
     log_file: Optional[str] = None,
     summarization_enabled: bool = True,
     key_topics_count: str = "3-5",
+    target_duration: Optional[int] = None,
 ) -> Generator[str, None, None]:
     """
     Generate a podcast episode, yielding progress updates.
@@ -70,6 +71,9 @@ def generate(
         config: Path to config file
         debug: Whether to enable debug logging
         log_file: Log output file
+        summarization_enabled: Whether to enable summarization
+        key_topics_count: Number of key topics to focus on
+        target_duration: Target duration in minutes for the entire podcast
     """
     log_level = logging.DEBUG if debug else logging.INFO
     setup_logging(log_level, output_file=log_file)
@@ -122,7 +126,7 @@ def generate(
     yield "Generating outline..."
     outline = checkpointer.checkpoint(
         outline_episode,
-        [config, topic, background_info, episode_guidance, key_topics_count],
+        [config, topic, background_info, episode_guidance, key_topics_count, target_duration],
         stage_name='outline'
     )
 
