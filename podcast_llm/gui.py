@@ -25,13 +25,13 @@ import logging
 import os
 from pathlib import Path
 import tempfile
-from typing import Generator
+from typing import Generator, Optional, List
 
 import gradio as gr
 from gradio_log import Log
 
 from .config.logging_config import setup_logging
-from .generate import generate
+from .generate import generate, DEFAULT_CONFIG_PATH
 from .utils.checkpointer import to_snake_case
 
 PACKAGE_ROOT = Path(__file__).parent
@@ -77,16 +77,17 @@ def submit_handler(
     Returns:
         Generator[str, None, None]: A generator yielding progress updates.
     """
-    # Overwrite the temp_log_file path for this specific run
-    temp_log_file = f"run_{to_snake_case(topic)}.log"
+    # Define the log file name for this specific run
+    run_log_file = f"run_{to_snake_case(topic)}.log"
 
     # Clear the log file by opening in write mode, which truncates it
-    with open(temp_log_file, 'w') as f:
+    with open(run_log_file, 'w') as f:
         pass  # Just opening in 'w' mode is enough to clear it
 
     # Set up logging
     log_level = logging.INFO
-    setup_logging(log_level=logging.INFO, output_file=temp_log_file)
+    setup_logging(log_level=logging.INFO, output_file=run_log_file)
+
     # Print values and types of all arguments
     logging.info(f'Topic: {topic} (type: {type(topic)})')
     logging.info(f'Mode of Operation: {mode_of_operation} (type: {type(mode_of_operation)})')
@@ -125,10 +126,11 @@ def submit_handler(
     else:
         audio_output_file = str(output_dir / f"{to_snake_case(topic)}.mp3")
 
+
     # Split URLs by line and filter out non-URL lines
     source_urls_list = [
-        url.strip() 
-        for url in source_urls.strip().split('\n') 
+        url.strip()
+        for url in source_urls.strip().split('\n')
         if url.strip().startswith(('http://', 'https://'))
     ]
 
@@ -141,7 +143,7 @@ def submit_handler(
 
     if adjusted_qa_rounds != qa_rounds:
         logging.info(f"Q&A rounds set to {adjusted_qa_rounds}")
-    
+
     final_audio_output = audio_output_file if generate_audio else None
 
     # Use a for loop to yield progress from the generator
@@ -156,12 +158,13 @@ def submit_handler(
         episode_guidance=episode_guidance.strip() if episode_guidance.strip() else None,
         config=custom_config_file if custom_config_file else DEFAULT_CONFIG_PATH,
         debug=False,
-        log_file=temp_log_file,
+        log_file=run_log_file,
         summarization_enabled=summarization_enabled,
         key_topics_count=key_topics_count,
         target_duration=target_duration,
     ):
         yield progress_update
+
 
 def main():
     """
@@ -184,9 +187,9 @@ def main():
     with gr.Blocks() as iface:
         # Title
         gr.Markdown('# Podcast-LLM', elem_classes='text-center')
+        gr.Markdown('Generate a podcast from a topic or existing content')
 
-        # Conversation Options Section
-        gr.Markdown('## Conversation Options')
+        # Main Inputs Section
         with gr.Row():
             topic_input = gr.Textbox(label='Topic')
             qa_rounds_input = gr.Number(
@@ -198,12 +201,12 @@ def main():
                 precision=0
             )
 
-        # Summarization Options Section
-        with gr.Accordion("Summarization and Topic Focus", open=True):
+        # Summarization Controls
+        with gr.Accordion("Summarization and Topic Focus", open=False):
             with gr.Row():
                 summarization_enabled_input = gr.Checkbox(
                     label="Enable Summarization",
-                    value=True,
+                    value=False,
                     info="Summarize source material to focus on key topics. Recommended for large sources."
                 )
                 key_topics_count_input = gr.Radio(
@@ -212,7 +215,7 @@ def main():
                     value="3-5",
                     info="Guide the LLM to focus on this many main topics in the outline."
                 )
-        
+
         # Duration Control
         with gr.Accordion("Duration Control", open=True):
             with gr.Row():
@@ -225,7 +228,7 @@ def main():
                     info="Target length for the entire podcast. This will guide the outline generation."
                 )
 
-        # Episode Structure Guidance (Collapsible)
+        # Custom Episode Guidance Section
         with gr.Accordion("Custom Episode Guidance", open=False):
             episode_guidance_input = gr.TextArea(
                 label='Custom Discussion Points',
@@ -234,7 +237,7 @@ def main():
                 lines=5
             )
 
-        # Mode Selection Section  
+        # Mode Selection Section
         gr.Markdown('## Mode of Operation')
         mode_of_operation = gr.Radio(
             choices=['research', 'context'],
@@ -283,14 +286,14 @@ def main():
         gr.Markdown('## Output Options')
         with gr.Row():
             text_output_input = gr.Textbox(
-                label='Text output (.md)', 
+                label='Text output (.md) - will be saved to /output/',
                 placeholder='Leave empty to use topic name'
             )
             audio_output_input = gr.Textbox(
-                label='Audio output (.mp3)', 
+                label='Audio output (.mp3) - will be saved to /output/',
                 placeholder='Leave empty to use topic name'
             )
-        gr.Markdown('*Leave output fields empty to automatically use the topic name as filename*')
+        gr.Markdown('*Leave output fields empty to automatically use the topic name as filename in the /output/ directory*')
 
         # Submit Button
         with gr.Row():
@@ -298,6 +301,14 @@ def main():
             stop_button = gr.Button('Stop Processing', variant='stop')
 
         status_output = gr.Textbox(label="Status", interactive=False)
+
+        # Log Display
+        gr.Markdown('## System Log')
+        with gr.Row():
+            log_display = Log(run_log_file, dark=True, xterm_font_size=12, height=400) # Ensure this watches the correct file
+
+        # Add spacing to prevent footer overlap
+        gr.Markdown('<div style="height: 100px;"></div>')
 
         click_event = submit_button.click(
             fn=submit_handler,
@@ -317,19 +328,11 @@ def main():
                 key_topics_count_input,
                 target_duration_input,
             ],
-            outputs=[status_output],
+            outputs=[status_output, log_display],
             queue=True
         )
 
         stop_button.click(fn=None, inputs=None, outputs=None, cancels=[click_event])
-
-        # Log Display
-        gr.Markdown('## System Log')
-        with gr.Row():
-            Log(temp_log_file, dark=True, xterm_font_size=12, height=400)
-        
-        # Add spacing to prevent footer overlap
-        gr.Markdown('<div style="height: 100px;"></div>')
 
     iface.launch(inbrowser=True)
 
